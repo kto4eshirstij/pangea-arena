@@ -36,6 +36,7 @@ set(CGAME_QVM_SOURCES ${SOURCE_DIR}/cgame/cg_syscalls.asm)
 
 set(GAME_SOURCES
     ${SOURCE_DIR}/game/g_main.c
+    ${SOURCE_DIR}/game/g_pangea.c
     ${SOURCE_DIR}/game/ai_chat.c
     ${SOURCE_DIR}/game/ai_cmd.c
     ${SOURCE_DIR}/game/ai_dmnet.c

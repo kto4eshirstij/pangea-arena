@@ -156,6 +156,15 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_podiumDrop, "g_podiumDrop", "70", 0, 0, qfalse },
 
 	{ &g_allowVote, "g_allowVote", "1", CVAR_ARCHIVE, 0, qfalse },
+
+	// Pangea Arena match rules (g_pangea.c)
+	{ &g_pangea_tickets, "g_pangea_tickets", "", 0, 0, qfalse },
+	{ &g_pangea_arsenal, "g_pangea_arsenal", "full", CVAR_SERVERINFO, 0, qfalse },
+	{ &g_pangea_instagib, "g_pangea_instagib", "0", CVAR_SERVERINFO, 0, qfalse },
+	{ &g_pangea_powerups, "g_pangea_powerups", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
+	{ &g_pangea_items, "g_pangea_items", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
+	{ &g_pangea_bots, "g_pangea_bots", "0", 0, 0, qfalse },
+	{ &g_pangea_autoexit, "g_pangea_autoexit", "0", 0, 0, qfalse },
 	{ &g_listEntity, "g_listEntity", "0", 0, 0, qfalse },
 
 #ifdef MISSIONPACK
@@ -1196,6 +1205,8 @@ void LogExit( const char *string ) {
 
 	}
 
+	Pangea_MatchLogged();
+
 #ifdef MISSIONPACK
 	if (g_singlePlayer.integer) {
 		if (g_gametype.integer >= GT_TEAM) {
@@ -1790,6 +1801,8 @@ void G_RunFrame( int levelTime ) {
 	if ( level.restarted ) {
 		return;
 	}
+
+	Pangea_RunFrame();
 
 	level.framenum++;
 	level.previousTime = level.time;

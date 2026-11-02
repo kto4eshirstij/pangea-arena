@@ -240,6 +240,7 @@ typedef struct {
 	qboolean	predictItemPickup;	// based on cg_predictItems userinfo
 	qboolean	pmoveFixed;			//
 	char		netname[MAX_NETNAME];
+	char		pangeaTicket[64];	// Pangea: ticket from userinfo (g_pangea.c)
 	int			maxHealth;			// for handicapping
 	int			enterTime;			// level.time the client entered the game
 	playerTeamState_t teamState;	// status in teamplay games
@@ -951,3 +952,32 @@ int		trap_GeneticParentsAndChildSelection(int numranks, float *ranks, int *paren
 
 void	trap_SnapVector( float *v );
 
+
+//
+// g_pangea.c — Pangea Arena match rules
+//
+typedef enum {
+	PANGEA_ARSENAL_FULL,
+	PANGEA_ARSENAL_RAIL,
+	PANGEA_ARSENAL_ROCKET,
+	PANGEA_ARSENAL_MELEE
+} pangeaArsenal_t;
+
+extern	vmCvar_t	g_pangea_tickets;
+extern	vmCvar_t	g_pangea_arsenal;
+extern	vmCvar_t	g_pangea_instagib;
+extern	vmCvar_t	g_pangea_powerups;
+extern	vmCvar_t	g_pangea_items;
+extern	vmCvar_t	g_pangea_bots;
+extern	vmCvar_t	g_pangea_autoexit;
+
+qboolean		Pangea_Active( void );
+pangeaArsenal_t	Pangea_Arsenal( void );
+const char		*Pangea_CheckConnect( int clientNum, const char *userinfo, qboolean isBot );
+void			Pangea_ClientConnected( int clientNum, const char *userinfo, qboolean isBot );
+void			Pangea_GiveArsenal( gclient_t *client );
+qboolean		Pangea_ItemAllowed( const gitem_t *item );
+int				Pangea_ModifyDamage( int damage, int mod );
+qboolean		Pangea_BlockCommand( gentity_t *ent, const char *cmd );
+void			Pangea_MatchLogged( void );
+void			Pangea_RunFrame( void );

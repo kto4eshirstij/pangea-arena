@@ -1793,6 +1793,8 @@ void ClientCommand( int clientNum ) {
 		Cmd_TeamTask_f (ent);
 	else if (Q_stricmp (cmd, "levelshot") == 0)
 		Cmd_LevelShot_f (ent);
+	else if (Pangea_BlockCommand (ent, cmd))
+		return;
 	else if (Q_stricmp (cmd, "follow") == 0)
 		Cmd_Follow_f (ent);
 	else if (Q_stricmp (cmd, "follownext") == 0)

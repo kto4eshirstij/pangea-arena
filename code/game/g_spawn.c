@@ -277,6 +277,9 @@ qboolean G_CallSpawn( gentity_t *ent ) {
 	// check item spawn functions
 	for ( item=bg_itemlist+1 ; item->classname ; item++ ) {
 		if ( !strcmp(item->classname, ent->classname) ) {
+			if ( !Pangea_ItemAllowed( item ) ) {
+				return qfalse;	// freed by the caller
+			}
 			G_SpawnItem( ent, item );
 			return qtrue;
 		}
