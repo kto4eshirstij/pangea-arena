@@ -20,6 +20,7 @@ const DEFAULT_ARGS = [
   '+set', 'r_mode', '-2',           // canvas size
   '+set', 'cl_motd', '0',           // no MOTD request to the internet
   '+set', 'com_introplayed', '1',
+  '+set', 'bot_enable', '0',       // local devmap only; the slim pak has no botfiles
 ];
 
 function splitArgs(s) {

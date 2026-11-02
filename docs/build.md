@@ -59,5 +59,5 @@ python3 -m http.server 8080 --bind 0.0.0.0 --directory build-web/Release
 - Одиночная игра: `http://192.168.31.11:8080/arena.html?map=czest1tourney`
 - По сети: см. `docs/network.md`.
 
-Headless Chromium со SwiftShader для ioq3 не подходит: контекст WebGL теряется при повторной
-инициализации рендера (загрузка карты). Картинку проверяем в настоящем браузере.
+Headless Chromium: с ANGLE/GL-SwiftShader контекст WebGL теряется при повторной
+инициализации рендера (загрузка карты); с `--use-angle=vulkan --use-vulkan=swiftshader` карта рисуется (см. `docs/content.md`).

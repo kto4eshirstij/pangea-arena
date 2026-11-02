@@ -1,0 +1,1645 @@
+ioq3 1.36_g040076bd emscripten-wasm32 Nov  2 2026
+----- FS_Startup -----
+FS_BaseDir_FOpenFileRead (fs_homeconfigpath): /home/web_user/.config/Quake3/baseq3/q3key
+FS_BaseDir_FOpenFileRead (fs_homedatapath): /home/web_user/.local/share/Quake3/baseq3/q3key
+FS_BaseDir_FOpenFileRead (fs_homestatepath): /home/web_user/.local/state/Quake3/baseq3/q3key
+FS_BaseDir_FOpenFileRead (fs_basepath): ./baseq3/q3key
+We are looking in the current search path:
+/home/web_user/.config/Quake3/baseoa
+/home/web_user/.local/share/Quake3/baseoa
+/home/web_user/.local/state/Quake3/baseoa
+./baseoa
+./baseoa/arena-oa-293a1466.pk3 (1181 files)
+
+----------------------
+1181 files in pk3 files
+FS_FOpenFileRead: default.cfg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: default.cfg (found in './baseoa/arena-oa-293a1466.pk3')
+execing default.cfg
+couldn't exec q3config.cfg
+couldn't exec autoexec.cfg
+Hunk_Clear: reset the hunk ok
+----- Client Initialization -----
+Couldn't read q3history.
+----- Initializing Renderer ----
+-------------------------------
+FS_BaseDir_FOpenFileRead (fs_homeconfigpath): /home/web_user/.config/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homedatapath): /home/web_user/.local/share/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homestatepath): /home/web_user/.local/state/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_basepath): ./qkey
+QKEY building random string
+FS_OSPath_FOpenFileWrite: /home/web_user/.local/state/Quake3/qkey
+QKEY generated
+FS_BaseDir_FOpenFileRead (fs_homeconfigpath): /home/web_user/.config/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homedatapath): /home/web_user/.local/share/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homestatepath): /home/web_user/.local/state/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homeconfigpath): /home/web_user/.config/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homedatapath): /home/web_user/.local/share/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homestatepath): /home/web_user/.local/state/Quake3/qkey
+----- Client Initialization Complete -----
+----- R_Init -----
+SDL using driver "emscripten"
+Initializing OpenGL display
+Display aspect: 1.600
+...setting mode 3: 640 480
+Using 24 color bits, 24 depth, 8 stencil display.
+Available modes: '1024x640'
+GL_RENDERER: WebKit WebGL
+Initializing OpenGL extensions
+...GL_EXT_texture_compression_s3tc not found
+...GL_S3_s3tc not found
+...ignoring GL_EXT_texture_filter_anisotropic
+...using GL_SGIS_texture_edge_clamp
+...using GL_EXT_occlusion_query_boolean
+...GL_NV_read_depth not found
+...GL_NV_read_stencil not found
+...using GL_EXT_shadow_samplers
+...using GL_OES_standard_derivatives
+...using GL_OES_element_index_uint
+...using GLSL version OpenGL ES GLSL ES 3.00 (WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium))
+------- GLSL_InitGPUShaders -------
+Using GPU vertex animation
+loaded 115 GLSL shaders (48 gen 42 light 25 etc) in  0.85 seconds
+------- R_InitVaos -------
+Initializing Shaders
+FS_FOpenFileRead: scripts/acc.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_base_wall2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_cf_models.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_cosmo_skies.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_cosmoflash.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_proto2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_sfx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/ammo.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/base_light.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/beams.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/cf_models.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/clown.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/clown2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/common.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/cosmoflash.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/ctf.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/czest.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/decals.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/desertfactory.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/details.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/detailtest.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/doubledomination.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/dsi_nw.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/evil8.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/evil8_base.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/evil8_lights-missing.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/filth.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/flaretest.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/gothic_light_reps.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/hotmenu.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/iconsprites.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/islandctf.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/item_health.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/leifx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/liquid_lavas.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/liquid_water.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/mc-oa.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/mpmodels.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/newmenu.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/newmenu2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/nki.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_ctf.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_fogs.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_mapobjects.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_powerups2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_pro_players.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oaflares.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oagfx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oalite.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oanew.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oapowerups.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oasfx-oasago2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oasfx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oasky.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oquartz.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_angelyss.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_arachna.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_assassin.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_ayumi.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_beret.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_gargoyle.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_kyonshi.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_liz.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_major.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_merman.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_neko.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_penguin.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_sergei.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_skelebot.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_smarine.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_sorceress.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_tony.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_tux.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/pul1duel-missing.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/pul1duel-new.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/pulchr.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/pxlfan.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/q3map2_void3.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/q3map2_void4.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/qtex.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/sfx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/shells.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/suction.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/teamicons.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/teleporter.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/temporary.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/terrain.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/trak2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_bfg.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_chaingun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_gauntlet.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_grapple.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_grenadelauncher.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_machinegun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_muzzles.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_nailgun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_newmuzzle.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_plasma.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_proxbomb.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_railgun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_rocketlauncher.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_shotgun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weaponhits.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weaponry.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/flares/blur.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/flares/flarey.tga (found in './baseoa/arena-oa-293a1466.pk3')
+
+GL_VENDOR: WebKit
+GL_RENDERER: WebKit WebGL
+GL_VERSION: OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium))
+GL_EXTENSIONS: EXT_clip_control EXT_color_buffer_float EXT_color_buffer_half_float EXT_conservative_depth EXT_depth_clamp EXT_disjoint_timer_query_webgl2 EXT_float_blend EXT_polygon_offset_clamp EXT_texture_compression_bptc EXT_texture_compression_rgtc EXT_texture_filter_anisotropic EXT_texture_norm16 NV_shader_noperspective_interpolation OES_texture_float_linear WEBGL_blend_func_extended WEBGL_clip_cull_distance WEBGL_compressed_texture_etc WEBGL_compressed_texture_etc1 WEBGL_compressed_texture_s3tc WEBGL_compressed_texture_s3tc_srgb WEBGL_debug_renderer_info WEBGL_debug_shaders WEBGL_lose_context WEBGL_multi_draw WEBGL_polygon_mode GL_EXT_clip_control GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_conservative_depth GL_EXT_depth_clamp GL_EXT_disjoint_timer_query_webgl2 GL_EXT_float_blend GL_EXT_polygon_offset_clamp GL_EXT_texture_compression_bptc GL_EXT_texture_compression_rgtc GL_EXT_texture_filter_anisotropic GL_EXT_texture_norm16 GL_NV_shader_noperspective_interpolation GL_OES_texture_float_linear GL_WEBGL_blend_func_extended GL_WEBGL_clip_cull_distance GL_WEBGL_compressed_texture_etc GL_WEBGL_compressed_texture_etc1 GL_WEBGL_compressed_texture_s3tc GL_WEBGL_compressed_texture_s3tc_srgb GL_WEBGL_debug_renderer_info GL_WEBGL_debug_shaders GL_WEBGL_lose_context GL_WEBGL_multi_draw GL_WEBGL_polygon_mode 
+GL_MAX_TEXTURE_SIZE: 16384
+GL_MAX_TEXTURE_IMAGE_UNITS: 32
+
+PIXELFORMAT: color(24-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:N/A
+GAMMA: software w/ 1 overbright bits
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 1
+texture bits: 0
+compiled vertex arrays: disabled
+texenv add: enabled
+compressed textures: disabled
+----- finished R_Init -----
+FS_FOpenFileRead: gfx/2d/bigchars.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/sfx/logo256.tga' in shader 'console'
+^3Shader console has a stage with no image
+------ Initializing Sound ------
+FS_FOpenFileRead: sound/feedback/hit.wav (found in './baseoa/arena-oa-293a1466.pk3')
+Allocated 96 sources.
+OpenAL default capture device is 'Emscripten OpenAL capture'
+OpenAL capture device opened.
+OpenAL info:
+  Vendor:         Emscripten
+  Version:        1.1
+  Renderer:       WebAudio
+  AL Extensions:  AL_EXT_float32 AL_SOFT_loop_points AL_SOFT_source_length AL_EXT_source_distance_model AL_SOFT_source_spatialize
+  ALC Extensions: ALC_EXT_capture ALC_SOFT_pause_device ALC_SOFT_HRTF
+  Input Device:   Emscripten OpenAL capture
+  Available Input Devices:
+Emscripten OpenAL capture
+Sound initialization successful.
+--------------------------------
+Loading vm file vm/ui.qvm...
+FS_FOpenFileRead: vm/ui.qvm (found in './baseoa')
+File "vm/ui.qvm" found at "./baseoa"
+...which has vmMagic VM_MAGIC_VER2
+Loading 1162 jump table targets
+Architecture doesn't have a bytecode compiler, using interpreter
+ui loaded in 2471520 bytes on the hunk
+FS_FOpenFileRead: scripts/arenas.txt (found in './baseoa/arena-oa-293a1466.pk3')
+58 arenas parsed
+FS_FOpenFileRead: scripts/bots.txt (found in './baseoa/arena-oa-293a1466.pk3')
+33 bots parsed
+FS_FOpenFileRead: menu/art/font1_prop.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/font1_prop_glo.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/font2_prop.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/3_cursor2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/switch_on.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/switch_off.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/detail/d_sand.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'gfx/fx/detail/d_ice.tga' in shader 'menuback'
+^3Shader menuback has a stage with no image
+FS_FOpenFileRead: sound/misc/menu1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/misc/menu2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/misc/menu3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/misc/menu4.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/change.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/slider2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/sliderbutt_0.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/sliderbutt_1.tga (found in './baseoa/arena-oa-293a1466.pk3')
+--- Common Initialization Complete ---
+Hostname: emscripten
+IP: 172.29.1.0
+Opening IP socket: 0.0.0.0:27960
+WARNING: NET_IPSocket: setsockopt SO_BROADCAST: Protocol not available
+FS_OSPath_FOpenFileWrite: /home/web_user/.config/Quake3/baseoa/q3config.cfg
+FS_BaseDir_FOpenFileRead (fs_homeconfigpath): /home/web_user/.config/Quake3/baseoa/serverbans.dat
+FS_BaseDir_FOpenFileRead (fs_homedatapath): /home/web_user/.local/share/Quake3/baseoa/serverbans.dat
+FS_BaseDir_FOpenFileRead (fs_homestatepath): /home/web_user/.local/state/Quake3/baseoa/serverbans.dat
+FS_BaseDir_FOpenFileRead (fs_basepath): ./baseoa/serverbans.dat
+FS_FOpenFileRead: maps/czest1tourney.bsp (found in './baseoa/arena-oa-293a1466.pk3')
+------ Server Initialization ------
+Server: czest1tourney
+FS_BaseDir_FOpenFileRead (fs_homeconfigpath): /home/web_user/.config/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homedatapath): /home/web_user/.local/share/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homestatepath): /home/web_user/.local/state/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homeconfigpath): /home/web_user/.config/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homedatapath): /home/web_user/.local/share/Quake3/qkey
+FS_BaseDir_FOpenFileRead (fs_homestatepath): /home/web_user/.local/state/Quake3/qkey
+RE_Shutdown( 0 )
+------- R_ShutdownVaos -------
+------- GLSL_ShutdownGPUShaders -------
+Hunk_Clear: reset the hunk ok
+----- FS_Startup -----
+We are looking in the current search path:
+/home/web_user/.config/Quake3/baseoa
+/home/web_user/.local/share/Quake3/baseoa
+/home/web_user/.local/state/Quake3/baseoa
+./baseoa
+./baseoa/arena-oa-293a1466.pk3 (1181 files)
+
+----------------------
+1181 files in pk3 files
+FS_FOpenFileRead: default.cfg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: maps/czest1tourney.bsp (found in './baseoa/arena-oa-293a1466.pk3')
+Loading vm file vm/qagame.qvm...
+FS_FOpenFileRead: vm/qagame.qvm (found in './baseoa')
+File "vm/qagame.qvm" found at "./baseoa"
+...which has vmMagic VM_MAGIC_VER2
+Loading 915 jump table targets
+Architecture doesn't have a bytecode compiler, using interpreter
+qagame loaded in 4523040 bytes on the hunk
+------- Game Initialization -------
+gamename: baseq3
+gamedate: Nov  2 2026
+FS_FOpenFileAppend_HomeData: /home/web_user/.local/share/Quake3/baseoa/games.log
+0 teams with 0 entities
+17 items registered
+-----------------------------------
+------- BotLib Initialization -------
+^1Error: couldn't load weapons.c
+^1Fatal: couldn't load the weapon config
+^1Error: BotLoadMap: bot library used before being setup
+FS_FOpenFileRead: scripts/bots.txt (found in './baseoa/arena-oa-293a1466.pk3')
+33 bots parsed
+FS_FOpenFileRead: scripts/arenas.txt (found in './baseoa/arena-oa-293a1466.pk3')
+58 arenas parsed
+^1Error: BotStartFrame: bot library used before being setup
+FinishSpawningItem: weapon_shotgun startsolid at (448 3 -5)
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+-----------------------------------
+^1Error: BotStartFrame: bot library used before being setup
+FS_OSPath_FOpenFileWrite: /home/web_user/.config/Quake3/baseoa/q3config.cfg
+^1Error: BotStartFrame: bot library used before being setup
+RE_Shutdown( 0 )
+----- R_Init -----
+------- GLSL_InitGPUShaders -------
+Using GPU vertex animation
+loaded 115 GLSL shaders (48 gen 42 light 25 etc) in  0.25 seconds
+------- R_InitVaos -------
+Initializing Shaders
+FS_FOpenFileRead: scripts/acc.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_base_wall2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_cf_models.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_cosmo_skies.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_cosmoflash.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_proto2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/am_sfx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/ammo.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/base_light.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/beams.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/cf_models.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/clown.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/clown2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/common.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/cosmoflash.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/ctf.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/czest.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/decals.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/desertfactory.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/details.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/detailtest.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/doubledomination.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/dsi_nw.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/evil8.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/evil8_base.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/evil8_lights-missing.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/filth.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/flaretest.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/gothic_light_reps.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/hotmenu.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/iconsprites.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/islandctf.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/item_health.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/leifx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/liquid_lavas.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/liquid_water.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/mc-oa.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/mpmodels.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/newmenu.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/newmenu2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/nki.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_ctf.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_fogs.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_mapobjects.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_powerups2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oa_pro_players.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oaflares.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oagfx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oalite.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oanew.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oapowerups.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oasfx-oasago2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oasfx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oasky.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/oquartz.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_angelyss.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_arachna.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_assassin.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_ayumi.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_beret.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_gargoyle.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_kyonshi.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_liz.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_major.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_merman.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_neko.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_penguin.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_sergei.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_skelebot.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_smarine.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_sorceress.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_tony.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/player_tux.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/pul1duel-missing.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/pul1duel-new.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/pulchr.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/pxlfan.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/q3map2_void3.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/q3map2_void4.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/qtex.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/sfx.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/shells.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/suction.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/teamicons.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/teleporter.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/temporary.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/terrain.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/trak2.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_bfg.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_chaingun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_gauntlet.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_grapple.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_grenadelauncher.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_machinegun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_muzzles.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_nailgun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_newmuzzle.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_plasma.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_proxbomb.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_railgun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_rocketlauncher.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weapon_shotgun.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weaponhits.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: scripts/weaponry.shader (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/flares/blur.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/flares/flarey.tga (found in './baseoa/arena-oa-293a1466.pk3')
+
+GL_VENDOR: WebKit
+GL_RENDERER: WebKit WebGL
+GL_VERSION: OpenGL ES 3.0 (WebGL 2.0 (OpenGL ES 3.0 Chromium))
+GL_EXTENSIONS: EXT_clip_control EXT_color_buffer_float EXT_color_buffer_half_float EXT_conservative_depth EXT_depth_clamp EXT_disjoint_timer_query_webgl2 EXT_float_blend EXT_polygon_offset_clamp EXT_texture_compression_bptc EXT_texture_compression_rgtc EXT_texture_filter_anisotropic EXT_texture_norm16 NV_shader_noperspective_interpolation OES_texture_float_linear WEBGL_blend_func_extended WEBGL_clip_cull_distance WEBGL_compressed_texture_etc WEBGL_compressed_texture_etc1 WEBGL_compressed_texture_s3tc WEBGL_compressed_texture_s3tc_srgb WEBGL_debug_renderer_info WEBGL_debug_shaders WEBGL_lose_context WEBGL_multi_draw WEBGL_polygon_mode GL_EXT_clip_control GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_conservative_depth GL_EXT_depth_clamp GL_EXT_disjoint_timer_query_webgl2 GL_EXT_float_blend GL_EXT_polygon_offset_clamp GL_EXT_texture_compression_bptc GL_EXT_texture_compression_rgtc GL_EXT_texture_filter_anisotropic GL_EXT_texture_norm16 GL_NV_shader_noperspective_interpolation GL_OES_texture_float_linear GL_WEBGL_blend_func_extended GL_WEBGL_clip_cull_distance GL_WEBGL_compressed_texture_etc GL_WEBGL_compressed_texture_etc1 GL_WEBGL_compressed_texture_s3tc GL_WEBGL_compressed_texture_s3tc_srgb GL_WEBGL_debug_renderer_info GL_WEBGL_debug_shaders GL_WEBGL_lose_context GL_WEBGL_multi_draw GL_WEBGL_polygon_mode 
+GL_MAX_TEXTURE_SIZE: 16384
+GL_MAX_TEXTURE_IMAGE_UNITS: 32
+
+PIXELFORMAT: color(24-bits) Z(24-bit) stencil(8-bits)
+MODE: 3, 640 x 480 fullscreen hz:N/A
+GAMMA: software w/ 1 overbright bits
+texturemode: GL_LINEAR_MIPMAP_LINEAR
+picmip: 1
+texture bits: 0
+compiled vertex arrays: disabled
+texenv add: enabled
+compressed textures: disabled
+----- finished R_Init -----
+FS_FOpenFileRead: gfx/2d/bigchars.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/sfx/logo256.tga' in shader 'console'
+^3Shader console has a stage with no image
+Loading vm file vm/ui.qvm...
+FS_FOpenFileRead: vm/ui.qvm (found in './baseoa')
+File "vm/ui.qvm" found at "./baseoa"
+...which has vmMagic VM_MAGIC_VER2
+Loading 1162 jump table targets
+Architecture doesn't have a bytecode compiler, using interpreter
+ui loaded in 2471520 bytes on the hunk
+FS_FOpenFileRead: scripts/arenas.txt (found in './baseoa/arena-oa-293a1466.pk3')
+58 arenas parsed
+FS_FOpenFileRead: scripts/bots.txt (found in './baseoa/arena-oa-293a1466.pk3')
+33 bots parsed
+FS_FOpenFileRead: menu/art/font1_prop.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/font1_prop_glo.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/font2_prop.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/3_cursor2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/switch_on.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/switch_off.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/detail/d_sand.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'gfx/fx/detail/d_ice.tga' in shader 'menuback'
+^3Shader menuback has a stage with no image
+FS_FOpenFileRead: menu/art/slider2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/sliderbutt_0.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/sliderbutt_1.tga (found in './baseoa/arena-oa-293a1466.pk3')
+Loading vm file vm/cgame.qvm...
+FS_FOpenFileRead: vm/cgame.qvm (found in './baseoa')
+File "vm/cgame.qvm" found at "./baseoa"
+...which has vmMagic VM_MAGIC_VER2
+Loading 798 jump table targets
+Architecture doesn't have a bytecode compiler, using interpreter
+cgame loaded in 3762880 bytes on the hunk
+FS_FOpenFileRead: menu/art/unknownmap.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/sfx/detail.tga' in shader 'levelShotDetail'
+^3Shader levelShotDetail has a stage with no image
+FS_FOpenFileRead: sound/feedback/1_minute.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/5_minute.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/sudden_death.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/1_frag.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/2_frags.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/3_frags.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/three.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/two.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/one.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/fight.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/prepare.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/machinegun/buletby1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/wearoff.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/use_nothing.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/gibsplt1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/gibimp1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/gibimp2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/gibimp3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/world/telein.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/world/teleout.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/respawn1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/noammo.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/talk.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/land1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/impressive.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/excellent.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/denied.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/humiliation.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/assist.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/defense.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/takenlead.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/tiedlead.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/feedback/lostlead.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/watr_in.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/watr_out.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/watr_un.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/world/jumppad.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/step1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/boot1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/flesh1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/mech1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/energy1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/splash1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/clank1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/step2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/boot2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/flesh2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/mech2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/energy2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/splash2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/clank2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/step3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/boot3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/flesh3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/mech3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/energy3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/splash3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/clank3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/step4.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/boot4.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/flesh4.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/mech4.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/energy4.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/splash4.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/footsteps/clank4.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/misc/ar1_pkup.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/misc/ar2_pkup.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/s_health.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/n_health.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/l_health.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/m_health.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/misc/w_pkup.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/grenade/hgrenb1a.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/grenade/hgrenb2a.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/misc/am_pkup.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/holdable.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/use_medkit.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/quaddamage.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/damage2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/damage3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/protect.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/airout.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/protect3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/haste.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/invisibility.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/regeneration.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/regen.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/items/flight.wav (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: Failed to load sound sound/player/fry.wav!
+^3WARNING: Using default sound for sound/player/fry.wav
+^3WARNING: Failed to load sound sound/misc/windfly.wav!
+^3WARNING: Using default sound for sound/misc/windfly.wav
+^3WARNING: Failed to load sound sound/world/electro.wav!
+^3WARNING: Using default sound for sound/world/electro.wav
+FS_FOpenFileRead: sound/weapons/machinegun/ric1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/machinegun/ric2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/machinegun/ric3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/rocket/rocklx1a.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/plasma/plasmx1a.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: maps/czest1tourney.bsp (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/liquids/lavafloor.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/skies/stars.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_light/light5.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_floor/concretefloor1.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_floor/diamond2.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_wall/rusted.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_wall/redmet.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_floor/achtung_clang.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_floor/clang_floor2.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/evil8_fx/e8jumpspawn02red.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/evil8_fx/e8jumpspawn02red-1.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/evil8_fx/e8jumpspawn02red-2.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/evil8_fx/e8jumpspawn02red-3.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/evil8_fx/e8jumpspawn02red-4.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/evil8_fx/e8jumpspawn02red-5.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/evil8_fx/e8jumpspawn02red-6.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_floor/floor3_3dark_ow.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_floor/metalbridge06.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_floor/floor3_3dark.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_wall/redmet4small.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_trim/spidertrim.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_wall/concrete_dark.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_trim/tin.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_trim/tinfx.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_light/ceil1_39.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_light/ceil1_39.blend.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_light/ceil1_22a.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_light/ceil1_22a.blend.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/base_wall/concrete.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/detail/d_conc.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/flares/wide.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/flares/lava.tga (found in './baseoa/arena-oa-293a1466.pk3')
+stitched 0 LoD cracks
+...loaded 1697 faces, 0 meshes, 0 trisurfs, 137 flares
+FS_FOpenFileRead: gfx/2d/numbers/zero_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/one_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/two_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/three_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/four_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/five_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/six_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/seven_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/eight_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/nine_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/numbers/minus_32b.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/skill1.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/skill2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/skill3.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/skill4.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/art/skill5.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/damage/blood_screen.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/defer.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/tab/name.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/tab/ping.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/tab/score.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/tab/time.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/misc/smokepuff3.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/misc/smokepuffragepro.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/plasmaa.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/damage/blood_spurt.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/lag.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/net.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/bubble.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/misc/tracer2.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/select.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshaira.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshairb.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshairc.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshaird.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshaire.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshairf.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshairg.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshairh.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshairi.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/crosshairj.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/backtile.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/noammo.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/oafx/quadmultshell' in shader 'powerups/quad'
+^3Shader powerups/quad has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/oafx/quadmultshell' in shader 'powerups/quadWeapon'
+^3Shader powerups/quadWeapon has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/oafx/suitshell' in shader 'powerups/battleSuit'
+^3Shader powerups/battleSuit has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/oafx/suitshell' in shader 'powerups/battleWeapon'
+^3Shader powerups/battleWeapon has a stage with no image
+FS_FOpenFileRead: gfx/damage/shadow.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/oafx/regenshell.tga' in shader 'powerups/regen'
+^3Shader powerups/regen has a stage with no image
+FS_FOpenFileRead: gfx/misc/hastesmoke.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/armor/armor_yel.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/armor/yellowarmor.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/spec/spots.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/detail/d_met2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/iconr_yellow.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shells/m_shell.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shells/mgunshell.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/spec/specenv.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shells/s_shell.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shells/sgunshell.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/abdomen.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/skull-4.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/arm.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/veins.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/chest.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/fist.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/foot.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/heart.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/splurt.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/forearm.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/genericgibmeat.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/gibmeatspec.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/intestine.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/leg.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/f_veins.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/skull.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/gibs/brain.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/balloon4.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/2d/bloodspew.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/ring02.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/boom01.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/misc/telep.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/instant/quadlite.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/instant/quadlite2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/medals/medal_impressive.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/medals/medal_excellent.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: menu/medals/medal_gauntlet.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'menu/medals/medal_defend.tga' in shader 'medal_defend'
+^3Shader medal_defend has a stage with no image
+^3WARNING: R_FindImageFile could not find 'menu/medals/medal_assist.tga' in shader 'medal_assist'
+^3Shader medal_assist has a stage with no image
+^3WARNING: R_FindImageFile could not find 'menu/medals/medal_capture.tga' in shader 'medal_capture'
+^3Shader medal_capture has a stage with no image
+FS_FOpenFileRead: icons/iconr_shard.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/armor/shard.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/armor/shard_env.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/iconh_yellow.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/health/medium_cross.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/envmapligh.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/envmapyel.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/health/medium_sphere.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/mediumhelth.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/mediumhelth_spec.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/iconh_mega.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/health/mega_cross.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/envmapblue2.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/megahelth.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/health/mega_sphere.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/megahelth.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/megahelth_spec.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/iconw_gauntlet.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/gauntlet/gauntlet.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/gauntlet/gauntlet2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/detail/d_met.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/gauntlet/gauntlet_barrel.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/gauntlet/gauntlet1.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shotgun/shotgun_hand.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/melee/fstrun.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/melee/fstatck.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/iconw_shotgun.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shotgun/shotgun.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shotgun/shotgun.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/spec/gunmetal.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shotgun/shotgun_laser.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/shotgunam.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/ammobox.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/ammolights.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/shotammo2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/shotgun/shotgun_flash.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/oa/muzzle/muz3.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/oa/muzzle/muz6.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/oa/muzzle/muz8.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/oa/muzzle/muz7.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/oa/muzzle/muz5.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/oa/muzzle/muz4.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/oa/muzzle/muz2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/oa/muzzle/muz1.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/shotgun/sshotf1b.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/iconw_machinegun.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/machinegun.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/mgun.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/sight.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/machinegunam.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/machammo2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/machinegun_flash.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/f_machinegun2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/f_machinegun3.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/machinegun_barrel.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/mgun.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/machinegun/machinegun_hand.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/machinegun/machgf1b.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/machinegun/machgf2b.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/machinegun/machgf3b.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/machinegun/machgf4b.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet_0000.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet_0001.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet_0002.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet_0003.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet_0004.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet_0005.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet_0006.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/bullet_0007.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/iconw_grenade.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/grenadel/grenadel.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/grenadel/newgren.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/grenadeam.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/grenammo2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/grenadel/grenadel_flash.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/ammo/grenade1.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models\weapons2\grenadel\grenadel.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/grenade/grenlf1a.wav (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/oa/grenfiar' in shader 'grenadeExplosion'
+^3Shader grenadeExplosion has a stage with no image
+FS_FOpenFileRead: icons/iconw_rocket.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/rocketl/rocketl.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/rocketl/skin.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/rocketam.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/rockammo2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/rocketl/rocketl_flash.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/rocketl/rocketl_hand.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/ammo/rocket/rocket.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/oafx/rocketflare.tga' in shader 'rocketFlare'
+^3Shader rocketFlare has a stage with no image
+FS_FOpenFileRead: textures/flares/newflare.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/ammo/rocket/rocket.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/rocket/rockfly.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/rocket/rocklf1a.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/rlboom/rlboom_1.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/rlboom/rlboom_2.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/rlboom/rlboom_3.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/rlboom/rlboom_4.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/rlboom/rlboom_5.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/rlboom/rlboom_6.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/rlboom/rlboom_7.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/rlboom/rlboom_8.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/oa/fiar.tga' in shader 'rocketExplosion'
+^3Shader rocketExplosion has a stage with no image
+FS_FOpenFileRead: icons/iconw_lightning.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/lightning/lightning.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/lightning/skinlightning.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/spec/robawt.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/lightningam.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/lighammo2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/lightning/lightning_flash.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/lightning/muzzle1.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/lightning/muzzle2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/lightning/muzzle3.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/melee/fsthum.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/lightning/lg_hum.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/lightning/lg_fire.wav (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/oafx/lbeam3.tga' in shader 'lightningBoltNew'
+^3Shader lightningBoltNew has a stage with no image
+FS_FOpenFileRead: models/weaphits/crackle.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/lightning/lg_hit.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/lightning/lg_hit2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/lightning/lg_hit3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/iconw_railgun.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/railgun/railgun.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/railgun/skin.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/railgun/scrolly.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/fx/flares/wide.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/effects/tinfx2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/railgunam.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/railammo2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/railgun/railgun_flash.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/railgun/f_railgun2.jpg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/railgun/rg_hum.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/railgun/railgf1a.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/smokering2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/spark.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'models/weapons2/railgun/f_railgun3.tga' in shader 'railDisc'
+^3Shader railDisc has a stage with no image
+^3WARNING: R_FindImageFile could not find 'models/weapons2/railgun/railcore.tga' in shader 'railCore'
+^3Shader railCore has a stage with no image
+FS_FOpenFileRead: icons/iconw_plasma.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/plasma/plasma.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/plasma/skin.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/plasmaam.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/powerups/ammo/plasammo2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weapons2/plasma/plasma_flash.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: textures/flares/twilightflare.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/plasma/lasfly.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/weapons/plasma/hyprbf1a.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/weaphits/plasring.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/icona_shotgun.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/icona_grenade.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/icona_plasma.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/icona_lightning.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/icona_rocket.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: icons/icona_railgun.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/damage/bulletmult.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/damage/burn_med_mrk.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/damage/hole_lg_mrk.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/damage/plasma_mrk.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/multwake1.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/multwake2.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/multwake3.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/multwake4.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/multwake5.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/multwake6.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/multwake7.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sprites/multwake8.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: gfx/damage/blood_stain.tga (found in './baseoa/arena-oa-293a1466.pk3')
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0000.tga' in shader 'explode11'
+^3Shader explode11 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0001.tga' in shader 'explode12'
+^3Shader explode12 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0002.tga' in shader 'explode13'
+^3Shader explode13 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0003.tga' in shader 'explode14'
+^3Shader explode14 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0004.tga' in shader 'explode15'
+^3Shader explode15 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0005.tga' in shader 'explode16'
+^3Shader explode16 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0006.tga' in shader 'explode17'
+^3Shader explode17 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0007.tga' in shader 'explode18'
+^3Shader explode18 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0008.tga' in shader 'explode19'
+^3Shader explode19 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0009.tga' in shader 'explode110'
+^3Shader explode110 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0010.tga' in shader 'explode111'
+^3Shader explode111 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0011.tga' in shader 'explode112'
+^3Shader explode112 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0012.tga' in shader 'explode113'
+^3Shader explode113 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0013.tga' in shader 'explode114'
+^3Shader explode114 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0014.tga' in shader 'explode115'
+^3Shader explode115 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0015.tga' in shader 'explode116'
+^3Shader explode116 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0016.tga' in shader 'explode117'
+^3Shader explode117 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0017.tga' in shader 'explode118'
+^3Shader explode118 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0018.tga' in shader 'explode119'
+^3Shader explode119 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0019.tga' in shader 'explode120'
+^3Shader explode120 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0020.tga' in shader 'explode121'
+^3Shader explode121 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0021.tga' in shader 'explode122'
+^3Shader explode122 has a stage with no image
+^3WARNING: R_FindImageFile could not find 'textures/sfx/130boom/dpexplosion4_0022.tga' in shader 'explode123'
+^3Shader explode123 has a stage with no image
+FS_FOpenFileRead: models/players/sarge/icon_default.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/lower_2.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/lower_1.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/lower.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/upper_2.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/upper_1.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/upper.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/head_2.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/head_1.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/head.md3 (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/lower_default.skin (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/grism/enkiskin.tga (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/upper_default.skin (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/head_default.skin (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: models/players/sarge/animation.cfg (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/death1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/death2.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/death3.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/jump1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/pain25_1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/pain50_1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/pain75_1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/pain100_1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/falling1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/gasp.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/drown.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/fall1.wav (found in './baseoa/arena-oa-293a1466.pk3')
+FS_FOpenFileRead: sound/player/sarge/taunt.wav (found in './baseoa/arena-oa-293a1466.pk3')
+CL_InitCGame:  3.09 seconds
+1 msec to draw all images
+Com_TouchMemory: 0 msec
+FS_OSPath_FOpenFileWrite: /home/web_user/.config/Quake3/baseoa/q3config.cfg
+^1Error: BotStartFrame: bot library used before being setup
+UnnamedPlayer^7 entered the game
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup
+^1Error: BotStartFrame: bot library used before being setup

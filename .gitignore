@@ -45,7 +45,6 @@ profile
 # Pangea Arena
 content/openarena/
 content/build/
-content/trace/
 *.pk3
 !content/pangea/**/*.pk3.src
 build-native/
