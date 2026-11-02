@@ -41,3 +41,17 @@ profile
 *.opensdf
 *.suo
 /.vs
+
+# Pangea Arena
+content/openarena/
+content/build/
+content/trace/
+*.pk3
+!content/pangea/**/*.pk3.src
+build-native/
+build-web/
+node_modules/
+gateway/dist/
+manager/dist/
+manager/state/
+content/home/

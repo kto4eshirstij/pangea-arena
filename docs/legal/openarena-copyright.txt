@@ -1,0 +1,287 @@
+== openarena-088-data
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: OpenArena
+Upstream-Contact: https://openarena.ws/
+Source:
+  https://openarena.ws/download.php?view.2 (oa081.zip)
+  https://openarena.ws/download.php?view.3 (oa085p.zip)
+  https://openarena.ws/download.php?view.5 (oa088p.zip)
+  https://openarena.ws/svn/source/assets/ (source files)
+  https://www.moddb.com/members/neon-knight/addons/openarena-community-mappack-volume-1-v3-re-release (oacmp-volume1-v3.zip)
+  .
+  The "orig" tarballs are derived from the downloadable files listed above,
+  with the engine, non-free files etc. removed, the PK3 files unpacked, and
+  source files added (where the files from the PK3 are not themselves the
+  preferred form for modification). See README.source for full details.
+
+Files: *
+Copyright:
+  © 2005-2012 OpenArena Team (see CREDITS, CREDITS-0.8.5, CREDITS-0.8.8)
+  © 1997-2006 id Software, Inc.
+  © Seth and Ulrich Galbraith (no year specified)
+  © 2003 Robert P. Gove Jr. (R.P.G.)
+  © 2006 jzero
+  © 2006-2008 leileilol
+  © 2006-2007 Bob Isaac (Dmn_clown)
+  © 2007 Cestmir Houska (Czestmyr)
+  © 2007 Enki
+  © 2006-2008 Chris Holden
+  © 2007-2008 Blake John Heatly
+  © 2008 Fuzztooth (mancubus.net)
+  © 2010 Poul Sander (Sago007)
+  © 2010 Zimmermann Gyula
+  © 2010 Jens Loehr
+  © 2013 Gig
+  © 2013 Jan Groothuijse
+  © 2014 Cosimo Pederiva (Akom74)
+  © 2014 Luciano Balducchi (Neon_Knight)
+  © 2014 Moixie
+  © Yves Allaire (evillair)
+  © Simon O'Callaghan (sock)
+License: GPL-2+
+== openarena-085-data
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: OpenArena
+Upstream-Contact: https://openarena.ws/
+Source:
+  https://openarena.ws/download.php?view.2 (oa081.zip)
+  https://openarena.ws/download.php?view.3 (oa085p.zip)
+  https://openarena.ws/download.php?view.5 (oa088p.zip)
+  https://openarena.ws/svn/source/assets/ (source files)
+  https://www.moddb.com/members/neon-knight/addons/openarena-community-mappack-volume-1-v3-re-release (oacmp-volume1-v3.zip)
+  .
+  The "orig" tarballs are derived from the downloadable files listed above,
+  with the engine, non-free files etc. removed, the PK3 files unpacked, and
+  source files added (where the files from the PK3 are not themselves the
+  preferred form for modification). See README.source for full details.
+
+Files: *
+Copyright:
+  © 2005-2012 OpenArena Team (see CREDITS, CREDITS-0.8.5, CREDITS-0.8.8)
+  © 1997-2006 id Software, Inc.
+  © Seth and Ulrich Galbraith (no year specified)
+  © 2003 Robert P. Gove Jr. (R.P.G.)
+  © 2006 jzero
+  © 2006-2008 leileilol
+  © 2006-2007 Bob Isaac (Dmn_clown)
+  © 2007 Cestmir Houska (Czestmyr)
+  © 2007 Enki
+  © 2006-2008 Chris Holden
+  © 2007-2008 Blake John Heatly
+  © 2008 Fuzztooth (mancubus.net)
+  © 2010 Poul Sander (Sago007)
+  © 2010 Zimmermann Gyula
+  © 2010 Jens Loehr
+  © 2013 Gig
+  © 2013 Jan Groothuijse
+  © 2014 Cosimo Pederiva (Akom74)
+  © 2014 Luciano Balducchi (Neon_Knight)
+  © 2014 Moixie
+  © Yves Allaire (evillair)
+  © Simon O'Callaghan (sock)
+License: GPL-2+
+== openarena-081-maps
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: OpenArena
+Upstream-Contact: https://openarena.ws/
+Source:
+  https://openarena.ws/download.php?view.2 (oa081.zip)
+  https://openarena.ws/download.php?view.3 (oa085p.zip)
+  https://openarena.ws/download.php?view.5 (oa088p.zip)
+  https://openarena.ws/svn/source/assets/ (source files)
+  https://www.moddb.com/members/neon-knight/addons/openarena-community-mappack-volume-1-v3-re-release (oacmp-volume1-v3.zip)
+  .
+  The "orig" tarballs are derived from the downloadable files listed above,
+  with the engine, non-free files etc. removed, the PK3 files unpacked, and
+  source files added (where the files from the PK3 are not themselves the
+  preferred form for modification). See README.source for full details.
+
+Files: *
+Copyright:
+  © 2005-2012 OpenArena Team (see CREDITS, CREDITS-0.8.5, CREDITS-0.8.8)
+  © 1997-2006 id Software, Inc.
+  © Seth and Ulrich Galbraith (no year specified)
+  © 2003 Robert P. Gove Jr. (R.P.G.)
+  © 2006 jzero
+  © 2006-2008 leileilol
+  © 2006-2007 Bob Isaac (Dmn_clown)
+  © 2007 Cestmir Houska (Czestmyr)
+  © 2007 Enki
+  © 2006-2008 Chris Holden
+  © 2007-2008 Blake John Heatly
+  © 2008 Fuzztooth (mancubus.net)
+  © 2010 Poul Sander (Sago007)
+  © 2010 Zimmermann Gyula
+  © 2010 Jens Loehr
+  © 2013 Gig
+  © 2013 Jan Groothuijse
+  © 2014 Cosimo Pederiva (Akom74)
+  © 2014 Luciano Balducchi (Neon_Knight)
+  © 2014 Moixie
+  © Yves Allaire (evillair)
+  © Simon O'Callaghan (sock)
+License: GPL-2+
+== openarena-081-misc
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: OpenArena
+Upstream-Contact: https://openarena.ws/
+Source:
+  https://openarena.ws/download.php?view.2 (oa081.zip)
+  https://openarena.ws/download.php?view.3 (oa085p.zip)
+  https://openarena.ws/download.php?view.5 (oa088p.zip)
+  https://openarena.ws/svn/source/assets/ (source files)
+  https://www.moddb.com/members/neon-knight/addons/openarena-community-mappack-volume-1-v3-re-release (oacmp-volume1-v3.zip)
+  .
+  The "orig" tarballs are derived from the downloadable files listed above,
+  with the engine, non-free files etc. removed, the PK3 files unpacked, and
+  source files added (where the files from the PK3 are not themselves the
+  preferred form for modification). See README.source for full details.
+
+Files: *
+Copyright:
+  © 2005-2012 OpenArena Team (see CREDITS, CREDITS-0.8.5, CREDITS-0.8.8)
+  © 1997-2006 id Software, Inc.
+  © Seth and Ulrich Galbraith (no year specified)
+  © 2003 Robert P. Gove Jr. (R.P.G.)
+  © 2006 jzero
+  © 2006-2008 leileilol
+  © 2006-2007 Bob Isaac (Dmn_clown)
+  © 2007 Cestmir Houska (Czestmyr)
+  © 2007 Enki
+  © 2006-2008 Chris Holden
+  © 2007-2008 Blake John Heatly
+  © 2008 Fuzztooth (mancubus.net)
+  © 2010 Poul Sander (Sago007)
+  © 2010 Zimmermann Gyula
+  © 2010 Jens Loehr
+  © 2013 Gig
+  © 2013 Jan Groothuijse
+  © 2014 Cosimo Pederiva (Akom74)
+  © 2014 Luciano Balducchi (Neon_Knight)
+  © 2014 Moixie
+  © Yves Allaire (evillair)
+  © Simon O'Callaghan (sock)
+License: GPL-2+
+== openarena-081-players
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: OpenArena
+Upstream-Contact: https://openarena.ws/
+Source:
+  https://openarena.ws/download.php?view.2 (oa081.zip)
+  https://openarena.ws/download.php?view.3 (oa085p.zip)
+  https://openarena.ws/download.php?view.5 (oa088p.zip)
+  https://openarena.ws/svn/source/assets/ (source files)
+  https://www.moddb.com/members/neon-knight/addons/openarena-community-mappack-volume-1-v3-re-release (oacmp-volume1-v3.zip)
+  .
+  The "orig" tarballs are derived from the downloadable files listed above,
+  with the engine, non-free files etc. removed, the PK3 files unpacked, and
+  source files added (where the files from the PK3 are not themselves the
+  preferred form for modification). See README.source for full details.
+
+Files: *
+Copyright:
+  © 2005-2012 OpenArena Team (see CREDITS, CREDITS-0.8.5, CREDITS-0.8.8)
+  © 1997-2006 id Software, Inc.
+  © Seth and Ulrich Galbraith (no year specified)
+  © 2003 Robert P. Gove Jr. (R.P.G.)
+  © 2006 jzero
+  © 2006-2008 leileilol
+  © 2006-2007 Bob Isaac (Dmn_clown)
+  © 2007 Cestmir Houska (Czestmyr)
+  © 2007 Enki
+  © 2006-2008 Chris Holden
+  © 2007-2008 Blake John Heatly
+  © 2008 Fuzztooth (mancubus.net)
+  © 2010 Poul Sander (Sago007)
+  © 2010 Zimmermann Gyula
+  © 2010 Jens Loehr
+  © 2013 Gig
+  © 2013 Jan Groothuijse
+  © 2014 Cosimo Pederiva (Akom74)
+  © 2014 Luciano Balducchi (Neon_Knight)
+  © 2014 Moixie
+  © Yves Allaire (evillair)
+  © Simon O'Callaghan (sock)
+License: GPL-2+
+== openarena-081-textures
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: OpenArena
+Upstream-Contact: https://openarena.ws/
+Source:
+  https://openarena.ws/download.php?view.2 (oa081.zip)
+  https://openarena.ws/download.php?view.3 (oa085p.zip)
+  https://openarena.ws/download.php?view.5 (oa088p.zip)
+  https://openarena.ws/svn/source/assets/ (source files)
+  https://www.moddb.com/members/neon-knight/addons/openarena-community-mappack-volume-1-v3-re-release (oacmp-volume1-v3.zip)
+  .
+  The "orig" tarballs are derived from the downloadable files listed above,
+  with the engine, non-free files etc. removed, the PK3 files unpacked, and
+  source files added (where the files from the PK3 are not themselves the
+  preferred form for modification). See README.source for full details.
+
+Files: *
+Copyright:
+  © 2005-2012 OpenArena Team (see CREDITS, CREDITS-0.8.5, CREDITS-0.8.8)
+  © 1997-2006 id Software, Inc.
+  © Seth and Ulrich Galbraith (no year specified)
+  © 2003 Robert P. Gove Jr. (R.P.G.)
+  © 2006 jzero
+  © 2006-2008 leileilol
+  © 2006-2007 Bob Isaac (Dmn_clown)
+  © 2007 Cestmir Houska (Czestmyr)
+  © 2007 Enki
+  © 2006-2008 Chris Holden
+  © 2007-2008 Blake John Heatly
+  © 2008 Fuzztooth (mancubus.net)
+  © 2010 Poul Sander (Sago007)
+  © 2010 Zimmermann Gyula
+  © 2010 Jens Loehr
+  © 2013 Gig
+  © 2013 Jan Groothuijse
+  © 2014 Cosimo Pederiva (Akom74)
+  © 2014 Luciano Balducchi (Neon_Knight)
+  © 2014 Moixie
+  © Yves Allaire (evillair)
+  © Simon O'Callaghan (sock)
+License: GPL-2+
+== openarena-data (только pak0.pk3)
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: OpenArena
+Upstream-Contact: https://openarena.ws/
+Source:
+  https://openarena.ws/download.php?view.2 (oa081.zip)
+  https://openarena.ws/download.php?view.3 (oa085p.zip)
+  https://openarena.ws/download.php?view.5 (oa088p.zip)
+  https://openarena.ws/svn/source/assets/ (source files)
+  https://www.moddb.com/members/neon-knight/addons/openarena-community-mappack-volume-1-v3-re-release (oacmp-volume1-v3.zip)
+  .
+  The "orig" tarballs are derived from the downloadable files listed above,
+  with the engine, non-free files etc. removed, the PK3 files unpacked, and
+  source files added (where the files from the PK3 are not themselves the
+  preferred form for modification). See README.source for full details.
+
+Files: *
+Copyright:
+  © 2005-2012 OpenArena Team (see CREDITS, CREDITS-0.8.5, CREDITS-0.8.8)
+  © 1997-2006 id Software, Inc.
+  © Seth and Ulrich Galbraith (no year specified)
+  © 2003 Robert P. Gove Jr. (R.P.G.)
+  © 2006 jzero
+  © 2006-2008 leileilol
+  © 2006-2007 Bob Isaac (Dmn_clown)
+  © 2007 Cestmir Houska (Czestmyr)
+  © 2007 Enki
+  © 2006-2008 Chris Holden
+  © 2007-2008 Blake John Heatly
+  © 2008 Fuzztooth (mancubus.net)
+  © 2010 Poul Sander (Sago007)
+  © 2010 Zimmermann Gyula
+  © 2010 Jens Loehr
+  © 2013 Gig
+  © 2013 Jan Groothuijse
+  © 2014 Cosimo Pederiva (Akom74)
+  © 2014 Luciano Balducchi (Neon_Knight)
+  © 2014 Moixie
+  © Yves Allaire (evillair)
+  © Simon O'Callaghan (sock)
+License: GPL-2+
