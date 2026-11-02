@@ -33,6 +33,9 @@ vmCvar_t	g_pangea_autoexit;
 
 static int	pangeaQuitTime;
 
+// ticket of each client slot ("" = none, "bot" for bots)
+static char	pangeaTickets[MAX_CLIENTS][64];
+
 // "Infinite" ammo for rail/rocket arsenals. Not -1: bot AI treats -1 as empty.
 #define PANGEA_AMMO	99
 
@@ -109,7 +112,7 @@ const char *Pangea_CheckConnect( int clientNum, const char *userinfo, qboolean i
 		if ( i == clientNum || cl->pers.connected == CON_DISCONNECTED ) {
 			continue;
 		}
-		if ( !strcmp( cl->pers.pangeaTicket, ticket ) ) {
+		if ( !strcmp( pangeaTickets[i], ticket ) ) {
 			return "Этот билет уже на арене";
 		}
 	}
@@ -120,18 +123,12 @@ const char *Pangea_CheckConnect( int clientNum, const char *userinfo, qboolean i
 Called from ClientConnect after the client slot was reset and accepted.
 */
 void Pangea_ClientConnected( int clientNum, const char *userinfo, qboolean isBot ) {
-	gclient_t	*client = &level.clients[clientNum];
-
 	if ( !Pangea_Active() ) {
 		return;
 	}
-	if ( isBot ) {
-		Q_strncpyz( client->pers.pangeaTicket, "bot", sizeof( client->pers.pangeaTicket ) );
-	} else {
-		Q_strncpyz( client->pers.pangeaTicket, Info_ValueForKey( userinfo, "pangea_ticket" ),
-			sizeof( client->pers.pangeaTicket ) );
-	}
-	G_LogPrintf( "Pangea: ticket %s client %i\n", client->pers.pangeaTicket, clientNum );
+	Q_strncpyz( pangeaTickets[clientNum], isBot ? "bot" : Info_ValueForKey( userinfo, "pangea_ticket" ),
+		sizeof( pangeaTickets[clientNum] ) );
+	G_LogPrintf( "Pangea: ticket %s client %i\n", pangeaTickets[clientNum], clientNum );
 }
 
 /*

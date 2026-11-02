@@ -2261,7 +2261,7 @@ void CG_Player( centity_t *cent ) {
 	// multiple corpses on the level using the same clientinfo
 	clientNum = cent->currentState.clientNum;
 	if ( clientNum < 0 || clientNum >= MAX_CLIENTS ) {
-		CG_Error( "Bad clientNum on player entity");
+		CG_Error( "Bad clientNum on player entity: ent %i eType %i clientNum %i modelindex %i", cent->currentState.number, cent->currentState.eType, clientNum, cent->currentState.modelindex);
 	}
 	ci = &cgs.clientinfo[ clientNum ];
 

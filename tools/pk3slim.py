@@ -43,7 +43,7 @@ WHOLE_DIRS = [
     "models/weaphits/", "models/gibs/", "sound/feedback/", "sound/weapons/", "sound/items/", "sound/misc/",
 ]
 # Never: not used by the browser client (bots, CTF/team, music, cinematics, other maps)
-SKIP_PREFIXES = ["botfiles/", "music/", "video/", "levelshots/", "maps/", "sound/teamplay/",
+SKIP_PREFIXES = ["vm/", "botfiles/", "music/", "video/", "levelshots/", "maps/", "sound/teamplay/",
                  "models/flags/", "models/flag2/", "models/powerups/obelisk/", "team_icon/", "ui/"]
 # Player skins we need: default + team colours for later team modes are not needed now
 PLAYER_SKINS = ("default",)
