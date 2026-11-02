@@ -1,0 +1,24 @@
+{
+  "name": "pangea-arena-manager",
+  "version": "0.1.0",
+  "description": "Match manager for Pangea Arena: runs one ioq3ded per match, WS->UDP gateway, reports results to Pangea",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "vitest run",
+    "start": "node dist/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pangea-arena-gateway": "file:../gateway"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  }
+}

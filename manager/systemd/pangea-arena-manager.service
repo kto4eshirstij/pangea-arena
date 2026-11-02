@@ -1,0 +1,16 @@
+[Unit]
+Description=Pangea Arena match manager (API 127.0.0.1:27950, WS gateway 127.0.0.1:27961)
+After=network.target
+
+[Service]
+User=gaskonec
+WorkingDirectory=/home/gaskonec/muddev/pangea-arena/manager
+# ARENA_SECRET, ARENA_RESULT_URL, ... — see docs/manager.md
+EnvironmentFile=/home/gaskonec/muddev/pangea-arena/manager/arena.env
+ExecStart=/home/gaskonec/.nvm/versions/node/v22.23.3/bin/node dist/index.js
+Restart=always
+RestartSec=3
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

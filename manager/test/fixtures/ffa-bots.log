@@ -1,0 +1,191 @@
+tty console mode disabled
+ioq3 1.36_g040076bd linux-x86_64 Nov  2 2026
+SSE instruction set enabled
+----- FS_Startup -----
+We are looking in the current search path:
+<repo>/content/openarena/baseoa
+<repo>/content/openarena/baseoa/pak6-patch088.pk3 (711 files)
+<repo>/content/openarena/baseoa/pak6-patch085.pk3 (559 files)
+<repo>/content/openarena/baseoa/pak6-misc.pk3 (229 files)
+<repo>/content/openarena/baseoa/pak5-TA.pk3 (139 files)
+<repo>/content/openarena/baseoa/pak4-textures.pk3 (1753 files)
+<repo>/content/openarena/baseoa/pak2-players.pk3 (669 files)
+<repo>/content/openarena/baseoa/pak1-maps.pk3 (100 files)
+<repo>/content/openarena/baseoa/pak0.pk3 (1042 files)
+
+----------------------
+5202 files in pk3 files
+execing default.cfg
+couldn't exec q3config_server.cfg
+couldn't exec autoexec.cfg
+fs_homepath is write protected.
+fs_game is write protected.
+Hunk_Clear: reset the hunk ok
+--- Common Initialization Complete ---
+IP: 127.0.0.1
+IP: 192.168.31.11
+IP6: ::1
+IP6: fe80::c30c:8352:45d4:5d70%wlp1s0
+Opening IP socket: 127.0.0.1:27978
+------ Server Initialization ------
+Server: oa_dm4
+Hunk_Clear: reset the hunk ok
+----- FS_Startup -----
+We are looking in the current search path:
+<repo>/content/openarena/baseoa
+<repo>/content/openarena/baseoa/pak6-patch088.pk3 (711 files)
+<repo>/content/openarena/baseoa/pak6-patch085.pk3 (559 files)
+<repo>/content/openarena/baseoa/pak6-misc.pk3 (229 files)
+<repo>/content/openarena/baseoa/pak5-TA.pk3 (139 files)
+<repo>/content/openarena/baseoa/pak4-textures.pk3 (1753 files)
+<repo>/content/openarena/baseoa/pak2-players.pk3 (669 files)
+<repo>/content/openarena/baseoa/pak1-maps.pk3 (100 files)
+<repo>/content/openarena/baseoa/pak0.pk3 (1042 files)
+
+----------------------
+5202 files in pk3 files
+Loading vm file vm/qagame.qvm...
+File "vm/qagame.qvm" found at "<repo>/content/openarena/baseoa"
+...which has vmMagic VM_MAGIC_VER2
+Loading 915 jump table targets
+VM file qagame compiled to 1282279 bytes of code
+qagame loaded in 3316128 bytes on the hunk
+------- Game Initialization -------
+gamename: baseq3
+gamedate: Nov  2 2026
+------------------------------------------------------------
+InitGame: \g_gametype\0\sv_maxclients\8\fraglimit\4\timelimit\4\g_pangea_arsenal\rocket\version\ioq3 1.36_g040076bd linux-x86_64 Nov  2 2026\com_gamename\Quake3Arena\com_protocol\71\dmflags\0\mapname\oa_dm4\sv_privateClients\0\sv_hostname\noname\sv_minRate\0\sv_maxRate\0\sv_dlRate\100\sv_minPing\0\sv_maxPing\0\sv_floodProtect\1\sv_allowDownload\0\gamename\baseq3\g_maxGameClients\0\capturelimit\8\g_needpass\0\g_pangea_instagib\0\g_pangea_powerups\1\g_pangea_items\1
+Warmup:
+0 teams with 0 entities
+8 items registered
+-----------------------------------
+------- BotLib Initialization -------
+loaded weapons.c
+loaded items.c
+loaded syn.c
+loaded rnd.c
+loaded match.c
+loaded rchat.c
+------------ Map Loading ------------
+trying to load maps/oa_dm4.aas
+loaded maps/oa_dm4.aas
+found 41 level items
+-------------------------------------
+33 bots parsed
+58 arenas parsed
+AAS initialized.
+-----------------------------------
+loaded skill 1 from bots/default_c.c
+loaded skill 1 from bots/sarge_c.c
+loaded skill 4 from bots/default_c.c
+loaded skill 4 from bots/sarge_c.c
+loaded bots/sarge_i.c
+loaded bots/sarge_w.c
+loaded sarge from bots/sarge_t.c
+Pangea: ticket t1 client 0
+ClientConnect: 0
+ClientUserinfoChanged: 0 n\Sarge\t\0\model\sarge\hmodel\sarge\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+broadcast: print "Sarge^7 connected\n"
+broadcast: print "Sarge^7 entered the game\n"
+ClientBegin: 0
+loaded cached skill 1.000000 from bots/default_c.c
+loaded skill 1 from bots/grism_c.c
+loaded cached skill 4.000000 from bots/default_c.c
+loaded skill 4 from bots/grism_c.c
+loaded bots/grism_i.c
+loaded bots/grism_w.c
+loaded grism from bots/grism_t.c
+Pangea: ticket t2 client 1
+ClientConnect: 1
+ClientUserinfoChanged: 1 n\Grism\t\0\model\sarge/classic\hmodel\sarge/classic\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+broadcast: print "Grism^7 connected\n"
+broadcast: print "Grism^7 entered the game\n"
+ClientBegin: 1
+loaded cached skill 1.000000 from bots/default_c.c
+loaded skill 1 from bots/kyonshi_c.c
+loaded cached skill 4.000000 from bots/default_c.c
+loaded skill 4 from bots/kyonshi_c.c
+loaded bots/kyonshi_i.c
+loaded bots/kyonshi_w.c
+loaded kyonshi from bots/kyonshi_t.c
+Pangea: ticket t3 client 2
+ClientConnect: 2
+ClientUserinfoChanged: 2 n\Kyonshi\t\0\model\kyonshi\hmodel\kyonshi\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+broadcast: print "Kyonshi^7 connected\n"
+broadcast: print "Kyonshi^7 entered the game\n"
+ClientBegin: 2
+Item: 0 item_armor_shard
+Item: 0 item_armor_shard
+Item: 0 item_armor_shard
+Item: 0 item_armor_shard
+Item: 0 item_armor_shard
+Item: 1 item_armor_combat
+==== ShutdownGame ====
+ShutdownGame:
+------------------------------------------------------------
+VM_Restart()
+Loading vm file vm/qagame.qvm...
+File "vm/qagame.qvm" found at "<repo>/content/openarena/baseoa"
+...which has vmMagic VM_MAGIC_VER2
+Loading 915 jump table targets
+------- Game Initialization -------
+gamename: baseq3
+gamedate: Nov  2 2026
+------------------------------------------------------------
+InitGame: \g_gametype\0\sv_maxclients\8\fraglimit\4\timelimit\4\g_pangea_arsenal\rocket\version\ioq3 1.36_g040076bd linux-x86_64 Nov  2 2026\com_gamename\Quake3Arena\com_protocol\71\dmflags\0\mapname\oa_dm4\sv_privateClients\0\sv_hostname\noname\sv_minRate\0\sv_maxRate\0\sv_dlRate\100\sv_minPing\0\sv_maxPing\0\sv_floodProtect\1\sv_allowDownload\0\bot_minplayers\0\gamename\baseq3\g_maxGameClients\0\capturelimit\8\g_needpass\0\g_pangea_instagib\0\g_pangea_powerups\1\g_pangea_items\1
+0 teams with 0 entities
+8 items registered
+-----------------------------------
+33 bots parsed
+58 arenas parsed
+loaded cached skill 3.000000 from bots/sarge_c.c
+Pangea: ticket t1 client 0
+ClientConnect: 0
+ClientUserinfoChanged: 0 n\Sarge\t\0\model\sarge\hmodel\sarge\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+broadcast: print "Sarge^7 entered the game\n"
+ClientBegin: 0
+loaded cached skill 3.000000 from bots/grism_c.c
+Pangea: ticket t2 client 1
+ClientConnect: 1
+ClientUserinfoChanged: 1 n\Grism\t\0\model\sarge/classic\hmodel\sarge/classic\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+broadcast: print "Grism^7 entered the game\n"
+ClientBegin: 1
+loaded cached skill 3.000000 from bots/kyonshi_c.c
+Pangea: ticket t3 client 2
+ClientConnect: 2
+ClientUserinfoChanged: 2 n\Kyonshi\t\0\model\kyonshi\hmodel\kyonshi\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+broadcast: print "Kyonshi^7 entered the game\n"
+ClientBegin: 2
+Item: 0 item_armor_shard
+Item: 0 item_armor_shard
+Item: 0 item_armor_shard
+Item: 0 item_armor_shard
+Item: 0 item_armor_shard
+Kill: 1 2 18: Grism killed Kyonshi by MOD_TELEFRAG
+Item: 1 weapon_rocketlauncher
+Item: 0 item_armor_combat
+Item: 2 item_armor_body
+Item: 0 item_armor_combat
+Item: 1 item_armor_shard
+Item: 1 item_armor_shard
+Item: 1 item_armor_shard
+Item: 1 item_armor_shard
+Item: 1 item_armor_shard
+broadcast: print "Timelimit hit.\n"
+Exit: Timelimit hit.
+score: 1  ping: 0  client: 1 Grism
+score: 0  ping: 0  client: 0 Sarge
+score: 0  ping: 0  client: 2 Kyonshi
+say: Sarge: Aww... crap!
+Sarge^7: Aww... crap!
+say: Grism: Yep.
+Grism^7: Yep.
+say: Kyonshi: Aww... crap!
+Kyonshi^7: Aww... crap!
+Pangea: quit
+----- Server Shutdown (Server quit) -----
+==== ShutdownGame ====
+ShutdownGame:
+------------------------------------------------------------
+AAS shutdown.
+---------------------------

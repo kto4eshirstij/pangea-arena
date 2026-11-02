@@ -55,3 +55,4 @@ gateway/dist/
 manager/dist/
 manager/state/
 content/home/
+manager/arena.env
