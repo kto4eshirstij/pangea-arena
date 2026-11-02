@@ -55,3 +55,4 @@ manager/dist/
 manager/state/
 content/home/
 manager/arena.env
+__pycache__/
