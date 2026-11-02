@@ -55,6 +55,15 @@ function(add_qvm MODULE_NAME)
         list(APPEND LCC_FLAGS "-D${DEFINITION}")
     endforeach()
 
+    # q3lcc does not emit dependency files, so every .asm depends on all headers the
+    # game modules can include. Without this, editing a header (e.g. a struct in
+    # g_local.h) leaves stale .asm files compiled with the old layout and the module
+    # ends up with inconsistent struct sizes (Pangea Arena, 2026-11-03).
+    file(GLOB_RECURSE QVM_HEADERS CONFIGURE_DEPENDS
+        ${SOURCE_DIR}/game/*.h ${SOURCE_DIR}/cgame/*.h ${SOURCE_DIR}/q3_ui/*.h
+        ${SOURCE_DIR}/ui/*.h ${SOURCE_DIR}/qcommon/*.h ${SOURCE_DIR}/botlib/*.h
+        ${SOURCE_DIR}/renderercommon/*.h)
+
     set(ASM_FILES "")
     foreach(SOURCE ${ARG_SOURCES})
         if(${SOURCE} MATCHES "\\.asm$")
@@ -69,7 +78,7 @@ function(add_qvm MODULE_NAME)
         add_custom_command(
             OUTPUT ${ASM_FILE}
             COMMAND ${Q3LCC} ${LCC_FLAGS} -o ${ASM_FILE} ${SOURCE}
-            DEPENDS ${SOURCE} qvm_tools ${Q3RCC} ${Q3CPP} ${Q3LCC}
+            DEPENDS ${SOURCE} ${QVM_HEADERS} qvm_tools ${Q3RCC} ${Q3CPP} ${Q3LCC}
             COMMENT "Building C object ${ASM_FILE_COMMENT}")
 
         list(APPEND ASM_FILES ${ASM_FILE})

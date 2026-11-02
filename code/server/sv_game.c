@@ -256,6 +256,15 @@ void SV_LocateGameData( sharedEntity_t *gEnts, int numGEntities, int sizeofGEnti
 	sv.gentitySize = sizeofGEntity_t;
 	sv.num_entities = numGEntities;
 
+	// Pangea Arena: a game module built from inconsistent objects (stale QVM .asm
+	// after a header change) reports different struct sizes from different call
+	// sites; the server would then send other memory as a client's playerState.
+	if ( ( sv.gameClientSize && sv.gameClientSize != sizeofGameClient ) ||
+		 ( sv.gentitySize && sv.gentitySize != sizeofGEntity_t ) ) {
+		Com_Error( ERR_DROP, "SV_LocateGameData: game module changed struct sizes "
+			"(gclient %i -> %i, gentity %i -> %i); rebuild the game module from clean",
+			sv.gameClientSize, sizeofGameClient, sv.gentitySize, sizeofGEntity_t );
+	}
 	sv.gameClients = clients;
 	sv.gameClientSize = sizeofGameClient;
 }
