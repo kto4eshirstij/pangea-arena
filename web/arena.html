@@ -1,0 +1,41 @@
+<!DOCTYPE html><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pangea Arena — debug</title>
+<style>
+html, body { margin: 0; height: 100%; overflow: hidden; background: #000; color: #ccc; font: 13px sans-serif; }
+canvas { width: 100%; height: 100%; display: block; }
+#status { position: fixed; left: 8px; bottom: 8px; pointer-events: none; text-shadow: 0 0 3px #000; }
+#src { position: fixed; right: 8px; bottom: 8px; color: #888; }
+</style>
+<canvas id=canvas tabindex=0></canvas>
+<div id=status>загрузка…</div>
+<a id=src href="https://github.com/kto4eshirstij/pangea-arena" target=_blank>Исходный код (GPLv2)</a>
+<script type=module>
+// Debug page. Query:
+//   ?map=czest1tourney                       — local game, no network
+//   ?connect=192.168.31.11:27960&ws=ws://192.168.31.11:27961/27960&name=Арн&ticket=t1
+//   &args=%2bset%20cg_drawFPS%201           — extra console args ("+" must be %2b)
+import { bootArena } from './arena-boot.js';
+const q = new URLSearchParams(location.search);
+const status = document.getElementById('status');
+const connect = q.get('connect');
+let ws = q.get('ws');
+if (connect && !ws) {
+  const [host, port] = connect.split(':');
+  ws = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${host}:27961/${port || 27960}`;
+}
+window.arenaLog = [];
+window.arena = await bootArena({
+  canvas: document.getElementById('canvas'),
+  basegame: q.get('basegame') || 'baseoa',
+  configUrl: q.get('config') || './arena-config.json',
+  wsUrl: ws, connect, map: q.get('map'),
+  name: q.get('name'), ticket: q.get('ticket'),
+  args: q.get('args') || '',
+  onEvent: (e) => {
+    if (e.type === 'progress') status.textContent = `паки ${e.done}/${e.total}`;
+    if (e.type === 'ready') status.textContent = '';
+    if (e.type === 'log') window.arenaLog.push(e.line);
+    if (e.type === 'exit') status.textContent = `выход (${e.code})`;
+  },
+});
+</script>

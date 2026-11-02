@@ -27,6 +27,7 @@ list(APPEND CLIENT_LINK_OPTIONS
     -sEXIT_RUNTIME=1
     -sEXPORT_ES6
     -sEXPORT_NAME=${CLIENT_NAME}
+    -sWEBSOCKET_SUBPROTOCOL=binary
 )
 
 option(EMSCRIPTEN_PRELOAD_FILE "Preload game files into .data file" OFF)
@@ -48,4 +49,10 @@ function(deploy_shell_files)
         configure_file(${SOURCE_DIR}/web/client-config.json
             ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${CLIENT_NAME}-config.json COPYONLY)
     endif()
+
+    # Pangea Arena: boot wrapper + debug page (web/ at the repo root)
+    foreach(f arena-boot.js arena.html)
+        configure_file(${CMAKE_SOURCE_DIR}/web/${f}
+            ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/${f} COPYONLY)
+    endforeach()
 endfunction()

@@ -1,3 +1,21 @@
+# Pangea Arena
+
+Боевой симулятор мира [Pangea](https://pangea.pp.ua): дуэль 1 на 1 и бойня в браузере.
+Это **форк [ioquake3](https://github.com/ioquake/ioq3)** (GPLv2) плюс шлюз WebSocket→UDP,
+менеджер матчей и (позже) собственный контент. Весь код этого репозитория — GPLv2 (см. `COPYING.txt`).
+
+- Сборка: [`docs/build.md`](docs/build.md)
+- Сеть браузера (Emscripten SOCKFS ↔ шлюз): [`docs/network.md`](docs/network.md)
+- Что взято откуда и под какой лицензией: [`docs/legal/README.md`](docs/legal/README.md)
+- План работ: [`docs/plan.md`](docs/plan.md)
+
+Временный контент — паки OpenArena из репозитория Ubuntu; в репозитории их нет (`content/openarena/`
+в `.gitignore`). Никаких файлов Quake III Arena (pak0–8, демо, бинарники id) здесь нет и не будет.
+
+---
+
+Ниже — оригинальный README ioquake3.
+
 ![Build](https://github.com/ioquake/ioq3/workflows/Build/badge.svg)
 
                    ,---------------------------------------.
