@@ -8,6 +8,15 @@ export interface Player {
   name?: string;
 }
 
+/** A Pangea NPC fighter: an ioq3 bot under the NPC's (transliterated) name. */
+export interface NpcPlayer {
+  npc: true;
+  name: string;          // as in Pangea (Cyrillic)
+  latin: string;         // in-game name: the engine fonts have no Cyrillic
+  key: string;           // internal id in places ("npc:<i>")
+  bot: { model: string; skill: number };
+}
+
 export interface Rules {
   fraglimit: number;
   timelimit: number;
@@ -24,6 +33,7 @@ export interface MatchRequest {
   mode: Mode;
   map: string;
   players: Player[];
+  npcs: NpcPlayer[];
   rules: Rules;
 }
 
@@ -38,6 +48,40 @@ export const DUEL_SPECTATORS = 2;
 export const BOT_NAMES = ["sarge", "grism", "kyonshi"];
 
 const TICKET_RE = /^[A-Za-z0-9_-]{1,63}$/;
+/** Longest in-game name of an NPC bot. */
+export const NPC_NAME_MAX = 15;
+
+const TRANSLIT: Record<string, string> = {
+  а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z", и: "i", й: "y", к: "k", л: "l",
+  м: "m", н: "n", о: "o", п: "p", р: "r", с: "s", т: "t", у: "u", ф: "f", х: "kh", ц: "ts", ч: "ch", ш: "sh",
+  щ: "shch", ъ: "", ы: "y", ь: "", э: "e", ю: "yu", я: "ya",
+};
+
+/** "Кер Старый" -> "KerStaryy": Latin letters and digits only, capitalised words, <= NPC_NAME_MAX. */
+export function translit(name: string): string {
+  const words = name.split(/\s+/).map((w) => {
+    let out = "";
+    for (const ch of w) {
+      const low = ch.toLowerCase();
+      const t = TRANSLIT[low] ?? (/[a-z0-9]/i.test(ch) ? low : "");
+      out += t;
+    }
+    return out.charAt(0).toUpperCase() + out.slice(1);
+  });
+  return (words.join("") || "Npc").slice(0, NPC_NAME_MAX);
+}
+
+/** Unique Latin names: a repeat gets a digit ("Ker", "Ker2"). */
+export function npcNames(names: string[]): string[] {
+  const used = new Set<string>();
+  return names.map((n) => {
+    const base = translit(n);
+    let out = base;
+    for (let i = 2; used.has(out.toLowerCase()); i++) out = base.slice(0, NPC_NAME_MAX - String(i).length) + i;
+    used.add(out.toLowerCase());
+    return out;
+  });
+}
 const ID_RE = /^[A-Za-z0-9_.-]{1,64}$/;
 
 export class ValidationError extends Error {}
@@ -65,14 +109,29 @@ export function parseMatchRequest(body: unknown, allowedMaps: Record<Mode, strin
     throw new ValidationError(`map: одна из ${allowedMaps[mode].join(", ")}`);
   }
   if (!Array.isArray(b.players)) throw new ValidationError("players: массив");
-  const players: Player[] = b.players.map((p, i) => {
+  const players: Player[] = [];
+  const npcRaw: { name: string; bot: { model: string; skill: number } }[] = [];
+  b.players.forEach((p, i) => {
     if (!p || typeof p !== "object") throw new ValidationError(`players[${i}]: объект`);
-    const { ticket, name } = p as Record<string, unknown>;
+    const { ticket, name, npc, bot } = p as Record<string, unknown>;
+    if (npc === true) {
+      if (typeof name !== "string" || !name.trim() || name.length > 64) throw new ValidationError(`players[${i}].name: имя NPC`);
+      const bb = (bot ?? {}) as Record<string, unknown>;
+      const model = bb.model ?? BOT_NAMES[0];
+      if (typeof model !== "string" || !BOT_NAMES.includes(model)) throw new ValidationError(`players[${i}].bot.model: одна из ${BOT_NAMES.join(", ")}`);
+      const skill = int(bb.skill ?? 3, `players[${i}].bot.skill`, 1, 5);
+      npcRaw.push({ name: name.trim(), bot: { model, skill } });
+      return;
+    }
+    if (npc !== undefined) throw new ValidationError(`players[${i}].npc: true`);
     if (typeof ticket !== "string" || !TICKET_RE.test(ticket)) throw new ValidationError(`players[${i}].ticket: [A-Za-z0-9_-]{1,63}`);
     if (name !== undefined && typeof name !== "string") throw new ValidationError(`players[${i}].name: строка`);
-    return { ticket, name: name as string | undefined };
+    players.push({ ticket, name: name as string | undefined });
   });
   if (new Set(players.map((p) => p.ticket)).size !== players.length) throw new ValidationError("players: билеты повторяются");
+  if (players.length < 1) throw new ValidationError("players: нужен хотя бы один человек");
+  const latin = npcNames(npcRaw.map((n) => n.name));
+  const npcs: NpcPlayer[] = npcRaw.map((n, i) => ({ npc: true, name: n.name, latin: latin[i], key: `npc:${i}`, bot: n.bot }));
 
   const r = { ...DEFAULT_RULES[mode], ...((b.rules as object) ?? {}) } as Record<string, unknown>;
   const rules: Rules = {
@@ -89,18 +148,19 @@ export function parseMatchRequest(body: unknown, allowedMaps: Record<Mode, strin
     bots: int(r.bots, "rules.bots", 0, 3),
   };
 
+  const entrants = players.length + npcs.length;
   if (mode === "duel") {
-    if (players.length !== 2) throw new ValidationError("duel: ровно 2 игрока");
-    if (rules.bots !== 0) throw new ValidationError("duel: боты не допускаются");
+    if (entrants !== 2) throw new ValidationError("duel: ровно 2 участника (люди и NPC)");
+    if (rules.bots !== 0) throw new ValidationError("duel: безымянные боты не допускаются");
   } else {
-    if (players.length < 2) throw new ValidationError("ffa: минимум 2 игрока");
-    if (players.length + rules.bots > FFA_MAX_CLIENTS) throw new ValidationError(`ffa: игроков + ботов не больше ${FFA_MAX_CLIENTS}`);
+    if (entrants < 2) throw new ValidationError("ffa: минимум 2 участника");
+    if (entrants + rules.bots > FFA_MAX_CLIENTS) throw new ValidationError(`ffa: участников + ботов не больше ${FFA_MAX_CLIENTS}`);
   }
-  return { match_id: b.match_id, mode, map: b.map, players, rules };
+  return { match_id: b.match_id, mode, map: b.map, players, npcs, rules };
 }
 
 export function maxClients(req: MatchRequest): number {
-  return req.mode === "duel" ? 2 + DUEL_SPECTATORS : Math.min(req.players.length + req.rules.bots, FFA_MAX_CLIENTS);
+  return req.mode === "duel" ? 2 + DUEL_SPECTATORS : Math.min(req.players.length + req.npcs.length + req.rules.bots, FFA_MAX_CLIENTS);
 }
 
 /** Warmup value used while waiting for everybody in FFA (re-set to rules.warmup at start). */
@@ -117,6 +177,18 @@ export interface ServerLaunch {
   args: string[];
   /** Contents of <homepath>/<basegame>/match.cfg with the match rules. */
   config: string;
+}
+
+/** Bots on the server: named NPC bots + plain FFA bots. */
+export function allBots(req: MatchRequest): number {
+  return req.npcs.length + req.rules.bots;
+}
+
+/** Console commands that add the bots after the first InitGame. */
+export function botCommands(req: MatchRequest): string[] {
+  const out = req.npcs.map((n) => `addbot ${n.bot.model} ${n.bot.skill} free 0 ${n.latin}`);
+  for (let i = 0; i < req.rules.bots; i++) out.push(`addbot ${BOT_NAMES[i % BOT_NAMES.length]} 3`);
+  return out;
 }
 
 /** ioq3ded command line + match.cfg for a match. */
@@ -138,13 +210,13 @@ export function serverLaunch(req: MatchRequest, port: number, paths: ServerPaths
     ["g_warmup", req.mode === "ffa" ? HOLD_WARMUP : r.warmup],
     ["g_forcerespawn", 3],
     ["g_allowVote", 0],
-    ["bot_enable", r.bots > 0 ? 1 : 0],
+    ["bot_enable", allBots(req) > 0 ? 1 : 0],
     ["g_pangea_tickets", req.players.map((p) => p.ticket).join(",")],
     ["g_pangea_arsenal", r.arsenal],
     ["g_pangea_instagib", r.instagib ? 1 : 0],
     ["g_pangea_powerups", r.powerups ? 1 : 0],
     ["g_pangea_items", r.items ? 1 : 0],
-    ["g_pangea_bots", r.bots],
+    ["g_pangea_bots", allBots(req)],
     ["g_pangea_autoexit", 1],
   ];
   const config = `// generated by pangea-arena-manager for match ${req.match_id}\n` +

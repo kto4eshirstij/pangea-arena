@@ -2,8 +2,8 @@
 
 import { EventEmitter } from "node:events";
 import type { Readable, Writable } from "node:stream";
-import { computePlaces, exitReason, MatchLog, parseLine, type ExitReason, type MatchResult, type LogEvent } from "./logparse.js";
-import { BOT_NAMES, type MatchRequest } from "./rules.js";
+import { computePlaces, exitReason, MatchLog, parseLine, type ExitReason, type MatchResult, type LogEvent, type Place } from "./logparse.js";
+import { botCommands, type MatchRequest } from "./rules.js";
 
 export interface ChildLike extends EventEmitter {
   stdout: Readable | null;
@@ -46,7 +46,7 @@ export const realClock: Clock = {
 };
 
 export class Match extends EventEmitter {
-  readonly log = new MatchLog();
+  readonly log: MatchLog;
   state: MatchState = "starting";
   readonly createdAt: number;
   startedAt: number | null = null;   // last InitGame while running (= after warmup map_restart)
@@ -66,10 +66,17 @@ export class Match extends EventEmitter {
   ) {
     super();
     this.createdAt = clock.now();
+    this.log = new MatchLog(new Map(req.npcs.map((n) => [n.latin.toLowerCase(), n.key])));
   }
 
+  /** Tickets of the humans (NPC bots have none). */
   get tickets(): string[] {
     return this.req.players.map((p) => p.ticket);
+  }
+
+  /** Internal keys of the NPC bots ("npc:<i>"); they never leave early. */
+  get npcKeys(): string[] {
+    return this.req.npcs.map((n) => n.key);
   }
 
   get expiresAt(): number {
@@ -120,9 +127,9 @@ export class Match extends EventEmitter {
     this.log.apply(ev);
     switch (ev.kind) {
       case "initgame":
-        if (!this.botsAdded && this.req.rules.bots > 0) {
+        if (!this.botsAdded && (this.req.rules.bots > 0 || this.req.npcs.length > 0)) {
           this.botsAdded = true;
-          for (let i = 0; i < this.req.rules.bots; i++) this.command(`addbot ${BOT_NAMES[i % BOT_NAMES.length]} 3`);
+          for (const cmd of botCommands(this.req)) this.command(cmd);
         }
         if (this.state === "running") this.startedAt = this.clock.now();
         break;
@@ -168,7 +175,7 @@ export class Match extends EventEmitter {
   private onJoinTimeout(): void {
     if (this.state !== "waiting") return;
     const present = this.tickets.filter((t) => this.log.present.has(t));
-    if (this.req.mode === "ffa" && present.length >= 2) {
+    if (this.req.mode === "ffa" && present.length >= 1 && present.length + this.req.npcs.length >= 2) {
       this.begin();
       return;
     }
@@ -211,10 +218,18 @@ export class Match extends EventEmitter {
     if ((reason === "fraglimit" || reason === "timelimit") && L.scores.length) {
       scores = L.scores;
     } else if (reason === "no_show" || reason === "forfeit") {
-      // whoever stayed wins; ties share the place
+      // whoever stayed wins (NPC bots always stay); ties share the place
       scores = this.tickets.filter((t) => L.present.has(t)).map((t) => ({ ticket: t, score: 0 }));
+      if (scores.length || reason === "forfeit" || this.req.mode === "duel") {
+        scores = scores.concat(this.npcKeys.map((k) => ({ ticket: k, score: 0 })));
+      }
     }
-    const places = reason === "crash" || reason === "cancelled" ? [] : computePlaces(scores, this.tickets, leftEarly);
+    const raw = reason === "crash" || reason === "cancelled" ? [] : computePlaces(scores, [...this.tickets, ...this.npcKeys], leftEarly);
+    const byKey = new Map(this.req.npcs.map((n) => [n.key, n]));
+    const places: Place[] = raw.map((p) => {
+      const n = p.ticket ? byKey.get(p.ticket) : undefined;
+      return n ? { npc: true, name: n.name, score: p.score, place: p.place } : p;
+    });
     return {
       match_id: this.req.match_id,
       mode: this.req.mode,
@@ -222,6 +237,7 @@ export class Match extends EventEmitter {
       duration_s: Math.max(0, Math.round((now - (this.startedAt ?? this.createdAt)) / 1000)),
       places,
       left_early: leftEarly,
+      ...(this.req.npcs.length ? { npc_names: Object.fromEntries(this.req.npcs.map((n) => [n.latin, n.name])) } : {}),
     };
   }
 

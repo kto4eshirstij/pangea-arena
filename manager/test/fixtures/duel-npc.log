@@ -1,0 +1,161 @@
+tty console mode disabled
+ioq3 1.36_gcb9f63e0 linux-x86_64 Nov  3 2026
+SSE instruction set enabled
+----- FS_Startup -----
+We are looking in the current search path:
+/tmp/claude-1000/-home-gaskonec-muddev-pangea/550d73ef-7e80-4bc8-9e68-208bc3f29be0/scratchpad/ioqhome/baseoa
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak6-patch088.pk3 (711 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak6-patch085.pk3 (559 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak6-misc.pk3 (229 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak5-TA.pk3 (139 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak4-textures.pk3 (1753 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak2-players.pk3 (669 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak1-maps.pk3 (100 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak0.pk3 (1042 files)
+
+----------------------
+5202 files in pk3 files
+execing default.cfg
+couldn't exec q3config_server.cfg
+couldn't exec autoexec.cfg
+Hunk_Clear: reset the hunk ok
+--- Common Initialization Complete ---
+IP: 127.0.0.1
+IP: 192.168.31.11
+IP6: ::1
+IP6: fe80::c30c:8352:45d4:5d70%wlp1s0
+Opening IP socket: 127.0.0.1:27990
+execing match.cfg
+g_gametype will be changed upon restarting.
+sv_maxclients will be changed upon restarting.
+------ Server Initialization ------
+Server: oa_dm7
+Hunk_Clear: reset the hunk ok
+----- FS_Startup -----
+We are looking in the current search path:
+/tmp/claude-1000/-home-gaskonec-muddev-pangea/550d73ef-7e80-4bc8-9e68-208bc3f29be0/scratchpad/ioqhome/baseoa
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak6-patch088.pk3 (711 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak6-patch085.pk3 (559 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak6-misc.pk3 (229 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak5-TA.pk3 (139 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak4-textures.pk3 (1753 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak2-players.pk3 (669 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak1-maps.pk3 (100 files)
+/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa/pak0.pk3 (1042 files)
+
+----------------------
+5202 files in pk3 files
+Loading vm file vm/qagame.qvm...
+File "vm/qagame.qvm" found at "/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa"
+...which has vmMagic VM_MAGIC_VER2
+Loading 915 jump table targets
+VM file qagame compiled to 1282000 bytes of code
+qagame loaded in 3316096 bytes on the hunk
+------- Game Initialization -------
+gamename: baseq3
+gamedate: Nov  3 2026
+------------------------------------------------------------
+InitGame: \version\ioq3 1.36_gcb9f63e0 linux-x86_64 Nov  3 2026\com_gamename\Quake3Arena\com_protocol\71\dmflags\0\fraglimit\3\timelimit\4\g_gametype\1\mapname\oa_dm7\sv_privateClients\0\sv_hostname\pangea-fixture\sv_maxclients\4\sv_minRate\0\sv_maxRate\0\sv_dlRate\100\sv_minPing\0\sv_maxPing\0\sv_floodProtect\1\sv_allowDownload\0\g_pangea_arsenal\rail\g_pangea_instagib\1\g_pangea_powerups\0\g_pangea_items\0\gamename\baseq3\g_maxGameClients\0\capturelimit\8\g_needpass\0
+Gametype changed, clearing session data.
+Warmup:
+0 teams with 0 entities
+3 items registered
+-----------------------------------
+------- BotLib Initialization -------
+loaded weapons.c
+loaded items.c
+loaded syn.c
+loaded rnd.c
+loaded match.c
+loaded rchat.c
+------------ Map Loading ------------
+trying to load maps/oa_dm7.aas
+loaded maps/oa_dm7.aas
+item_health in solid at (624.0 -328.0 320.0)
+item_health in solid at (624.0 -864.0 320.0)
+trigger_push start solid
+trigger_push start solid
+trigger_push start solid
+trigger_push start solid
+trigger_push start solid
+trigger_push start solid
+trigger_push start solid
+trigger_push start solid
+trigger_push start solid
+found 73 level items
+-------------------------------------
+33 bots parsed
+58 arenas parsed
+AAS initialized.
+-----------------------------------
+loaded skill 1 from bots/default_c.c
+loaded skill 1 from bots/sarge_c.c
+loaded skill 4 from bots/default_c.c
+loaded skill 4 from bots/sarge_c.c
+loaded bots/sarge_i.c
+loaded bots/sarge_w.c
+loaded sarge from bots/sarge_t.c
+Pangea: ticket bot client 0
+ClientConnect: 0
+ClientUserinfoChanged: 0 n\Ker\t\0\model\sarge\hmodel\sarge\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+broadcast: print "Ker^7 connected\n"
+ClientBegin: 0
+loaded cached skill 1.000000 from bots/default_c.c
+loaded skill 1 from bots/grism_c.c
+loaded cached skill 4.000000 from bots/default_c.c
+loaded skill 4 from bots/grism_c.c
+loaded bots/grism_i.c
+loaded bots/grism_w.c
+loaded grism from bots/grism_t.c
+Pangea: ticket t2 client 1
+ClientConnect: 1
+ClientUserinfoChanged: 1 n\Grism\t\0\model\sarge/classic\hmodel\sarge/classic\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+broadcast: print "Grism^7 connected\n"
+ClientBegin: 1
+==== ShutdownGame ====
+ShutdownGame:
+------------------------------------------------------------
+VM_Restart()
+Loading vm file vm/qagame.qvm...
+File "vm/qagame.qvm" found at "/home/gaskonec/muddev/pangea-arena/content/openarena/baseoa"
+...which has vmMagic VM_MAGIC_VER2
+Loading 915 jump table targets
+------- Game Initialization -------
+gamename: baseq3
+gamedate: Nov  3 2026
+------------------------------------------------------------
+InitGame: \version\ioq3 1.36_gcb9f63e0 linux-x86_64 Nov  3 2026\com_gamename\Quake3Arena\com_protocol\71\dmflags\0\fraglimit\3\timelimit\4\g_gametype\1\mapname\oa_dm7\sv_privateClients\0\sv_hostname\pangea-fixture\sv_maxclients\4\sv_minRate\0\sv_maxRate\0\sv_dlRate\100\sv_minPing\0\sv_maxPing\0\sv_floodProtect\1\sv_allowDownload\0\bot_minplayers\0\g_pangea_arsenal\rail\g_pangea_instagib\1\g_pangea_powerups\0\g_pangea_items\0\gamename\baseq3\g_maxGameClients\0\capturelimit\8\g_needpass\0
+0 teams with 0 entities
+3 items registered
+-----------------------------------
+33 bots parsed
+58 arenas parsed
+loaded cached skill 3.000000 from bots/sarge_c.c
+Pangea: ticket bot client 0
+ClientConnect: 0
+ClientUserinfoChanged: 0 n\Ker\t\0\model\sarge\hmodel\sarge\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+ClientBegin: 0
+loaded cached skill 3.000000 from bots/grism_c.c
+Pangea: ticket t2 client 1
+ClientConnect: 1
+ClientUserinfoChanged: 1 n\Grism\t\0\model\sarge/classic\hmodel\sarge/classic\c1\4\c2\5\hc\90\w\0\l\0\skill\3.00\tt\0\tl\0
+ClientBegin: 1
+Kill: 0 1 10: Ker killed Grism by MOD_RAILGUN
+Kill: 0 1 10: Ker killed Grism by MOD_RAILGUN
+Item: 0 holdable_teleporter
+Kill: 0 1 10: Ker killed Grism by MOD_RAILGUN
+Exit: Fraglimit hit.
+score: 3  ping: 0  client: 0 Ker
+score: 0  ping: 0  client: 1 Grism
+broadcast: print "Ker^7 hit the fraglimit.\n"
+ClientUserinfoChanged: 0 n\Ker\t\0\model\sarge\hmodel\sarge\c1\4\c2\5\hc\90\w\1\l\0\skill\3.00\tt\0\tl\0
+ClientUserinfoChanged: 1 n\Grism\t\0\model\sarge/classic\hmodel\sarge/classic\c1\4\c2\5\hc\90\w\0\l\1\skill\3.00\tt\0\tl\0
+Pangea: quit
+----- Server Shutdown (Server quit) -----
+==== ShutdownGame ====
+ShutdownGame:
+------------------------------------------------------------
+AAS shutdown.
+---------------------------

@@ -11,6 +11,7 @@ export type LogEvent =
   | { kind: "kill"; killer: number; victim: number; mod: string }
   | { kind: "exit"; reason: string }
   | { kind: "score"; score: number; ping: number; client: number; name: string }
+  | { kind: "userinfo"; client: number; name: string }
   | { kind: "quit" };
 
 /** Strips an optional "  0:23 " games.log time prefix. */
@@ -26,6 +27,7 @@ export function parseLine(raw: string): LogEvent | null {
   if ((m = /^ClientConnect: (\d+)$/.exec(line))) return { kind: "connect", client: +m[1] };
   if ((m = /^ClientBegin: (\d+)$/.exec(line))) return { kind: "begin", client: +m[1] };
   if ((m = /^ClientDisconnect: (\d+)$/.exec(line))) return { kind: "disconnect", client: +m[1] };
+  if ((m = /^ClientUserinfoChanged: (\d+) n\\([^\\]*)/.exec(line))) return { kind: "userinfo", client: +m[1], name: m[2] };
   if (line.startsWith("InitGame:")) return { kind: "initgame" };
   if (line === "Warmup:") return { kind: "warmup" };
   if ((m = /^Kill: (\d+) (\d+) \d+: .* by (MOD_\w+)$/.exec(line))) return { kind: "kill", killer: +m[1], victim: +m[2], mod: m[3] };
@@ -45,9 +47,16 @@ export function exitReason(text: string): ExitReason | null {
 }
 
 export interface Place {
-  ticket: string;
+  ticket?: string;     // a human (absent for NPC rows)
   score: number;
   place: number;
+  npc?: true;          // a Pangea NPC fighter (named bot)
+  name?: string;       // its Pangea name
+}
+
+/** "^1Ker^7" -> "Ker" (Quake colour codes). */
+export function stripColors(name: string): string {
+  return name.replace(/\^[^^]/g, "").trim();
 }
 
 export interface MatchResult {
@@ -57,6 +66,8 @@ export interface MatchResult {
   duration_s: number;
   places: Place[];
   left_early: string[];
+  /** in-game Latin name -> Pangea name of each NPC bot (only when there were NPCs) */
+  npc_names?: Record<string, string>;
 }
 
 /**
@@ -76,6 +87,22 @@ export class MatchLog {
   scores: { ticket: string; score: number }[] = [];
   initGames = 0;
   quit = false;
+  /** client slot -> player name (from ClientUserinfoChanged) */
+  readonly names = new Map<number, string>();
+
+  /** npcByName: lower-case in-game name of an NPC bot -> its key ("npc:0"). */
+  constructor(private npcByName: Map<string, string> = new Map()) {}
+
+  /** Key of the NPC bot in this slot, if the slot is a named NPC bot. */
+  npcKey(client: number, name?: string): string | undefined {
+    if (this.slots.get(client) !== "bot") return undefined;
+    for (const n of [name, this.names.get(client)]) {
+      if (!n) continue;
+      const k = this.npcByName.get(stripColors(n).toLowerCase());
+      if (k) return k;
+    }
+    return undefined;
+  }
 
   apply(ev: LogEvent): void {
     switch (ev.kind) {
@@ -90,6 +117,7 @@ export class MatchLog {
       case "disconnect": {
         const t = this.slots.get(ev.client);
         this.slots.delete(ev.client);
+        this.names.delete(ev.client);
         if (t && t !== "bot") {
           this.present.delete(t);
           // after Exit the server kicks everyone — that is not leaving early
@@ -100,6 +128,9 @@ export class MatchLog {
       case "initgame":
         this.initGames++;
         break;
+      case "userinfo":
+        this.names.set(ev.client, ev.name);
+        break;
       case "exit":
         this.exitText = ev.reason;
         this.scores = [];
@@ -108,6 +139,10 @@ export class MatchLog {
         if (this.exitText === null) break;
         const t = this.slots.get(ev.client);
         if (t && t !== "bot") this.scores.push({ ticket: t, score: ev.score });
+        else if (t === "bot") {
+          const k = this.npcKey(ev.client, ev.name);
+          if (k) this.scores.push({ ticket: k, score: ev.score });
+        }
         break;
       }
       case "quit":

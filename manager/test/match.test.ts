@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { PassThrough } from "node:stream";
 import { describe, expect, it } from "vitest";
 import { Match, type Clock, type ChildLike, type MatchTimings } from "../src/match.js";
-import { parseMatchRequest, serverLaunch, maxClients, ValidationError, type MatchRequest } from "../src/rules.js";
+import { parseMatchRequest, serverLaunch, maxClients, translit, npcNames, botCommands, ValidationError, type MatchRequest } from "../src/rules.js";
 import type { MatchResult } from "../src/logparse.js";
 
 const MAPS = { duel: ["czest1tourney", "oa_dm7"], ffa: ["oa_dm4", "czest1dm"] };
@@ -273,5 +273,106 @@ describe("real ioq3ded logs (test/fixtures)", () => {
     expect(r.reason).toBe("timelimit");
     expect(r.places).toEqual([
       { ticket: "t2", score: 1, place: 1 }, { ticket: "t1", score: 0, place: 2 }, { ticket: "t3", score: 0, place: 2 }]);
+  });
+});
+
+// --- NPC fighters (Pangea part F4): named bots ---------------------------------
+
+const ker = { npc: true, name: "Кер", bot: { model: "sarge", skill: 3 } };
+const duelNpc = { match_id: "pvp-7", mode: "duel", map: "oa_dm7", players: [{ ticket: "t2", name: "Арн" }, ker] };
+
+describe("npc: rules", () => {
+  it("transliterates names for the engine fonts, unique", () => {
+    expect(translit("Кер")).toBe("Ker");
+    expect(translit("Щука Старый")).toBe("ShchukaStaryy");
+    expect(translit("Ёж-17")).toBe("Ezh17");
+    expect(translit("Очень Длинное Имя Наставника")).toHaveLength(15);
+    expect(npcNames(["Кер", "Кер", "кер"])).toEqual(["Ker", "Ker2", "Ker3"]);
+  });
+
+  it("duel: one human + one npc is allowed; bot counts in g_pangea_bots, not in tickets", () => {
+    const req = parseMatchRequest(duelNpc, MAPS);
+    expect(req.players).toEqual([{ ticket: "t2", name: "Арн" }]);
+    expect(req.npcs).toEqual([{ npc: true, name: "Кер", latin: "Ker", key: "npc:0", bot: { model: "sarge", skill: 3 } }]);
+    const cfg = serverLaunch(req, 27990, { basepath: "/b", homepath: "/h", basegame: "baseoa" }).config;
+    expect(cfg).toContain('set g_pangea_tickets "t2"');
+    expect(cfg).toContain('set g_pangea_bots "1"');
+    expect(cfg).toContain('set bot_enable "1"');
+    expect(botCommands(req)).toEqual(["addbot sarge 3 free 0 Ker"]);
+  });
+
+  it("rejects: npc-only, three in a duel, unknown model, bad skill, too many in ffa", () => {
+    const bad = (b: object) => expect(() => parseMatchRequest(b, MAPS)).toThrow(ValidationError);
+    bad({ ...duelNpc, players: [ker, { ...ker, name: "Тур" }] });
+    bad({ ...duelNpc, players: [{ ticket: "a" }, { ticket: "b" }, ker] });
+    bad({ ...duelNpc, players: [{ ticket: "a" }, { ...ker, bot: { model: "doom" } }] });
+    bad({ ...duelNpc, players: [{ ticket: "a" }, { ...ker, bot: { model: "sarge", skill: 9 } }] });
+    bad({ ...ffa(5, { bots: 3 }), players: [...ffa(5).players, ker] });
+  });
+
+  it("ffa: npc entries add to rules.bots within 8 slots", () => {
+    const req = parseMatchRequest({ ...ffa(2, { bots: 2 }), players: [...ffa(2).players, ker, { ...ker, name: "Тур", bot: { model: "grism", skill: 2 } }] }, MAPS);
+    expect(maxClients(req)).toBe(6);
+    expect(botCommands(req)).toEqual(["addbot sarge 3 free 0 Ker", "addbot grism 2 free 0 Tur", "addbot sarge 3", "addbot grism 3"]);
+  });
+});
+
+describe("npc: life cycle", () => {
+  it("adds the named bot after InitGame; the human alone starts the duel", async () => {
+    const { srv, m } = setup(duelNpc);
+    srv.print("InitGame: \\g_gametype\\1");
+    await tick();
+    expect(srv.commands).toEqual(["addbot sarge 3 free 0 Ker"]);
+    srv.print("Pangea: ticket bot client 0", "ClientUserinfoChanged: 0 n\\Ker\\t\\0", "Pangea: ticket t2 client 1");
+    await tick();
+    expect(m.state).toBe("running");
+  });
+
+  it("real log: the npc wins 3:0 and is placed by name", async () => {
+    const fixture = readFileSync(new URL("./fixtures/duel-npc.log", import.meta.url), "utf8");
+    const { srv, done } = setup(duelNpc);
+    srv.print(fixture);
+    await tick();
+    srv.quit();
+    const r = await done;
+    expect(r.reason).toBe("fraglimit");
+    expect(r.places).toEqual([{ npc: true, name: "Кер", score: 3, place: 1 }, { ticket: "t2", score: 0, place: 2 }]);
+    expect(r.npc_names).toEqual({ Ker: "Кер" });
+  });
+
+  it("human leaves: forfeit in favour of the npc", async () => {
+    const { srv, clock, done } = setup(duelNpc);
+    srv.print("InitGame:", "Pangea: ticket bot client 0", "ClientUserinfoChanged: 0 n\\Ker\\t\\0", "Pangea: ticket t2 client 1");
+    await tick();
+    srv.print("ClientDisconnect: 1");
+    await tick();
+    clock.advance(30_000);
+    const r = await done;
+    expect(r.reason).toBe("forfeit");
+    expect(r.places).toEqual([{ npc: true, name: "Кер", score: 0, place: 1 }, { ticket: "t2", score: 0, place: 2 }]);
+    expect(r.left_early).toEqual(["t2"]);
+  });
+
+  it("human never comes: no_show", async () => {
+    const { clock, done } = setup(duelNpc);
+    clock.advance(180_000);
+    const r = await done;
+    expect(r.reason).toBe("no_show");
+    expect(r.left_early).toEqual(["t2"]);
+  });
+
+  it("ffa: npc bots are placed, plain bots are not", async () => {
+    const { srv, done } = setup({ ...ffa(2, { bots: 1 }), players: [...ffa(2).players, ker] });
+    srv.print("InitGame:", "Pangea: ticket t1 client 0", "Pangea: ticket t2 client 1",
+      "Pangea: ticket bot client 2", "ClientUserinfoChanged: 2 n\\^1Ker^7\\t\\0",
+      "Pangea: ticket bot client 3", "ClientUserinfoChanged: 3 n\\Sarge\\t\\0");
+    await tick();
+    srv.print("Exit: Fraglimit hit.", "score: 5  ping: 0  client: 2 ^1Ker^7", "score: 4  ping: 0  client: 3 Sarge",
+      "score: 2  ping: 9  client: 0 Anna", "score: 1  ping: 9  client: 1 Bor");
+    await tick();
+    srv.quit();
+    const r = await done;
+    expect(r.places).toEqual([
+      { npc: true, name: "Кер", score: 5, place: 1 }, { ticket: "t1", score: 2, place: 2 }, { ticket: "t2", score: 1, place: 3 }]);
   });
 });
