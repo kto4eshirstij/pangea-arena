@@ -43,14 +43,49 @@ def stage_look(outdir, ids):
         render.render(os.path.join(outdir, mid + ".png"), 480, 360, samples=24)
 
 
+def place_items(tags, items, loader):
+    """Attach item models (procedural or exported) at pose tags."""
+    out = []
+    for tname, mid in items.items():
+        if tname not in tags:
+            continue
+        for o in loader(mid):
+            o.matrix_world = tags[tname] @ o.matrix_world
+            out.append(o)
+    return out
+
+
+def _procedural(mid):
+    return [o for o in models.load(mid).build() if o.type == 'MESH']
+
+
+def stage_hands_look(outdir, build="medium", poses=None):
+    from hands import hands
+    from hands.poses import POSE_ITEMS, POSES
+    from lib import render
+    os.makedirs(outdir, exist_ok=True)
+    for pose in poses or list(POSES):
+        geo.reset_scene()
+        objs, tags = hands.build_pose(build, pose)
+        place_items(tags, POSE_ITEMS[pose], _procedural)
+        print("TRIS hands %-7s %-13s %4d" % (build, pose, geo.tri_count(objs)))
+        render.world("#1a1512", 1.0)
+        render.lights((14, 0, -4), scale=0.35)
+        render.q3_view()
+        render.render(os.path.join(outdir, "%s_%s.png" % (build, pose)), 480, 360, samples=16)
+
+
 def main():
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     st, rest = argv[0], argv[1:]
     if st == "look":
         stage_look(rest[0], rest[1:])
+    elif st == "hands_look":
+        stage_hands_look(rest[0], *(rest[1:2] or ["medium"]), poses=rest[2:] or None)
     else:
         from tools_stages import run_stage   # noqa: E402  (W3/W4 stages)
         run_stage(st, rest)
 
 
-main()
+if __name__ == "__main__":
+    main()

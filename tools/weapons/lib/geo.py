@@ -257,3 +257,49 @@ def tag(name, loc=(0, 0, 0), r=None):
 
 def tri_count(objs):
     return sum(len(o.data.polygons) for o in objs if o.type == 'MESH')
+
+
+def merge(name, objs, surface=None):
+    """Merge part objects into one mesh in a fixed order (deterministic topology), keeping each
+    part's material as its own slot. Deletes the parts."""
+    bm = bmesh.new()
+    mats = []
+    for o in objs:
+        n0 = len(bm.faces)
+        me = o.data.copy()
+        me.transform(o.matrix_world)
+        bm.from_mesh(me)
+        bpy.data.meshes.remove(me)
+        bm.faces.ensure_lookup_table()
+        m = o.data.materials[0] if o.data.materials else None
+        if m not in mats:
+            mats.append(m)
+        idx = mats.index(m)
+        for f in bm.faces[n0:]:
+            f.material_index = idx
+    me = bpy.data.meshes.new(name)
+    bm.to_mesh(me)
+    bm.free()
+    for m in mats:
+        me.materials.append(m)
+    for o in objs:
+        old = o.data
+        bpy.data.objects.remove(o)
+        if old.users == 0:
+            bpy.data.meshes.remove(old)
+    ob = bpy.data.objects.new(name, me)
+    bpy.context.scene.collection.objects.link(ob)
+    if surface:
+        ob["surface"] = surface
+    return ob
+
+
+def frame(x, y, at=(0, 0, 0)):
+    """4x4 from desired local X and (approximate) Y directions, Gram-Schmidt."""
+    X = Vector(x).normalized()
+    Y = Vector(y)
+    Y = (Y - Y.dot(X) * X).normalized()
+    Z = X.cross(Y)
+    m = Matrix((X, Y, Z)).transposed().to_4x4()
+    m.translation = Vector(at)
+    return m
