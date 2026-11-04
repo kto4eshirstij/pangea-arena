@@ -197,6 +197,7 @@ def build_pose(build, pose, mats=None, wraps_mats=None):
         _uv_set(hand, uv["hands"])
         place(hand, h["side"], H)
         hand.name = "hand_" + h["side"]
+        hand["surface"] = "hands" if h["side"] == "R" else "hands_l"   # <= 999 verts each
         objs.append(hand)
         if wraps:
             _uv_set(wraps, uv["wraps"])

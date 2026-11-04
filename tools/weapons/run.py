@@ -83,7 +83,7 @@ def main():
     elif st == "hands_look":
         stage_hands_look(rest[0], *(rest[1:2] or ["medium"]), poses=rest[2:] or None)
     else:
-        from tools_stages import run_stage   # noqa: E402  (W3/W4 stages)
+        from stages import run_stage
         run_stage(st, rest)
 
 
