@@ -97,7 +97,7 @@ POSES = {
              at=(26.0, 4.5, -3.2), tag="tag_weapon", wrist=(0, 25)),
     ],
     "torch": [
-        dict(side="R", curl="grip", grip="torch", item=((1, 0.2, 0), (-0.2, 1, 0), (11.5, -7.0, -8.5)),
+        dict(side="R", curl="grip", grip="torch", item=((1, 0.2, 0), (-0.2, 1, 0), (12.5, -6.0, -7.0)),
              tag="tag_weapon", wrist=(0, 45)),
     ],
     "shield": [

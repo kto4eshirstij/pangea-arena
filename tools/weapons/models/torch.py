@@ -45,7 +45,7 @@ def build():
                           [0.45, 0.55, 0.3], sides=4, mat=bark, flat=(1.0, 0.3),
                           up=tuple(R @ geo.Vector((0, math.cos(a), math.sin(a))))))
     o.append(geo.tube("bind", [at(19.6), at(20.6)], [1.08, 1.08], sides=6, mat=sinew))
-    o.append(geo.cross_planes("flame", TOP - geo.Vector((0, 0, 1.0)), 6.5, 12.0, n=2,
+    o.append(geo.cross_planes("flame", TOP - geo.Vector((0, 0, 1.2)), 7.5, 13.0, n=2,
                               surface="flame"))
     o.append(geo.tag("tag_weapon"))
     o.append(geo.tag("tag_flash", TOP + geo.Vector((0, 0, 4.5))))

@@ -152,7 +152,7 @@ def _flame_material(t):
     dx = g.math('ABSOLUTE', g.math('SUBTRACT', x, 0.5))
     dx = g.math('ADD', g.math('MULTIPLY', dx, 2.0), g.math('MULTIPLY', g.math('SUBTRACT', n, 0.5),
                                                           g.math('MULTIPLY', y, 1.3)))
-    width = g.math('ADD', g.math('MULTIPLY', g.math('POWER', g.math('SUBTRACT', 1.0, y), 1.3), 0.85), 0.02)
+    width = g.math('ADD', g.math('MULTIPLY', g.math('POWER', g.math('SUBTRACT', 1.0, y), 1.05), 1.05), 0.05)
     body = g.math('SUBTRACT', 1.0, g.math('DIVIDE', g.math('ABSOLUTE', dx), width), clamp=True)
     base = g.smooth(y, 0.0, 0.12)
     tongues = g.math('SUBTRACT', g.math('MULTIPLY', body, base),
