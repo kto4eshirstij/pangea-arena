@@ -249,6 +249,9 @@ def m_hide(g, p):
     col = g.mix(col, "#e0c8a4", g.math('MULTIPLY', g.smooth(hair, 0.66, 0.75), 0.35))
     vein = g.voronoi(g.co, scale=0.9, feature='DISTANCE_TO_EDGE')
     col = g.mix(col, "#755638", g.math('MULTIPLY', g.smooth(vein, 0.04, 0.0), 0.4))
+    if p.get("holes"):   # punched decoration (sling pouch)
+        h = g.voronoi(g.co, scale=p["holes"], rand=0.15)
+        col = g.mix(col, "#1a120c", g.smooth(h, 0.16, 0.12))
     return col, None
 
 
@@ -282,8 +285,9 @@ def m_river_stone(g, p):
     col = g.ramp(n, [(0.2, "#4a4642"), (0.5, shade), (0.85, "#b8b2a6")])
     sp = g.noise(g.co, scale=14.0 * p.get("scale", 1.0), detail=1)
     col = g.mix(col, "#2e2b28", g.math('MULTIPLY', g.smooth(sp, 0.68, 0.74), 0.5))
-    vein = g.wave(g.co, scale=0.6, dist=6.0, detail=2)
-    col = g.mix(col, "#d9d3c6", g.math('MULTIPLY', g.smooth(vein, 0.94, 1.0), 0.5))
+    vein = g.wave(g.co, scale=0.45, dist=9.0, detail=3)
+    vmask = g.math('MULTIPLY', g.smooth(vein, 0.975, 1.0), g.smooth(g.noise(g.co, 0.7), 0.5, 0.62))
+    col = g.mix(col, "#cfc8ba", g.math('MULTIPLY', vmask, 0.35))
     return col, None
 
 
