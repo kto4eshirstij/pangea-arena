@@ -55,4 +55,8 @@ manager/dist/
 manager/state/
 content/home/
 manager/arena.env
+
+# Python
 __pycache__/
+*.pyc
+*.blend1
