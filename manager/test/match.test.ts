@@ -77,6 +77,8 @@ describe("rules", () => {
     expect(config).toContain('set g_pangea_tickets "aaa,bbb"');
     expect(config).toContain('set g_warmup "10"');
     expect(config).toContain('set g_forcerespawn "3"');
+    // a 0:0 at the timelimit ends as a draw after the overtime, not when the lifetime runs out
+    expect(config).toContain('set g_pangea_overtime "120"');
   });
 
   it("ffa: defaults 20/12/15, maxclients = players + bots, held warmup", () => {
@@ -185,6 +187,26 @@ describe("duel life cycle", () => {
     const { m, done } = setup(duel);
     m.cancel();
     expect((await done).reason).toBe("cancelled");
+  });
+});
+
+describe("closed arena tab", () => {
+  it("kicks the client behind a closed WebSocket, and only it; not after the exit", async () => {
+    const { srv, m } = setup(duel);
+    srv.print("InitGame: x", "Pangea: ticket aaa client 0", "Pangea: addr client 0 127.0.0.1:40001",
+      "Pangea: ticket bbb client 1", "Pangea: addr client 1 127.0.0.1:40002");
+    await tick();
+    m.peerClosed("127.0.0.1:49999");
+    m.peerClosed("127.0.0.1:40002");
+    expect(srv.commands).toEqual(["clientkick 1"]);
+    // the kicked slot is gone: a second close of the same socket does nothing
+    srv.print("ClientDisconnect: 1");
+    await tick();
+    m.peerClosed("127.0.0.1:40002");
+    srv.print("Exit: Timelimit hit.");
+    await tick();
+    m.peerClosed("127.0.0.1:40001");
+    expect(srv.commands).toEqual(["clientkick 1"]);
   });
 });
 

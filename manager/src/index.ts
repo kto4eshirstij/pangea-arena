@@ -57,6 +57,7 @@ const gateway = await startGateway({
   maxPort,
   allowPort: (p) => manager.matchOnPort(p) !== undefined,
   limitForPort: (p) => manager.wsLimit(p),
+  onPeerClosed: (p, addr) => manager.matchOnPort(p)?.peerClosed(addr),
 });
 const resumed = reporter.resumePending();
 if (resumed) console.log(`[manager] re-sending ${resumed} undelivered result(s)`);

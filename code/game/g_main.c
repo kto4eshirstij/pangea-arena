@@ -165,6 +165,7 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_pangea_items, "g_pangea_items", "1", CVAR_SERVERINFO | CVAR_LATCH, 0, qfalse },
 	{ &g_pangea_bots, "g_pangea_bots", "0", 0, 0, qfalse },
 	{ &g_pangea_autoexit, "g_pangea_autoexit", "0", 0, 0, qfalse },
+	{ &g_pangea_overtime, "g_pangea_overtime", "120", 0, 0, qfalse },
 	{ &g_listEntity, "g_listEntity", "0", 0, 0, qfalse },
 
 #ifdef MISSIONPACK
@@ -1373,7 +1374,11 @@ void CheckExitRules( void ) {
 
 	// check for sudden death
 	if ( ScoreIsTied() ) {
-		// always wait for sudden death
+		// always wait for sudden death (Pangea: only g_pangea_overtime seconds, then a draw)
+		if ( Pangea_OvertimeOver() ) {
+			trap_SendServerCommand( -1, "print \"Время вышло: ничья.\n\"" );
+			LogExit( "Timelimit hit." );
+		}
 		return;
 	}
 

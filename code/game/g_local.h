@@ -969,6 +969,7 @@ extern	vmCvar_t	g_pangea_powerups;
 extern	vmCvar_t	g_pangea_items;
 extern	vmCvar_t	g_pangea_bots;
 extern	vmCvar_t	g_pangea_autoexit;
+extern	vmCvar_t	g_pangea_overtime;
 
 qboolean		Pangea_Active( void );
 pangeaArsenal_t	Pangea_Arsenal( void );
@@ -980,3 +981,4 @@ int				Pangea_ModifyDamage( int damage, int mod );
 qboolean		Pangea_BlockCommand( gentity_t *ent, const char *cmd );
 void			Pangea_MatchLogged( void );
 void			Pangea_RunFrame( void );
+qboolean		Pangea_OvertimeOver( void );

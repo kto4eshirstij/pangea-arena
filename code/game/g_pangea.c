@@ -16,6 +16,8 @@ Rules are plain cvars set by the match manager on the ioq3ded command line:
   g_pangea_items     0/1          spawn armor and health
   g_pangea_bots      0..3         bots allowed in (the manager issues addbot itself)
   g_pangea_autoexit  0/1          quit the server 5 s after the match result is logged
+  g_pangea_overtime  seconds      (120) a tie at the timelimit plays sudden death this long,
+                                  then ends as a draw (0 = sudden death without end)
 
 "Pangea mode" = g_pangea_tickets is not empty: votes are off, team/follow are
 spectator-only.
@@ -30,6 +32,7 @@ vmCvar_t	g_pangea_powerups;
 vmCvar_t	g_pangea_items;
 vmCvar_t	g_pangea_bots;
 vmCvar_t	g_pangea_autoexit;
+vmCvar_t	g_pangea_overtime;
 
 static int	pangeaQuitTime;
 
@@ -129,6 +132,11 @@ void Pangea_ClientConnected( int clientNum, const char *userinfo, qboolean isBot
 	Q_strncpyz( pangeaTickets[clientNum], isBot ? "bot" : Info_ValueForKey( userinfo, "pangea_ticket" ),
 		sizeof( pangeaTickets[clientNum] ) );
 	G_LogPrintf( "Pangea: ticket %s client %i\n", pangeaTickets[clientNum], clientNum );
+	// The gateway's UDP socket of this browser: the manager kicks the slot when its
+	// WebSocket closes (a closed arena tab would otherwise linger until sv_timeout).
+	if ( !isBot ) {
+		G_LogPrintf( "Pangea: addr client %i %s\n", clientNum, Info_ValueForKey( userinfo, "pangea_addr" ) );
+	}
 }
 
 /*
@@ -206,6 +214,23 @@ qboolean Pangea_BlockCommand( gentity_t *ent, const char *cmd ) {
 		}
 	}
 	return qfalse;
+}
+
+/*
+A tie at the timelimit: qtrue once the sudden death has lasted g_pangea_overtime
+seconds - the match ends as a draw (idle players at 0:0 would wait forever).
+*/
+qboolean Pangea_OvertimeOver( void ) {
+	int limit;
+
+	if ( g_pangea_overtime.integer <= 0 || g_timelimit.integer <= 0 || level.warmupTime ) {
+		return qfalse;
+	}
+	if ( g_timelimit.integer > ( INT_MAX - g_pangea_overtime.integer * 1000 ) / 60000 ) {
+		return qfalse;
+	}
+	limit = g_timelimit.integer * 60000 + g_pangea_overtime.integer * 1000;
+	return level.time - level.startTime >= limit;
 }
 
 /*

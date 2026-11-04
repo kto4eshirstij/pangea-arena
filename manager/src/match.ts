@@ -27,6 +27,7 @@ export interface MatchTimings {
 export const DEFAULT_TIMINGS = (req: MatchRequest): MatchTimings => ({
   joinTimeoutMs: 3 * 60_000,
   reconnectGraceMs: 30_000,
+  // timelimit + overtime (rules.ts OVERTIME_S, 2 min) with a minute to spare + 2 min of joining
   maxLifetimeMs: (req.rules.timelimit + 3 + 2) * 60_000 + req.rules.warmup * 1000 + 60_000,
   exitKillMs: 15_000,
 });
@@ -106,6 +107,19 @@ export class Match extends EventEmitter {
   /** Writes a console command to the server. */
   command(cmd: string): void {
     this.child?.stdin?.write(cmd + "\n");
+  }
+
+  /**
+   * A browser's WebSocket closed (the gateway, its UDP socket's ip:port): the
+   * server would keep that client until sv_timeout (~200 s) and refuse its ticket
+   * meanwhile. Kicked now - leaving the arena is leaving (duel: the reconnect grace).
+   */
+  peerClosed(addr: string): void {
+    if (this.state === "finished" || this.log.exitText !== null) return;
+    const client = this.log.slotOfAddr(addr);
+    if (client === undefined) return;
+    this.emit("log", `peer ${addr} closed: kicking client ${client}`);
+    this.command(`clientkick ${client}`);
   }
 
   // --- log handling -------------------------------------------------------

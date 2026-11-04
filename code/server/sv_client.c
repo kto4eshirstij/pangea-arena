@@ -398,6 +398,13 @@ void SV_DirectConnect( netadr_t from ) {
 		return;
 	}
 	Info_SetValueForKey( userinfo, "ip", ip );
+	// Pangea: ip:port for the match manager (one gateway UDP socket per browser,
+	// all from 127.0.0.1); set by the server, so a client cannot fake it.
+	if ( strlen( NET_AdrToStringwPort( from ) ) + strlen( userinfo ) + 16 < MAX_INFO_STRING ) {
+		Info_SetValueForKey( userinfo, "pangea_addr", NET_AdrToStringwPort( from ) );
+	} else {
+		Info_SetValueForKey( userinfo, "pangea_addr", "" );
+	}
 
 	// see if the challenge is valid (LAN clients don't need to challenge)
 	if (!NET_IsLocalAddress(from))

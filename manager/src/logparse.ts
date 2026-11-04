@@ -3,6 +3,7 @@
 
 export type LogEvent =
   | { kind: "ticket"; ticket: string; client: number }
+  | { kind: "addr"; client: number; addr: string }
   | { kind: "connect"; client: number }
   | { kind: "begin"; client: number }
   | { kind: "disconnect"; client: number }
@@ -23,6 +24,7 @@ export function parseLine(raw: string): LogEvent | null {
   const line = stripTime(raw);
   let m: RegExpExecArray | null;
   if ((m = /^Pangea: ticket (\S+) client (\d+)$/.exec(line))) return { kind: "ticket", ticket: m[1], client: +m[2] };
+  if ((m = /^Pangea: addr client (\d+) (\S+)$/.exec(line))) return { kind: "addr", client: +m[1], addr: m[2] };
   if (line === "Pangea: quit") return { kind: "quit" };
   if ((m = /^ClientConnect: (\d+)$/.exec(line))) return { kind: "connect", client: +m[1] };
   if ((m = /^ClientBegin: (\d+)$/.exec(line))) return { kind: "begin", client: +m[1] };
@@ -89,9 +91,17 @@ export class MatchLog {
   quit = false;
   /** client slot -> player name (from ClientUserinfoChanged) */
   readonly names = new Map<number, string>();
+  /** client slot -> its ip:port as the server sees it (the gateway's UDP socket of that browser) */
+  readonly addrs = new Map<number, string>();
 
   /** npcByName: lower-case in-game name of an NPC bot -> its key ("npc:0"). */
   constructor(private npcByName: Map<string, string> = new Map()) {}
+
+  /** The connected client slot behind this ip:port, if any. */
+  slotOfAddr(addr: string): number | undefined {
+    for (const [client, a] of this.addrs) if (a === addr && this.slots.has(client)) return client;
+    return undefined;
+  }
 
   /** Key of the NPC bot in this slot, if the slot is a named NPC bot. */
   npcKey(client: number, name?: string): string | undefined {
@@ -114,10 +124,14 @@ export class MatchLog {
           this.gone.delete(ev.ticket);
         }
         break;
+      case "addr":
+        this.addrs.set(ev.client, ev.addr);
+        break;
       case "disconnect": {
         const t = this.slots.get(ev.client);
         this.slots.delete(ev.client);
         this.names.delete(ev.client);
+        this.addrs.delete(ev.client);
         if (t && t !== "bot") {
           this.present.delete(t);
           // after Exit the server kicks everyone — that is not leaving early

@@ -31,7 +31,11 @@ node dist/index.js --listen 27961 --host 0.0.0.0 --udp-host 127.0.0.1 --min 2796
 - На каждый WebSocket — свой UDP-сокет к `127.0.0.1:<udp_port>`, сервер видит каждого игрока
   как отдельный `ip:port`.
 - Порты только из диапазона; лимит соединений на порт (по умолчанию 4); простой 60 с — закрытие.
-- `startGateway({allowPort, limitForPort})` — хуки для менеджера матчей.
+- `startGateway({allowPort, limitForPort, onPeerClosed})` — хуки для менеджера матчей.
+  `onPeerClosed(port, "127.0.0.1:<udp>")` — WebSocket браузера закрылся (закрыли вкладку
+  или окно арены): менеджер находит слот по строке `Pangea: addr client N <ip:port>`
+  (сервер кладёт `pangea_addr` в userinfo сам) и делает `clientkick N` — иначе слот
+  висел бы до `sv_timeout` (~200 с), а билет на это время был бы «уже на арене».
 
 ## Проверка по LAN
 

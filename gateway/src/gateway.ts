@@ -28,6 +28,8 @@ export interface GatewayOptions {
   /** Overrides max connections per port (e.g. FFA with more players). */
   limitForPort?: (port: number) => number | undefined;
   log?: (msg: string) => void;
+  /** A browser's WebSocket closed: its UDP socket's local ip:port (as the game server saw it). */
+  onPeerClosed?: (port: number, addr: string) => void;
 }
 
 /** The SOCKFS "port" handshake: FF FF FF FF 'p' 'o' 'r' 't' hi lo. */
@@ -113,6 +115,7 @@ export function startGateway(opts: GatewayOptions): Promise<Gateway> {
       clearInterval(idleTimer);
       set!.delete(ws);
       if (set!.size === 0) perPort.delete(port);
+      if (local) opts.onPeerClosed?.(port, local);
       try { udp.close(); } catch { /* already closed */ }
       if (ws.readyState === ws.OPEN || ws.readyState === ws.CONNECTING) ws.close(1000, why.slice(0, 120));
       log(`close ${peer} -> :${port} (${why}) in=${toUdp} out=${toWs}`);
@@ -129,9 +132,12 @@ export function startGateway(opts: GatewayOptions): Promise<Gateway> {
     });
     udp.on("error", (e) => close(`udp error: ${e.message}`));
     let connected = false;
+    let local: string | null = null;
     const pending: Buffer[] = [];
     udp.connect(port, udpHost, () => {
       connected = true;
+      const a = udp.address();
+      local = `${a.address}:${a.port}`;
       log(`open ${peer} -> ${udpHost}:${port}`);
       for (const b of pending.splice(0)) udp.send(b);
     });

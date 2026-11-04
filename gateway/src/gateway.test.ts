@@ -40,6 +40,26 @@ describe("bridge", () => {
     udp.close();
   });
 
+  it("reports the UDP ip:port of a closed WebSocket (the one the server saw)", async () => {
+    const udp = createSocket("udp4");
+    await new Promise<void>((r) => udp.bind(0, "127.0.0.1", () => r()));
+    const udpPort = udp.address().port;
+    const seen = new Promise<string>((r) => udp.once("message", (_m, rinfo) => r(`${rinfo.address}:${rinfo.port}`)));
+    let closed: (v: [number, string]) => void = () => {};
+    const report = new Promise<[number, string]>((r) => (closed = r));
+    const gw = await startGateway({ listenHost: "127.0.0.1", listenPort: 0, minPort: 1, maxPort: 65535, log: () => {},
+      onPeerClosed: (port, addr) => closed([port, addr]) });
+    const addr = gw.server.address() as { port: number };
+    const ws = new WebSocket(`ws://127.0.0.1:${addr.port}/${udpPort}`, "binary");
+    await new Promise((r) => ws.once("open", r));
+    ws.send(Buffer.from("hello", "latin1"));
+    const peer = await seen;
+    ws.close();
+    expect(await report).toEqual([udpPort, peer]);
+    await gw.close();
+    udp.close();
+  });
+
   it("rejects ports outside the range", async () => {
     const gw = await startGateway({ listenHost: "127.0.0.1", listenPort: 0, minPort: 27960, maxPort: 27961, log: () => {} });
     const addr = gw.server.address() as { port: number };
