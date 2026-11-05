@@ -1,0 +1,105 @@
+# Архетип «Глубь» (depth): Duel Atrium + branched, 3 яруса. Ниша «сердце кратона».
+# Канон: research-arena-maps-pangea.md §2.2; задание: pangea-arena-maps-task.md A3.
+# Координаты абсолютные (юниты Q3): x — восток, y — север, z — вверх. box = [x, y, z, dx, dy, dz].
+name: depth
+title: "Глубь (реликт)"
+connectivity: branched
+archetype_doc: "Два зала восьмёркой: низ — один коридор-чокпойнт с поворотом, верх замыкает петлю; кольцо кулачной дуэли — карман у зала А."
+units: {wall: 32}
+ambient: 6
+
+skin_textures:
+  floor: textures/pangea_skin/floor_a
+  wall:  textures/pangea_skin/wall_a
+  ceil:  textures/pangea_skin/ceil_a
+  trim:  textures/pangea_skin/trim_a
+  sky:   textures/pangea_skin/sky
+
+rooms:
+  - id: hall_a                     # зал А — панцирь наверху
+    box: [0, 0, 0, 896, 768, 576]
+    tiers: [0, 192, 352]
+  - id: hall_b                     # зал Б — источник внизу
+    box: [1152, 256, 0, 768, 768, 416]
+    tiers: [0, 192]
+
+ring:                              # круг кулачной дуэли (pangea_ring)
+  box: [-512, 192, 0, 384, 384, 256]
+
+halls:
+  - id: low                        # нижний коридор-чокпойнт, одна дверь на зал, поворот
+    width: 128
+    height: 160
+    path: [[896, 160, 0], [1024, 160, 0], [1024, 832, 0], [1152, 832, 0]]
+  - id: upper                      # верхний коридор замыкает «восьмёрку», со спуском 352 -> 192
+    width: 128
+    height: 144
+    path: [[896, 608, 352], [1024, 608, 352], [1024, 320, 192], [1152, 320, 192]]
+  - id: ring_link                  # проход в кольцо
+    width: 96
+    height: 128
+    path: [[-128, 384, 0], [0, 384, 0]]
+
+ledges:
+  - {room: hall_a, side: east,  z: 352, width: 96}                    # ярус 2: панцирь, выход в верхний коридор
+  - {room: hall_a, side: north, z: 192, width: 128, from: 0, to: 560} # ярус 1
+  - {room: hall_a, side: west,  z: 192, width: 128, from: 288, to: 640} # площадка между лестницами
+  - {room: hall_b, side: south, z: 192, width: 128}                    # ярус 1 зала Б: костёр, выход наверх
+
+stairs:
+  - {from: [64, 0, 0],     to: [64, 288, 192],  width: 128}   # А0 -> А1 вдоль западной стены
+  - {from: [560, 704, 192], to: [800, 704, 352], width: 128}  # А1 -> А2 вдоль северной стены (к восточному ярусу)
+
+jumppads:
+  - {at: [1536, 480, 0], target: [1536, 330, 250]}            # Б0 -> ярус Б1
+
+teleports:
+  - {at: [-320, 544, 0], dest: [448, 704, 192], angle: 270}   # из кольца на северный ярус А
+
+items:
+  - {kind: carapace, at: [848, 64, 352]}            # панцирь (RA): южный конец восточного яруса
+  - {kind: spring,   at: [1536, 640, 0]}            # источник (MH): центр Б0
+  - {kind: hide,     at: [200, 64, 0]}              # шкура: угол А0 (юго-запад)
+  - {kind: hide,     at: [960, 608, 352]}           # шкура: начало верхнего коридора
+  - {kind: scrap,    at: [1024, 600, 0], n: 3, along: y}      # обрывки: нижний коридор
+  - {kind: scrap,    at: [1840, 320, 192], n: 2}             # обрывки: восток яруса Б1
+  - {kind: water,    at: [-320, 384, 0]}            # вода: кольцо
+  - {kind: water,    at: [300, 704, 192]}           # вода: северный ярус А
+  - {kind: water,    at: [1216, 600, 0]}            # вода: Б0 у западной стены
+  - {kind: water,    at: [1100, 320, 192]}          # вода: конец верхнего коридора
+  - {kind: fruit,    at: [1216, 960, 0], n: 3}      # плоды: Б0 северо-запад
+  - {kind: fruit,    at: [832, 704, 0], n: 2}       # плоды: А0 северо-восток, под ярусом
+  - {kind: spear,    at: [448, 32, 0]}              # копьё: А0 у южной стены
+  - {kind: spear,    at: [1500, 320, 192]}          # копьё: ярус Б1
+  - {kind: stones,   at: [1024, 700, 0]}            # камни: нижний коридор
+  - {kind: stones,   at: [1880, 700, 0]}            # камни: Б0 у восточной стены
+  - {kind: quiver,   at: [64, 500, 192]}            # колчан: западная площадка А1
+  - {kind: quiver,   at: [1880, 900, 0]}            # колчан: Б0 северо-восток
+  - {kind: campfire, at: [1216, 320, 192]}          # костёр: запад яруса Б1
+
+spawns:
+  - {at: [200, 480, 0],   angle: 0}
+  - {at: [640, 448, 0],   angle: 180}
+  - {at: [200, 704, 192], angle: 270}
+  - {at: [1024, 420, 0],  angle: 90}
+  - {at: [1216, 920, 0],  angle: 315}
+  - {at: [1856, 960, 0],  angle: 225}
+  - {at: [1880, 400, 0],  angle: 180}
+  - {at: [1650, 320, 192], angle: 90}
+  - {at: [-448, 384, 0],  angle: 0,   ring: true}
+  - {at: [-192, 384, 0],  angle: 180, ring: true}
+
+intermission: {at: [448, 384, 500], angle: 0}
+
+# Правила для lint.py
+rules:
+  carapace: 1
+  spring: 1
+  hide: 2
+  scrap_groups_max: 2
+  spawns: [8, 12]
+  min_dist_carapace: 512
+  min_dist_spring: 384
+  players: [2, 2]
+  modes: [fists, honor, ranged, brawl]
+  ring: true

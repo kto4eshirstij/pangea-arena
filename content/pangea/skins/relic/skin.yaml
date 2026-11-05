@@ -1,0 +1,8 @@
+# Обличие «реликт» — нейтральное: серый камень + ржавый панк. Текстуры-заглушки из texgen.py.
+name: relic
+title_ru: "Реликт"
+ambient: 6
+room_light: 260
+light_color: "1.0 0.93 0.82"
+sun: {color: "1.0 0.95 0.85", intensity: 110, degrees: 300, elevation: 55}
+hazards: []

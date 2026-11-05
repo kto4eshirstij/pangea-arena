@@ -1,0 +1,8 @@
+vm/
+maps/*.bsp
+maps/*.aas
+maps/*.prt
+maps/*.srf
+maps/*.layout.png
+textures/pangea/*/*.tga
+levelshots/*.jpg

@@ -1,0 +1,14 @@
+# Общие настройки генератора для всех архетипов.
+# item_classes: kind из YAML -> classname сущности. Пока — ванильные классы Q3 (карта играется на
+# текущей сборке); когда C6 заведёт предметы Пангеи в bg_misc.c — заменить здесь, перегенерировать.
+item_classes:
+  carapace: item_armor_body        # панцирь, +100 брони
+  spring:   item_health_mega       # священный источник, +100
+  hide:     item_armor_combat      # шкура, +50
+  scrap:    item_armor_shard       # обрывок шкуры, +5
+  water:    item_health            # вода, +25
+  fruit:    item_health_small      # плоды, +5
+  spear:    weapon_rocketlauncher  # копьё (временно RL)
+  stones:   ammo_shells            # куча камней (временно)
+  quiver:   ammo_bullets           # колчан (временно)
+  campfire: pangea_campfire        # костёр (нет в движке до A1 -> warning, безвредно)
