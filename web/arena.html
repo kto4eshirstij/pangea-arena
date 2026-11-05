@@ -24,6 +24,14 @@ if (connect && !ws) {
   ws = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${host}:27961/${port || 27960}`;
 }
 window.arenaLog = [];
+// Embedded in the Pangea client (iframe): the parent draws the loading screen, so every
+// boot event goes up as {pangeaArena: 1, ...event} (same origin only).
+const embedded = window.parent !== window;
+const toParent = (e) => {
+  if (!embedded) return;
+  try { window.parent.postMessage({ pangeaArena: 1, ...e }, location.origin); } catch (err) { /* cross-origin parent */ }
+};
+try {
 window.arena = await bootArena({
   canvas: document.getElementById('canvas'),
   basegame: q.get('basegame') || 'baseoa',
@@ -32,10 +40,17 @@ window.arena = await bootArena({
   name: q.get('name'), ticket: q.get('ticket'),
   args: q.get('args') || '',
   onEvent: (e) => {
+    toParent(e);
+    if (e.type === 'pak' && e.total) status.textContent = `пак ${Math.round(100 * e.loaded / e.total)}%`;
     if (e.type === 'progress') status.textContent = `паки ${e.done}/${e.total}`;
     if (e.type === 'ready') status.textContent = '';
     if (e.type === 'log') window.arenaLog.push(e.line);
     if (e.type === 'exit') status.textContent = `выход (${e.code})`;
   },
 });
+} catch (err) {
+  status.textContent = `ошибка: ${err.message}`;
+  toParent({ type: 'abort', what: err.message });
+  throw err;
+}
 </script>
