@@ -22,6 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // cl_cgame.c  -- client system interaction with client game
 
 #include "client.h"
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 
 #include "../botlib/botlib.h"
 
@@ -881,6 +884,11 @@ void CL_FirstSnapshot( void ) {
 		return;
 	}
 	clc.state = CA_ACTIVE;
+
+#ifdef __EMSCRIPTEN__
+	// Pangea: tell the web wrapper the world is ready, the loading screen can go away.
+	EM_ASM({ if (typeof Module !== 'undefined' && typeof Module.onArenaReady === 'function') Module.onArenaReady(); });
+#endif
 
 	// set the timedelta so we are exactly on this first frame
 	cl.serverTimeDelta = cl.snap.serverTime - cls.realtime;
