@@ -1125,7 +1125,7 @@
 }
 {
 "classname" "item_health"
-"origin" "1100 320 216"
+"origin" "1106 336 216"
 }
 {
 "classname" "item_health_small"
