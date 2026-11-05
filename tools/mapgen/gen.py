@@ -267,7 +267,7 @@ class Gen:
             x, y, z = it["at"]; n = it.get("n", 1); sp = it.get("spread", 40); along = it.get("along", "x")
             for i in range(n):
                 off = (i - (n - 1) / 2) * sp
-                self.point(cls, (x + (off if along == "x" else 0), y + (off if along == "y" else 0), z + 8), wait=it.get("wait"))
+                self.point(cls, (x + (off if along == "x" else 0), y + (off if along == "y" else 0), z + 24), wait=it.get("wait"))  # item bbox is +-15: keep it clear of the floor
         for s in self.spec.get("spawns", []):
             x, y, z = s["at"]
             self.point("info_player_deathmatch", (x, y, z + 25), angle=s.get("angle", 0), ring=("1" if s.get("ring") else None))

@@ -1077,103 +1077,103 @@
 }
 {
 "classname" "item_armor_body"
-"origin" "848 64 360"
+"origin" "848 64 376"
 }
 {
 "classname" "item_health_mega"
-"origin" "1536 640 8"
+"origin" "1536 640 24"
 }
 {
 "classname" "item_armor_combat"
-"origin" "200 64 8"
+"origin" "200 64 24"
 }
 {
 "classname" "item_armor_combat"
-"origin" "960 608 360"
+"origin" "960 608 376"
 }
 {
 "classname" "item_armor_shard"
-"origin" "1024 560 8"
+"origin" "1024 560 24"
 }
 {
 "classname" "item_armor_shard"
-"origin" "1024 600 8"
+"origin" "1024 600 24"
 }
 {
 "classname" "item_armor_shard"
-"origin" "1024 640 8"
+"origin" "1024 640 24"
 }
 {
 "classname" "item_armor_shard"
-"origin" "1820 320 200"
+"origin" "1820 320 216"
 }
 {
 "classname" "item_armor_shard"
-"origin" "1860 320 200"
+"origin" "1860 320 216"
 }
 {
 "classname" "item_health"
-"origin" "-320 384 8"
+"origin" "-320 384 24"
 }
 {
 "classname" "item_health"
-"origin" "300 704 200"
+"origin" "300 704 216"
 }
 {
 "classname" "item_health"
-"origin" "1216 600 8"
+"origin" "1216 600 24"
 }
 {
 "classname" "item_health"
-"origin" "1100 320 200"
+"origin" "1100 320 216"
 }
 {
 "classname" "item_health_small"
-"origin" "1176 960 8"
+"origin" "1176 960 24"
 }
 {
 "classname" "item_health_small"
-"origin" "1216 960 8"
+"origin" "1216 960 24"
 }
 {
 "classname" "item_health_small"
-"origin" "1256 960 8"
+"origin" "1256 960 24"
 }
 {
 "classname" "item_health_small"
-"origin" "812 704 8"
+"origin" "812 704 24"
 }
 {
 "classname" "item_health_small"
-"origin" "852 704 8"
+"origin" "852 704 24"
 }
 {
 "classname" "weapon_rocketlauncher"
-"origin" "448 32 8"
+"origin" "448 32 24"
 }
 {
 "classname" "weapon_rocketlauncher"
-"origin" "1500 320 200"
+"origin" "1500 320 216"
 }
 {
 "classname" "ammo_shells"
-"origin" "1024 700 8"
+"origin" "1024 700 24"
 }
 {
 "classname" "ammo_shells"
-"origin" "1880 700 8"
+"origin" "1880 700 24"
 }
 {
 "classname" "ammo_bullets"
-"origin" "64 500 200"
+"origin" "64 500 216"
 }
 {
 "classname" "ammo_bullets"
-"origin" "1880 900 8"
+"origin" "1880 900 24"
 }
 {
 "classname" "pangea_campfire"
-"origin" "1216 320 200"
+"origin" "1216 320 216"
 }
 {
 "classname" "info_player_deathmatch"
