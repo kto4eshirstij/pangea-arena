@@ -33,7 +33,7 @@
   },
   {
    "name": "lamp",
-   "prompt": "Square ancient relic lamp panel, dark bronze frame set into black basalt, in the centre a glowing orange-gold sun disc with twelve rays, cracked enamel, frost on the frame corners, flat frontal view, square composition, no perspective, no text, photorealistic",
+   "prompt": "Square ancient relic lamp panel seen straight on, the dark bronze frame touches all four edges of the image with no background and no surrounding wall, in the centre a glowing orange-gold sun disc with twelve rays, cracked enamel, frost on the frame corners, perfectly centred and symmetric, flat frontal orthographic view, no perspective, no text, photorealistic texture",
    "aspect": "1:1",
    "kind": "texture",
    "ref": "wall_a"

@@ -43,6 +43,45 @@ def make_tileable(arr, border=0.12, axes=("x", "y")):
     return out
 
 
+def _min_cut_x(L, R):
+    """Vertical minimum-error path through the overlap of R (left of cut) and L (right of cut)."""
+    e = ((L - R) ** 2).sum(-1)
+    h, w = e.shape
+    cost = e.copy()
+    for y in range(1, h):
+        prev = cost[y - 1]
+        best = np.minimum(prev, np.minimum(np.r_[np.inf, prev[:-1]], np.r_[prev[1:], np.inf]))
+        cost[y] += best
+    path = np.zeros(h, int)
+    path[-1] = int(np.argmin(cost[-1]))
+    for y in range(h - 2, -1, -1):
+        c = path[y + 1]
+        lo, hi = max(0, c - 1), min(w, c + 2)
+        path[y] = lo + int(np.argmin(cost[y, lo:hi]))
+    return path
+
+
+def seam_tile(arr, overlap=0.14, axes=("x", "y")):
+    """Make a texture tileable by quilting its own edges: the right strip overlaps the left strip and the
+    two are joined along the cheapest path (seams follow stone joints instead of a visible cross-fade)."""
+    out = arr.astype(np.float32)
+    for ax in axes:
+        if ax == "y":
+            out = out.transpose(1, 0, 2)
+        h, w, _ = out.shape
+        ov = int(w * overlap)
+        L, R = out[:, :ov], out[:, w - ov:]
+        path = _min_cut_x(L, R)
+        cols = np.arange(ov)[None, :]
+        # soft 3-px feather around the cut
+        t = np.clip((cols - path[:, None] + 1.5) / 3.0, 0, 1)[..., None]
+        joined = R * (1 - t) + L * t
+        out = np.concatenate([joined, out[:, ov:w - ov]], axis=1)
+        if ax == "y":
+            out = out.transpose(1, 0, 2)
+    return out
+
+
 def height_from_rgb(arr, blur=12):
     lum = (0.299 * arr[..., 0] + 0.587 * arr[..., 1] + 0.114 * arr[..., 2]) / 255.0
     img = Image.fromarray((lum * 255).astype(np.uint8))
@@ -69,8 +108,32 @@ def glow_mask(arr):
 
 
 def save(path, arr, mode="RGB"):
-    Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), mode).save(path)
-    print("wrote", path)
+    """ioq3 resolves textures by name with any of .tga/.jpg/.png, so we write compact files:
+    RGB -> .jpg (q92), RGBA -> .png. Stale .tga with the same name is removed (it would win)."""
+    img = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), mode)
+    base = os.path.splitext(path)[0]
+    for ext in (".tga", ".jpg", ".png"):
+        if os.path.exists(base + ext):
+            os.remove(base + ext)
+    if mode == "RGBA":
+        img.save(base + ".png", optimize=True); print("wrote", base + ".png")
+    else:
+        img.save(base + ".jpg", quality=92); print("wrote", base + ".jpg")
+
+
+def crop_to_panel(img):
+    """Crop to the bounding box of the bright panel (lamp art sometimes leaves wall around the frame)."""
+    a = np.asarray(img.convert("L"), np.float32)
+    g = np.abs(np.diff(a, axis=0))[:, :-1] + np.abs(np.diff(a, axis=1))[:-1, :]
+    rows = np.where(g.mean(1) > g.mean() * 0.9)[0]
+    cols = np.where(g.mean(0) > g.mean() * 0.9)[0]
+    if len(rows) < 10 or len(cols) < 10:
+        return img
+    y0, y1, x0, x1 = rows[0], rows[-1], cols[0], cols[-1]
+    side = max(y1 - y0, x1 - x0)
+    cy, cx = (y0 + y1) // 2, (x0 + x1) // 2
+    box = (max(0, cx - side // 2), max(0, cy - side // 2), min(img.size[0], cx + side // 2), min(img.size[1], cy + side // 2))
+    return img.crop(box)
 
 
 def main(skin):
@@ -93,12 +156,18 @@ def main(skin):
             # the plating band sits in the middle of the generated image: crop it to a 1024x256 strip
             im = load(src); w, h = im.size
             img = im.crop((0, int(h * 0.26), w, int(h * 0.74))).resize((TEX, 256), Image.LANCZOS)
-            arr = make_tileable(np.asarray(img, np.float32), axes=("x",))
+            arr = seam_tile(np.asarray(img, np.float32), axes=("x",))
+            arr = np.asarray(Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).resize((TEX, 256), Image.LANCZOS), np.float32)
         else:
-            img = square(load(src), TEX)
-            arr = np.asarray(img, np.float32)
             if name not in ("lamp", "ring_floor", "pad_base"):
-                arr = make_tileable(arr)
+                big = np.asarray(square(load(src), TEX + TEX // 4), np.float32)
+                arr = seam_tile(big)
+                arr = np.asarray(Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8)).resize((TEX, TEX), Image.LANCZOS), np.float32)
+            else:
+                im = load(src)
+                if name == "lamp":
+                    im = crop_to_panel(im)
+                arr = np.asarray(square(im, TEX), np.float32)
         save(os.path.join(out, name + ".tga"), arr)
         h = height_from_rgb(arr)
         strength = {"ceil_a": 5.0, "wall_a": 4.5, "floor_a": 4.2, "ring_floor": 3.5}.get(name, 3.0)
@@ -119,27 +188,30 @@ def main(skin):
     if src:
         sky = load(src)
         w, h = sky.size
-        face_w = w // 4
+        face_w = w // 2
         for i, face in enumerate(("ft", "rt", "bk", "lf")):
-            f = sky.crop((i * face_w, 0, (i + 1) * face_w, h)).resize((SKY, SKY), Image.LANCZOS)
-            f.save(os.path.join(out, "env", f"sky_{face}.tga")); print("wrote", face)
+            x0 = (i % 2) * face_w
+            f = sky.crop((x0, 0, x0 + face_w, h))
+            if i >= 2:
+                f = f.transpose(Image.FLIP_LEFT_RIGHT)
+            f = f.resize((SKY, SKY), Image.LANCZOS)
+            save(os.path.join(out, "env", f"sky_{face}.tga"), np.asarray(f, np.float32))
         top = np.asarray(sky.resize((SKY, SKY)), np.float32)[:SKY // 6].mean(axis=(0, 1))
         bot = np.asarray(sky.resize((SKY, SKY)), np.float32)[-SKY // 6:].mean(axis=(0, 1))
-        Image.fromarray(np.full((SKY, SKY, 3), top, np.uint8)).save(os.path.join(out, "env", "sky_up.tga"))
-        Image.fromarray(np.full((SKY, SKY, 3), bot * 0.5, np.uint8)).save(os.path.join(out, "env", "sky_dn.tga"))
-        square(sky, SKY).save(os.path.join(out, "sky.tga"))
+        save(os.path.join(out, "env", "sky_up.tga"), np.full((SKY, SKY, 3), top, np.float32))
+        save(os.path.join(out, "env", "sky_dn.tga"), np.full((SKY, SKY, 3), bot * 0.5, np.float32))
+        save(os.path.join(out, "sky.tga"), np.asarray(square(sky, SKY), np.float32))
     src = find("clouds")
     if src:
-        c = np.asarray(square(load(src), TEX), np.float32)
-        c = make_tileable(c)
+        c = seam_tile(np.asarray(square(load(src), TEX), np.float32))
         lum = (0.299 * c[..., 0] + 0.587 * c[..., 1] + 0.114 * c[..., 2])
         save(os.path.join(out, "clouds.tga"), np.stack([lum] * 3, -1))
         save(os.path.join(out, "clouds2.tga"), np.stack([np.clip(lum * 0.6 - 20, 0, 255)] * 3, -1)[::-1, ::-1])
     # pads: reuse relic ring/spiral masks if present, else nothing (shader falls back)
     for name in ("pad_rings", "tele_spiral"):
-        relic = os.path.join("content", "pangea", "textures", "pangea", "relic", name + ".tga")
-        if os.path.exists(relic) and not os.path.exists(os.path.join(out, name + ".tga")):
-            Image.open(relic).save(os.path.join(out, name + ".tga")); print("copied", name)
+        relic = next((f for f in glob.glob(os.path.join("content", "pangea", "textures", "pangea", "relic", name + ".*"))), None)
+        if relic and not glob.glob(os.path.join(out, name + ".*")):
+            save(os.path.join(out, name + ".tga"), np.asarray(Image.open(relic).convert("RGB"), np.float32))
     # levelshots
     for f in glob.glob(os.path.join(raw, "pangea_*.*")):
         if f.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):

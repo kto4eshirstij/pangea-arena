@@ -77,7 +77,7 @@ textures/pangea/siberian_core/ceil_a
 textures/pangea/siberian_core/trim_a
 {
 	qer_editorimage textures/pangea/siberian_core/trim_a.tga
-	q3map_surfacelight 120
+	q3map_surfacelight 200
 	q3map_lightimage textures/pangea/siberian_core/trim_a_g.tga
 	q3map_lightsubdivide 128
 	{
@@ -110,7 +110,7 @@ textures/pangea/siberian_core/lamp
 {
 	qer_editorimage textures/pangea/siberian_core/lamp.tga
 	surfaceparm nomarks
-	q3map_surfacelight 1800
+	q3map_surfacelight 2800
 	q3map_lightimage textures/pangea/siberian_core/lamp_g.tga
 	q3map_lightsubdivide 32
 	{
@@ -218,18 +218,20 @@ textures/pangea/siberian_core/sky
 	surfaceparm nolightmap
 	surfaceparm sky
 	q3map_sunExt 1.0 0.78 0.55 95 320 18 3 16
-	q3map_skylight 55 3
-	q3map_lightmapFilterRadius 0 8
-	skyparms textures/pangea/siberian_core/env/sky 512 -
+	q3map_skylight 90 4
+	skyparms textures/pangea/siberian_core/env/sky 1024 -
 	{
 		map textures/pangea/siberian_core/clouds.tga
-		tcMod scale 2 2
-		tcMod scroll 0.012 0.006
+		blendFunc GL_ONE GL_ONE
+		rgbGen const ( 0.35 0.35 0.38 )
+		tcMod scale 3 3
+		tcMod scroll 0.006 0.003
 	}
 	{
 		map textures/pangea/siberian_core/clouds2.tga
 		blendFunc GL_ONE GL_ONE
-		tcMod scale 3 3
-		tcMod scroll -0.008 0.01
+		rgbGen const ( 0.2 0.2 0.22 )
+		tcMod scale 5 5
+		tcMod scroll -0.004 0.005
 	}
 }

@@ -318,7 +318,7 @@ class Gen:
                 self.point("light", (px, py, z1 - 24), light=meta.get("light", 120), _color=color)
             return
         area = (x1 - x0) * (y1 - y0)
-        inten = meta.get("light", self.skin.get("room_light", 160))
+        inten = meta.get("light", self.skin.get("room_light", 220))
         if area < 250000:
             pts = [((x0 + x1) / 2, (y0 + y1) / 2)]
         else:
@@ -346,7 +346,7 @@ class Gen:
             else:
                 sy0, sy1 = ay + (by - ay) * t0, ay + (by - ay) * t1
                 by0, by1, bx0, bx1 = min(sy0, sy1), max(sy0, sy1), ax - width / 2, ax + width / 2
-            self.brushes.append(box_brush((bx0, by0, lo - self.W, bx1, by1, top), CAULK, textop=floor))
+            self.brushes.append(box_brush((bx0, by0, lo - self.W, bx1, by1, top), self.tex.get("trim", self.tex["wall"]), textop=floor, texbot=CAULK))
 
     def build_solids(self):
         floor, wall = self.tex["floor"], self.tex["wall"]
