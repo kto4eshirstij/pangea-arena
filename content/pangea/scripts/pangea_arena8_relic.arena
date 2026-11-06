@@ -1,0 +1,11 @@
+{
+map "pangea_arena8_relic"
+longname "Четыре двора (реликт)"
+type "tourney ffa"
+pangea_archetype "arena8"
+pangea_skin "relic"
+pangea_modes "brawl,ranged"
+pangea_players "3-8"
+pangea_ring "1"
+pangea_connectivity "bottom_loop"
+}

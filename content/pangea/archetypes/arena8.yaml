@@ -1,0 +1,244 @@
+# Архетип «Четыре двора (реликт)» — сгенерировано tools/mapgen/author.py, можно править руками.
+# Координаты абсолютные (юниты Q3). Правило: без пропастей, у каждой пустоты есть пол.
+name: arena8
+title: Четыре двора (реликт)
+connectivity: bottom_loop
+archetype_doc: 'Бойня на 8: открытый двор с помостом (панцирь), четыре зала по сторонам света, кольцевой коридор между соседями,
+  два яруса, кольцо для кулаков у южного зала. Без пропастей.'
+units: {wall: 32}
+ambient: 8
+skin_textures: {floor: textures/pangea_skin/floor_a, wall: textures/pangea_skin/wall_a, ceil: textures/pangea_skin/ceil_a,
+  trim: textures/pangea_skin/trim_a, sky: textures/pangea_skin/sky}
+rooms:
+- id: yard
+  box: [-640, -640, 0, 1280, 1280, 512]
+  open_top: true
+  tiers: [0, 192]
+- id: n
+  box: [-384, 864, 0, 768, 576, 352]
+  tiers: [0, 160]
+- id: e
+  box: [864, -384, 0, 576, 768, 352]
+  tiers: [0, 160]
+- id: s
+  box: [-384, -1440, 0, 768, 576, 352]
+  tiers: [0, 160]
+- id: w
+  box: [-1440, -384, 0, 576, 768, 352]
+  tiers: [0, 160]
+halls:
+- id: n_in
+  width: 192
+  height: 192
+  path:
+  - [0, 864, 0]
+  - [0, 640, 0]
+- id: e_in
+  width: 192
+  height: 192
+  path:
+  - [864, 0, 0]
+  - [640, 0, 0]
+- id: s_in
+  width: 192
+  height: 192
+  path:
+  - [0, -864, 0]
+  - [0, -640, 0]
+- id: w_in
+  width: 192
+  height: 192
+  path:
+  - [-864, 0, 0]
+  - [-640, 0, 0]
+- id: ring_ne
+  width: 160
+  height: 160
+  path:
+  - [384, 1152, 0]
+  - [1152, 1152, 0]
+  - [1152, 384, 0]
+- id: ring_es
+  width: 160
+  height: 160
+  path:
+  - [1152, -384, 0]
+  - [1152, -1152, 0]
+  - [384, -1152, 0]
+- id: ring_sw
+  width: 160
+  height: 160
+  path:
+  - [-384, -1152, 0]
+  - [-1152, -1152, 0]
+  - [-1152, -384, 0]
+- id: ring_wn
+  width: 160
+  height: 160
+  path:
+  - [-1152, 384, 0]
+  - [-1152, 1152, 0]
+  - [-384, 1152, 0]
+- id: ring_link
+  width: 96
+  height: 128
+  path:
+  - [-640, -960, 0]
+  - [-384, -960, 0]
+ledges:
+- {room: n, side: north, z: 160, width: 128}
+- {room: e, side: east, z: 160, width: 128}
+- {room: s, side: south, z: 160, width: 128}
+- {room: w, side: west, z: 160, width: 128}
+stairs:
+- from: [0, 448, 0]
+  to: [0, 192, 192]
+  width: 128
+- from: [0, -448, 0]
+  to: [0, -192, 192]
+  width: 128
+- from: [-320, 1120, 0]
+  to: [-320, 1376, 160]
+  width: 112
+- from: [1120, -320, 0]
+  to: [1376, -320, 160]
+  width: 112
+- from: [-320, -1120, 0]
+  to: [-320, -1376, 160]
+  width: 112
+- from: [-1120, -320, 0]
+  to: [-1376, -320, 160]
+  width: 112
+blocks:
+- box: [-192, -192, 0, 384, 384, 192]
+items:
+- kind: carapace
+  at: [0, 0, 192]
+- kind: spring
+  at: [0, 1352, 160]
+- kind: hide
+  at: [1352, 0, 160]
+- kind: hide
+  at: [-1352, 0, 160]
+- kind: mushroom
+  at: [0, -1352, 160]
+- kind: scrap
+  at: [1152, 1152, 0]
+  n: 3
+- kind: scrap
+  at: [-1152, -1152, 0]
+  n: 3
+- kind: scrap
+  at: [1152, -1152, 0]
+  n: 2
+- kind: water
+  at: [448, 448, 0]
+- kind: water
+  at: [-448, -448, 0]
+- kind: water
+  at: [-448, 448, 0]
+- kind: water
+  at: [448, -448, 0]
+- kind: water
+  at: [0, 952, 0]
+- kind: water
+  at: [0, -952, 0]
+- kind: fruit
+  at: [952, 300, 0]
+  n: 3
+  along: y
+- kind: fruit
+  at: [-952, -300, 0]
+  n: 3
+  along: y
+- kind: fruit
+  at: [-300, 952, 0]
+  n: 3
+- kind: fruit
+  at: [300, -952, 0]
+  n: 3
+- kind: spear
+  at: [-1152, 1152, 0]
+- kind: spear
+  at: [1152, -700, 0]
+- kind: spear
+  at: [-952, -1152, 0]
+- kind: spear
+  at: [0, 560, 0]
+- kind: stones
+  at: [952, -1152, 0]
+- kind: stones
+  at: [-952, 1152, 0]
+- kind: stones
+  at: [560, 0, 0]
+- kind: stones
+  at: [-560, 0, 0]
+- kind: quiver
+  at: [1352, 300, 160]
+- kind: quiver
+  at: [-1352, -300, 160]
+- kind: quiver
+  at: [300, 1352, 160]
+- kind: quiver
+  at: [-300, -1352, 160]
+- kind: campfire
+  at: [1352, -300, 160]
+- kind: campfire
+  at: [-1352, 300, 160]
+- kind: water
+  at: [-832, -860, 0]
+spawns:
+- at: [-250, 952, 0]
+  angle: 270
+- at: [250, 952, 0]
+  angle: 270
+- at: [1152, 250, 0]
+  angle: 180
+- at: [1152, -250, 0]
+  angle: 180
+- at: [1352, 150, 160]
+  angle: 180
+- at: [250, -1152, 0]
+  angle: 90
+- at: [-250, -1152, 0]
+  angle: 90
+- at: [150, -1352, 160]
+  angle: 90
+- at: [-1152, -250, 0]
+  angle: 0
+- at: [-1152, 250, 0]
+  angle: 0
+- at: [-1352, -150, 160]
+  angle: 0
+- at: [1152, 992, 0]
+  angle: 225
+- at: [-1152, 992, 0]
+  angle: 315
+- at: [-1152, -992, 0]
+  angle: 45
+- at: [1152, -992, 0]
+  angle: 135
+- at: [-960, -960, 0]
+  angle: 0
+  ring: true
+- at: [-704, -960, 0]
+  angle: 180
+  ring: true
+ring:
+  box: [-1024, -1024, 0, 384, 384, 256]
+intermission:
+  at: [0, -560, 460]
+  angle: 90
+rules:
+  carapace: 1
+  spring: 1
+  hide: 2
+  scrap_groups_max: 3
+  spawns: [12, 20]
+  min_dist_carapace: 512
+  min_dist_spring: 384
+  players: [3, 8]
+  modes: [brawl, ranged]
+  ring: true
+  no_pits: true
+  health: [180, 320]

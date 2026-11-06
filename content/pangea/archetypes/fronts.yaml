@@ -1,0 +1,129 @@
+# Архетип «Стенка (реликт)» — сгенерировано tools/mapgen/author.py, можно править руками.
+# Координаты абсолютные (юниты Q3). Правило: без пропастей, у каждой пустоты есть пол.
+name: fronts
+title: Стенка (реликт)
+connectivity: bottom_loop
+archetype_doc: '3 на 3: две зеркальные базы, спорный центр с помостом (источник) и галереями (панцирь), три пути — низ, верхняя
+  галерея, южный обход. Без пропастей.'
+units: {wall: 32}
+ambient: 8
+skin_textures: {floor: textures/pangea_skin/floor_a, wall: textures/pangea_skin/wall_a, ceil: textures/pangea_skin/ceil_a,
+  trim: textures/pangea_skin/trim_a, sky: textures/pangea_skin/sky}
+mirror: {axis: x, at: 0}
+rooms:
+- id: centre
+  box: [-512, -512, 0, 1024, 1024, 512]
+  open_top: true
+  tiers: [0, 128, 256]
+ledges:
+- {room: centre, side: north, z: 256, width: 128}
+- {room: centre, side: south, z: 256, width: 128}
+blocks:
+- box: [-160, -160, 0, 320, 320, 128]
+items:
+- kind: carapace
+  at: [0, 448, 256]
+- kind: spring
+  at: [0, -704, 0]
+- kind: scrap
+  at: [0, -448, 256]
+  n: 2
+- kind: water
+  at: [0, 0, 128]
+spawns: []
+half:
+  rooms:
+  - id: base
+    box: [-1856, -320, 0, 768, 640, 384]
+    tiers: [0, 160]
+  halls:
+  - id: low
+    width: 192
+    height: 192
+    path:
+    - [-1088, 0, 0]
+    - [-512, 0, 0]
+  - id: upper
+    width: 128
+    height: 144
+    path:
+    - [-1472, 320, 160]
+    - [-1472, 560, 160]
+    - [-1472, 784, 256]
+    - [-256, 784, 256]
+    - [-256, 512, 256]
+  - id: flank
+    width: 160
+    height: 160
+    path:
+    - [-1472, -320, 0]
+    - [-1472, -704, 0]
+    - [0, -704, 0]
+  ledges:
+  - {room: base, side: west, z: 160, width: 192}
+  - {room: base, side: north, z: 160, width: 128, from: -1664, to: -1200}
+  stairs:
+  - from: [-1408, 0, 0]
+    to: [-1664, 0, 160]
+    width: 128
+  - from: [-1300, 0, 0]
+    to: [-1300, 192, 160]
+    width: 128
+  - from: [-384, 0, 0]
+    to: [-160, 0, 128]
+    width: 160
+  jumppads:
+  - at: [-384, 384, 0]
+    target: [-384, 460, 300]
+  items:
+  - kind: hide
+    at: [-1200, -240, 0]
+  - kind: water
+    at: [-1760, 0, 160]
+  - kind: water
+    at: [-900, 784, 256]
+  - kind: fruit
+    at: [-440, -440, 0]
+    n: 3
+  - kind: scrap
+    at: [-900, -704, 0]
+    n: 3
+  - kind: spear
+    at: [-1120, 0, 0]
+  - kind: spear
+    at: [-448, 448, 256]
+  - kind: stones
+    at: [-1472, -560, 0]
+  - kind: quiver
+    at: [-1472, 240, 160]
+  - kind: campfire
+    at: [-1700, -290, 160]
+  spawns:
+  - at: [-1760, -200, 160]
+    angle: 0
+  - at: [-1760, 200, 160]
+    angle: 0
+  - at: [-1400, -250, 0]
+    angle: 0
+  - at: [-1400, 250, 0]
+    angle: 0
+  - at: [-1200, 0, 0]
+    angle: 0
+  - at: [-1472, -620, 0]
+    angle: 90
+intermission:
+  at: [0, -300, 440]
+  angle: 90
+rules:
+  carapace: 1
+  spring: 1
+  hide: 2
+  scrap_groups_max: 3
+  spawns: [10, 16]
+  min_dist_carapace: 512
+  min_dist_spring: 384
+  players: [4, 8]
+  modes: [team]
+  ring: false
+  no_pits: true
+  health: [120, 220]

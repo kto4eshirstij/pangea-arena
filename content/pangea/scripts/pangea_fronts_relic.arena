@@ -1,0 +1,11 @@
+{
+map "pangea_fronts_relic"
+longname "Стенка (реликт)"
+type "team"
+pangea_archetype "fronts"
+pangea_skin "relic"
+pangea_modes "team"
+pangea_players "4-8"
+pangea_ring "0"
+pangea_connectivity "bottom_loop"
+}

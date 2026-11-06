@@ -31,6 +31,9 @@ DEFAULT_CLASSES = {          # vanilla Q3 stand-ins; overridden by common.yaml /
     "stones": "ammo_shells",
     "quiver": "ammo_bullets",
     "campfire": "pangea_campfire",
+    "mushroom": "item_quad",            # мухомор (урон x2)
+    "honey": "item_haste",              # пьяный мёд (скорость)
+    "glowshroom": "item_regen",         # светящиеся грибы (регенерация)
 }
 
 
@@ -93,11 +96,67 @@ def subtract_all(s, voids):
     return pieces
 
 
+def expand_mirror(spec):
+    """If spec has `mirror: {axis: x, at: X}` and a `half:` section, append mirrored copies of every
+    element of `half` to the top-level lists (and the originals too). Shared elements stay top-level."""
+    m = spec.get("mirror")
+    half = spec.get("half")
+    if not m or not half:
+        return spec
+    X = m.get("at", 0)
+    axis = m.get("axis", "x")
+    ix = 0 if axis == "x" else 1
+
+    def mp(p):
+        p = list(p); p[ix] = 2 * X - p[ix]; return p
+
+    def mbox(b):
+        b = list(b); b[ix] = 2 * X - (b[ix] + b[ix + 3]); return b
+
+    def mang(a):
+        return (180 - a) % 360 if axis == "x" else (-a) % 360
+
+    swap = {"east": "west", "west": "east"} if axis == "x" else {"north": "south", "south": "north"}
+    out = {k: list(spec.get(k, [])) for k in ("rooms", "halls", "ledges", "stairs", "blocks", "jumppads", "teleports", "items", "spawns", "lights")}
+    for r in half.get("rooms", []):
+        out["rooms"].append(r); out["rooms"].append({**r, "id": r["id"] + "_m", "box": mbox(r["box"])})
+    for h in half.get("halls", []):
+        out["halls"].append(h); out["halls"].append({**h, "id": h.get("id", "hall") + "_m", "path": [mp(p) for p in h["path"]]})
+    for l in half.get("ledges", []):
+        out["ledges"].append(l)
+        lm = {**l, "room": l["room"] + "_m", "side": swap.get(l["side"], l["side"])}
+        along_mirror_axis = (l["side"] in ("north", "south")) == (axis == "x")
+        if along_mirror_axis and ("from" in l or "to" in l):
+            f, t = l.get("from"), l.get("to")
+            lm["from"], lm["to"] = (2 * X - t if t is not None else None), (2 * X - f if f is not None else None)
+            lm = {k: v for k, v in lm.items() if v is not None}
+        out["ledges"].append(lm)
+    for st in half.get("stairs", []):
+        out["stairs"].append(st); out["stairs"].append({**st, "from": mp(st["from"]), "to": mp(st["to"])})
+    for b in half.get("blocks", []):
+        out["blocks"].append(b); out["blocks"].append({**b, "box": mbox(b["box"])})
+    for j in half.get("jumppads", []):
+        out["jumppads"].append(j); out["jumppads"].append({**j, "at": mp(j["at"]), "target": mp(j["target"])})
+    for t in half.get("teleports", []):
+        out["teleports"].append(t); out["teleports"].append({**t, "at": mp(t["at"]), "dest": mp(t["dest"]), "angle": mang(t.get("angle", 0))})
+    for it in half.get("items", []):
+        out["items"].append(it); out["items"].append({**it, "at": mp(it["at"])})
+    for sp in half.get("spawns", []):
+        out["spawns"].append(sp); out["spawns"].append({**sp, "at": mp(sp["at"]), "angle": mang(sp.get("angle", 0))})
+    for lt in half.get("lights", []):
+        out["lights"].append(lt); out["lights"].append({**lt, "at": mp(lt["at"])})
+    spec = dict(spec); spec.update(out)
+    return spec
+
+
 class Gen:
     def __init__(self, spec, skin, common):
+        spec = expand_mirror(spec)
         self.spec, self.skin, self.common = spec, skin or {}, common or {}
         self.W = spec.get("units", {}).get("wall", 32)
         self.tex = {k: v.replace("textures/", "", 1) for k, v in spec.get("skin_textures", {}).items()}
+        for k in ("ring_floor", "pad", "tele", "lamp"):
+            self.tex.setdefault(k, "pangea_skin/" + k)
         self.classes = dict(DEFAULT_CLASSES)
         self.classes.update(self.common.get("item_classes", {}))
         self.classes.update(self.skin.get("item_classes", {}))
@@ -166,8 +225,9 @@ class Gen:
             x0, y0, z0, x1, y1, z1 = box
             others = [v for v in allv if v is not box]
             sky = kind == "room" and meta.get("open_top")
+            ftex = self.tex["ring_floor"] if kind == "ring" else floor
             slabs = [
-                ((x0 - W, y0 - W, z0 - W, x1 + W, y1 + W, z0), CAULK, floor, None),            # floor
+                ((x0 - W, y0 - W, z0 - W, x1 + W, y1 + W, z0), CAULK, ftex, None),             # floor
                 ((x0 - W, y0 - W, z1, x1 + W, y1 + W, z1 + W), (self.tex.get("sky", ceil) if sky else CAULK), None, (None if sky else ceil)),  # ceiling
                 ((x1, y0 - W, z0, x1 + W, y1 + W, z1), wall, None, None),                     # east
                 ((x0 - W, y0 - W, z0, x0, y1 + W, z1), wall, None, None),                     # west
@@ -181,7 +241,30 @@ class Gen:
                 self.stairs(meta["a"], meta["b"], meta["width"], meta["step_h"])
             if kind == "ring":
                 self.brush_ent("pangea_ring", [box_brush(box, TRIGGER)], ring="1")
+            if kind in ("room", "ring") and not meta.get("no_lamps"):
+                self.lamps(box, others)
             self.auto_light(box, kind, meta)
+
+    def lamps(self, box, others, size=64, thick=8, step=384, below_ceiling=112):
+        """Emissive relic panels on room walls near the ceiling (q3map2 surfacelight in the shader)."""
+        x0, y0, z0, x1, y1, z1 = box
+        zt = z1 - below_ceiling
+        if zt - size < z0 + 160:      # low rooms: keep lamps above head height
+            zt = min(z1 - 16, z0 + 160 + size)
+        lamp = self.tex["lamp"]
+        for side in ("north", "south", "east", "west"):
+            L = (x1 - x0) if side in ("north", "south") else (y1 - y0)
+            n = max(1, int(L // step))
+            for i in range(n):
+                c = (i + 0.5) * L / n
+                if side == "north":   b = (x0 + c - size / 2, y1 - thick, zt - size, x0 + c + size / 2, y1, zt)
+                elif side == "south": b = (x0 + c - size / 2, y0, zt - size, x0 + c + size / 2, y0 + thick, zt)
+                elif side == "east":  b = (x1 - thick, y0 + c - size / 2, zt - size, x1, y0 + c + size / 2, zt)
+                else:                 b = (x0, y0 + c - size / 2, zt - size, x0 + thick, y0 + c + size / 2, zt)
+                if any(overlap(b, o) for o in others):
+                    continue
+                self.brushes.append(box_brush(b, lamp))
+                self.stats_lamps = getattr(self, "stats_lamps", 0) + 1
 
     def auto_light(self, box, kind, meta):
         if meta.get("no_auto_light"):
@@ -197,7 +280,7 @@ class Gen:
                 self.point("light", (px, py, z1 - 24), light=meta.get("light", 120), _color=color)
             return
         area = (x1 - x0) * (y1 - y0)
-        inten = meta.get("light", self.skin.get("room_light", 250))
+        inten = meta.get("light", self.skin.get("room_light", 160))
         if area < 250000:
             pts = [((x0 + x1) / 2, (y0 + y1) / 2)]
         else:
@@ -256,12 +339,12 @@ class Gen:
             x, y, z = jp["at"]; s = jp.get("size", 64); name = self.uid("jp")
             self.brush_ent("trigger_push", [box_brush((x - s / 2, y - s / 2, z, x + s / 2, y + s / 2, z + 16), TRIGGER)], target=name)
             self.point("target_position", tuple(jp["target"]), targetname=name)
-            self.brushes.append(box_brush((x - s / 2, y - s / 2, z - 8, x + s / 2, y + s / 2, z), trim))
+            self.brushes.append(box_brush((x - s / 2, y - s / 2, z - 8, x + s / 2, y + s / 2, z), trim, textop=self.tex["pad"]))
         for tp in self.spec.get("teleports", []):
             x, y, z = tp["at"]; s = tp.get("size", 64); h = tp.get("height", 96); name = self.uid("tp")
             self.brush_ent("trigger_teleport", [box_brush((x - s / 2, y - s / 2, z, x + s / 2, y + s / 2, z + h), TRIGGER)], target=name)
             self.point("misc_teleporter_dest", tuple(tp["dest"]), targetname=name, angle=tp.get("angle", 0))
-            self.brushes.append(box_brush((x - s / 2, y - s / 2, z - 8, x + s / 2, y + s / 2, z), trim))
+            self.brushes.append(box_brush((x - s / 2, y - s / 2, z - 8, x + s / 2, y + s / 2, z), trim, textop=self.tex["tele"]))
         for it in self.spec.get("items", []):
             cls = self.classes.get(it["kind"], it["kind"])
             x, y, z = it["at"]; n = it.get("n", 1); sp = it.get("spread", 40); along = it.get("along", "x")
@@ -292,10 +375,11 @@ class Gen:
         return self.render()
 
     def stats(self):
-        return {"voids": len(self.voids), "brushes": len(self.brushes), "entities": len(self.ents)}
+        return {"voids": len(self.voids), "brushes": len(self.brushes), "entities": len(self.ents), "lamps": getattr(self, "stats_lamps", 0)}
 
 
 def layout_png(spec, path):
+    spec = expand_mirror(spec)
     try:
         from PIL import Image, ImageDraw
     except ImportError:
@@ -375,6 +459,22 @@ def main():
     os.makedirs(os.path.dirname(os.path.abspath(out)) or ".", exist_ok=True)
     open(out, "w", encoding="utf-8", newline="\n").write(text)
     print(f"wrote {out}: {g.stats()}")
+    # .arena passport (ioq3 UI format + Pangea keys), next to scripts/
+    bsp = os.path.splitext(os.path.basename(out))[0]
+    rules = spec.get("rules", {})
+    modes = rules.get("modes", [])
+    q3types = " ".join(t for t, ok in (("tourney", "honor" in modes or "fists" in modes or "ranged" in modes),
+                                       ("ffa", "brawl" in modes), ("team", "team" in modes)) if ok) or "ffa"
+    scripts_dir = os.path.join(os.path.dirname(os.path.abspath(out)), "..", "scripts")
+    if os.path.isdir(scripts_dir):
+        pmin, pmax = rules.get("players", [2, 8])
+        arena = ["{", f'map "{bsp}"', f'longname "{spec.get("title", spec["name"])}"', f'type "{q3types}"',
+                 f'pangea_archetype "{spec["name"]}"', f'pangea_skin "{a.skin}"', f'pangea_modes "{",".join(modes)}"',
+                 f'pangea_players "{pmin}-{pmax}"', f'pangea_ring "{1 if rules.get("ring") else 0}"',
+                 f'pangea_connectivity "{spec.get("connectivity", "")}"', "}"]
+        ap = os.path.join(scripts_dir, bsp + ".arena")
+        open(ap, "w", encoding="utf-8", newline="\n").write("\n".join(arena) + "\n")
+        print(f"wrote {ap}")
     if a.png:
         layout_png(spec, a.png)
 

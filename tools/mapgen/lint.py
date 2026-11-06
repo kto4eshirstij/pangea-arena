@@ -3,8 +3,10 @@
 
 Usage: python lint.py content/pangea/archetypes/depth.yaml   -> exit 1 on errors
 """
-import math, sys
+import math, os, sys
 import yaml
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from gen import expand_mirror
 
 
 def inside(p, box):
@@ -32,7 +34,7 @@ def hall_boxes(h):
 
 
 def main(path):
-    spec = yaml.safe_load(open(path, encoding="utf-8"))
+    spec = expand_mirror(yaml.safe_load(open(path, encoding="utf-8")))
     rules = spec.get("rules", {})
     errors, warns = [], []
     voids = {r["id"]: rb(r) for r in spec.get("rooms", [])}
@@ -96,8 +98,9 @@ def main(path):
                 warns.append(f"spawns {a['at']} and {b['at']} closer than 256")
     # health budget (vanilla values): water 25, fruit 5
     health = sum(25 * i.get("n", 1) for i in kinds.get("water", [])) + sum(5 * i.get("n", 1) for i in kinds.get("fruit", []))
-    if not 100 <= health <= 200:
-        warns.append(f"health without spring = {health} (canon 125..175)")
+    hlo, hhi = rules.get("health", [100, 200])
+    if not hlo <= health <= hhi:
+        warns.append(f"health without spring = {health} (want {hlo}..{hhi})")
     # chokepoint: at least one hall segment with width <= 128
     if spec.get("connectivity") == "branched" and not any(h["width"] <= 128 for h in spec.get("halls", [])):
         errors.append("branched archetype needs a hall with width <= 128 (chokepoint)")
