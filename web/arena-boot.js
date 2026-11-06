@@ -56,7 +56,7 @@ export async function bootArena(opts) {
   if (map) argv.push('+devmap', map);
   else if (connect) argv.push('+connect', connect);
 
-  const config = await fetch(configUrl).then((r) => (r.ok ? r.json() : {}));
+  const config = await fetch(configUrl, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : {}));
   const dataURL = new URL(dataPath, location.href);
   const websocket = { url: wsUrl || 'ws://', subprotocol: 'binary' };
 
@@ -77,7 +77,7 @@ export async function bootArena(opts) {
         const files = (config[basegame] && config[basegame].files) || [];
         let done = 0;
         await Promise.all(files.map(async (file) => {
-          const res = await fetch(new URL(file.src, dataURL));
+          const res = await fetch(new URL(file.src, dataURL), { cache: 'no-store' });
           if (!res.ok) { emit({ type: 'log', line: `missing ${file.src}`, err: true }); return; }
           const data = new Uint8Array(await res.arrayBuffer());
           m.FS.mkdirTree(file.dst);
