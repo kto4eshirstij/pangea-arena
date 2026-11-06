@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-11-06T10:12:16.328909Z",
+    "display_name": "Nano Banana 2.1",
+    "id": "51400dd4-f633-4a65-b1c0-6675a8a7bc17",
+    "job_type": "nano_banana_2_1",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101216_51400dd4-f633-4a65-b1c0-6675a8a7bc17_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "batch_size": 1,
+      "height": 2048,
+      "is_inpaint": false,
+      "medias": [
+        {
+          "data": {
+            "id": "bb373573-961f-439a-814d-941976778059",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/bb373573-961f-439a-814d-941976778059.png"
+          },
+          "role": "image"
+        }
+      ],
+      "prompt": "Round ancient bronze plate with concentric grooves inset into black basalt, worn centre, square composition, plate nearly touching the edges, top-down orthographic, flat lighting, no text, photorealistic",
+      "reference_elements": [],
+      "resolution": "2k",
+      "seed": 1152,
+      "thinking_level": "medium",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101216_51400dd4-f633-4a65-b1c0-6675a8a7bc17.png",
+    "status": "completed"
+  }
+]

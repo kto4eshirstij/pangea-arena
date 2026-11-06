@@ -75,8 +75,18 @@ def colorize(v, base, dark):
     return np.clip(dark + (base - dark) * v[..., None], 0, 255)
 
 
+FIT_NAMES = ("lamp", "ring_floor", "pad_base", "pad_rings", "tele_spiral")
+
+
 def save(path, arr, mode="RGB"):
-    Image.fromarray(arr.astype(np.uint8), mode).save(path)
+    img = Image.fromarray(arr.astype(np.uint8), mode)
+    base = os.path.basename(path).split(".")[0]
+    stem = base.rsplit("_", 1)[0] if base.endswith(("_n", "_s", "_g")) else base
+    if stem in FIT_NAMES:
+        img = img.resize((1024, 1024), Image.BICUBIC)
+    elif stem == "trim_a":
+        img = img.crop((0, 128, 512, 256)).resize((1024, 256), Image.BICUBIC)   # one band -> 1024x256 strip
+    img.save(path)
     print("wrote", path)
 
 

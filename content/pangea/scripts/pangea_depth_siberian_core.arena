@@ -1,0 +1,11 @@
+{
+map "pangea_depth_siberian_core"
+longname "Глубь (реликт)"
+type "tourney ffa"
+pangea_archetype "depth"
+pangea_skin "siberian_core"
+pangea_modes "fists,honor,ranged,brawl"
+pangea_players "2-2"
+pangea_ring "1"
+pangea_connectivity "branched"
+}

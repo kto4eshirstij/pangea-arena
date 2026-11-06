@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-11-06T10:08:43.668669Z",
+    "display_name": "Nano Banana 2.1",
+    "id": "df1fd10a-8314-4117-b767-558ab08c34aa",
+    "job_type": "nano_banana_2_1",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_100843_df1fd10a-8314-4117-b767-558ab08c34aa_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "batch_size": 1,
+      "height": 2048,
+      "is_inpaint": false,
+      "medias": [
+        {
+          "data": {
+            "id": "63557243-a9e0-4d86-b439-dbc9edb55733",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/63557243-a9e0-4d86-b439-dbc9edb55733.png"
+          },
+          "role": "image"
+        }
+      ],
+      "prompt": "Horizontal band of ancient relic metal plating set into basalt, oxidized dark bronze with rust, one continuous engraved groove running horizontally through the middle filled with glowing orange ember light, small rune-like notches along the groove, seamless tileable game texture, top-down orthographic view, flat even diffuse lighting, no cast shadows, no vignette, no text, no watermark, photorealistic PBR albedo",
+      "reference_elements": [],
+      "resolution": "2k",
+      "seed": 1152,
+      "thinking_level": "medium",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_100843_df1fd10a-8314-4117-b767-558ab08c34aa.png",
+    "status": "completed"
+  }
+]

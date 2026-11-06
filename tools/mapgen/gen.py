@@ -42,23 +42,57 @@ def fmt(v):
     return str(int(v)) if v == int(v) else f"{v:.3f}"
 
 
-def box_brush(b, tex, textop=None, texbot=None):
+FIT_TEX = 1024          # size of "fit" textures (lamp, ring floor, pads): art2skin/texgen write them at 1024
+TRIM_H = 256            # trim band height in texels (maps onto the brush's vertical extent)
+
+# Q3 legacy texture projection: per dominant axis -> (s axis, t axis) in world space
+_AXES = {"z": ((1, 0, 0), (0, -1, 0)), "x": ((0, 1, 0), (0, 0, -1)), "y": ((1, 0, 0), (0, 0, -1))}
+
+
+def _face_tex(axis, box, tex, fit, size):
+    """Return texture params string for a face with dominant normal `axis`.
+    fit: None (default 0.5 scale), 'both' (texture spans the face exactly), 'vertical' (t spans face height)."""
+    x0, y0, z0, x1, y1, z1 = box
+    sv, tv = _AXES[axis]
+    def ext(v):   # extent of the face along world vector v, and the world coordinate where t/s should be 0
+        if v[0]: return (x1 - x0), (x0 if v[0] > 0 else x1)
+        if v[1]: return (y1 - y0), (y0 if v[1] > 0 else y1)
+        return (z1 - z0), (z0 if v[2] > 0 else z1)
+    W, H = size
+    xs = ys = 0.5
+    xoff = yoff = 0
+    if fit in ("both", "vertical"):
+        es, s0 = ext(sv)
+        et, t0 = ext(tv)
+        if fit == "both" and es >= 1:
+            xs = es / W
+            xoff = (-(s0 * (1 if sv[0] + sv[1] + sv[2] > 0 else -1)) / xs) % W
+        if et >= 1:
+            ys = et / H
+            yoff = (-(t0 * (1 if tv[0] + tv[1] + tv[2] > 0 else -1)) / ys) % H
+    return f"{tex} {fmt(xoff)} {fmt(yoff)} 0 {fmt(xs)} {fmt(ys)} 0 0 0"
+
+
+def box_brush(b, tex, textop=None, texbot=None, fit=None, fit_faces=("top",), size=(FIT_TEX, FIT_TEX), fit_box=None):
+    """Axis-aligned box brush; points are ordered so plane normals face outward.
+    fit/fit_faces: apply texture fitting to 'top', 'bottom' and/or 'sides'."""
     x0, y0, z0, x1, y1, z1 = b
     if x1 - x0 < 1 or y1 - y0 < 1 or z1 - z0 < 1:
         raise ValueError(f"degenerate box {b}")
     tt, tb = textop or tex, texbot or tex
     faces = [
-        ((x0, y0, z1), (x0, y1, z1), (x1, y1, z1), tt),   # +z
-        ((x0, y0, z0), (x1, y0, z0), (x1, y1, z0), tb),   # -z
-        ((x0, y0, z0), (x0, y0, z1), (x1, y0, z1), tex),  # -y
-        ((x1, y1, z0), (x1, y1, z1), (x0, y1, z1), tex),  # +y
-        ((x1, y0, z0), (x1, y0, z1), (x1, y1, z1), tex),  # +x
-        ((x0, y1, z0), (x0, y1, z1), (x0, y0, z1), tex),  # -x
+        ((x0, y0, z1), (x0, y1, z1), (x1, y1, z1), tt, "z", "top"),
+        ((x0, y0, z0), (x1, y0, z0), (x1, y1, z0), tb, "z", "bottom"),
+        ((x0, y0, z0), (x0, y0, z1), (x1, y0, z1), tex, "y", "sides"),
+        ((x1, y1, z0), (x1, y1, z1), (x0, y1, z1), tex, "y", "sides"),
+        ((x1, y0, z0), (x1, y0, z1), (x1, y1, z1), tex, "x", "sides"),
+        ((x0, y1, z0), (x0, y1, z1), (x0, y0, z1), tex, "x", "sides"),
     ]
     lines = ["{"]
-    for p1, p2, p3, t in faces:
+    for p1, p2, p3, t, axis, kind in faces:
         pts = " ".join("( %s %s %s )" % tuple(fmt(c) for c in p) for p in (p1, p2, p3))
-        lines.append(f"{pts} {TEXFMT.format(tex=t)}")
+        f = fit if (fit and kind in fit_faces) else None
+        lines.append(f"{pts} {_face_tex(axis, fit_box or b, t, f, size)}")
     lines.append("}")
     return "\n".join(lines)
 
@@ -236,7 +270,11 @@ class Gen:
             ]
             for s, tex, top, bot in slabs:
                 for p in subtract_all(s, others):
-                    self.brushes.append(box_brush(p, tex, textop=top, texbot=bot))
+                    if kind == "ring" and top == ftex:
+                        # ring floor: fit the ring texture to the ring's interior box (not to each slab piece)
+                        self.brushes.append(box_brush(p, tex, textop=top, texbot=bot, fit="both", fit_faces=("top",), fit_box=box))
+                    else:
+                        self.brushes.append(box_brush(p, tex, textop=top, texbot=bot))
             if kind == "hall" and meta["a"][2] != meta["b"][2]:
                 self.stairs(meta["a"], meta["b"], meta["width"], meta["step_h"])
             if kind == "ring":
@@ -263,7 +301,7 @@ class Gen:
                 else:                 b = (x0, y0 + c - size / 2, zt - size, x0 + thick, y0 + c + size / 2, zt)
                 if any(overlap(b, o) for o in others):
                     continue
-                self.brushes.append(box_brush(b, lamp))
+                self.brushes.append(box_brush(b, lamp, fit="both", fit_faces=("sides",)))
                 self.stats_lamps = getattr(self, "stats_lamps", 0) + 1
 
     def auto_light(self, box, kind, meta):
@@ -320,11 +358,11 @@ class Gen:
             if side in ("north", "south"):
                 a0, a1 = l.get("from", x0), l.get("to", x1)
                 yy0, yy1 = (y1 - w, y1) if side == "north" else (y0, y0 + w)
-                self.brushes.append(box_brush((a0, yy0, z - th, a1, yy1, z), trim, textop=floor))
+                self.brushes.append(box_brush((a0, yy0, z - th, a1, yy1, z), trim, textop=floor, fit="vertical", fit_faces=("sides",), size=(FIT_TEX, TRIM_H)))
             else:
                 a0, a1 = l.get("from", y0), l.get("to", y1)
                 xx0, xx1 = (x1 - w, x1) if side == "east" else (x0, x0 + w)
-                self.brushes.append(box_brush((xx0, a0, z - th, xx1, a1, z), trim, textop=floor))
+                self.brushes.append(box_brush((xx0, a0, z - th, xx1, a1, z), trim, textop=floor, fit="vertical", fit_faces=("sides",), size=(FIT_TEX, TRIM_H)))
         for s in self.spec.get("stairs", []):
             self.stairs(tuple(s["from"]), tuple(s["to"]), s["width"], s.get("step_h", 16), s.get("base"))
         for bk in self.spec.get("blocks", []):
@@ -339,12 +377,12 @@ class Gen:
             x, y, z = jp["at"]; s = jp.get("size", 64); name = self.uid("jp")
             self.brush_ent("trigger_push", [box_brush((x - s / 2, y - s / 2, z, x + s / 2, y + s / 2, z + 16), TRIGGER)], target=name)
             self.point("target_position", tuple(jp["target"]), targetname=name)
-            self.brushes.append(box_brush((x - s / 2, y - s / 2, z - 8, x + s / 2, y + s / 2, z), trim, textop=self.tex["pad"]))
+            self.brushes.append(box_brush((x - s / 2, y - s / 2, z - 8, x + s / 2, y + s / 2, z), trim, textop=self.tex["pad"], fit="both", fit_faces=("top",)))
         for tp in self.spec.get("teleports", []):
             x, y, z = tp["at"]; s = tp.get("size", 64); h = tp.get("height", 96); name = self.uid("tp")
             self.brush_ent("trigger_teleport", [box_brush((x - s / 2, y - s / 2, z, x + s / 2, y + s / 2, z + h), TRIGGER)], target=name)
             self.point("misc_teleporter_dest", tuple(tp["dest"]), targetname=name, angle=tp.get("angle", 0))
-            self.brushes.append(box_brush((x - s / 2, y - s / 2, z - 8, x + s / 2, y + s / 2, z), trim, textop=self.tex["tele"]))
+            self.brushes.append(box_brush((x - s / 2, y - s / 2, z - 8, x + s / 2, y + s / 2, z), trim, textop=self.tex["tele"], fit="both", fit_faces=("top",)))
         for it in self.spec.get("items", []):
             cls = self.classes.get(it["kind"], it["kind"])
             x, y, z = it["at"]; n = it.get("n", 1); sp = it.get("spread", 40); along = it.get("along", "x")

@@ -1,2 +1,3 @@
 common
 pangea_relic
+pangea_siberian_core

@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-11-06T10:17:17.358495Z",
+    "display_name": "Nano Banana 2.1",
+    "id": "6e32b654-7cf6-483c-ad0a-5c56131daaeb",
+    "job_type": "nano_banana_2_1",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101717_6e32b654-7cf6-483c-ad0a-5c56131daaeb_min.webp",
+    "params": {
+      "aspect_ratio": "4:3",
+      "batch_size": 1,
+      "height": 1792,
+      "is_inpaint": false,
+      "medias": [
+        {
+          "data": {
+            "id": "550a844a-99a9-41a9-9c30-27996942453d",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/550a844a-99a9-41a9-9c30-27996942453d.png"
+          },
+          "role": "image"
+        }
+      ],
+      "prompt": "Vast volcanic arena: a square basalt courtyard with a raised platform in the middle, four gateways to side halls, glowing ember lines in the floor joints, steam vents, pale cold sky with a low sun, no people, game level concept art, high viewpoint",
+      "reference_elements": [],
+      "resolution": "2k",
+      "seed": 1152,
+      "thinking_level": "medium",
+      "width": 2400
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101717_6e32b654-7cf6-483c-ad0a-5c56131daaeb.png",
+    "status": "completed"
+  }
+]

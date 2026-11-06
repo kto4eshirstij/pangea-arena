@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-11-06T10:15:48.404428Z",
+    "display_name": "Nano Banana 2.1",
+    "id": "89e79579-98e5-4976-a641-5e92b06b0b58",
+    "job_type": "nano_banana_2_1",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101548_89e79579-98e5-4976-a641-5e92b06b0b58_min.webp",
+    "params": {
+      "aspect_ratio": "4:3",
+      "batch_size": 1,
+      "height": 1792,
+      "is_inpaint": false,
+      "medias": [
+        {
+          "data": {
+            "id": "4e7486ff-6292-46e7-bf77-cf2e6a1c66df",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/4e7486ff-6292-46e7-bf77-cf2e6a1c66df.png"
+          },
+          "role": "image"
+        }
+      ],
+      "prompt": "Interior of a two-level arena carved into columnar basalt, a stone staircase climbing to an upper ledge, glowing orange ember grooves along bronze trim bands, relic sun-disc lamps on the walls, steam drifting from floor vents, cold blue daylight from a doorway, no people, game level concept art",
+      "reference_elements": [],
+      "resolution": "2k",
+      "seed": 1152,
+      "thinking_level": "medium",
+      "width": 2400
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101548_89e79579-98e5-4976-a641-5e92b06b0b58.png",
+    "status": "completed"
+  }
+]

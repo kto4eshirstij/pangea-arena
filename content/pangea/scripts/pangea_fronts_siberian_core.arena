@@ -1,0 +1,11 @@
+{
+map "pangea_fronts_siberian_core"
+longname "Стенка (реликт)"
+type "team"
+pangea_archetype "fronts"
+pangea_skin "siberian_core"
+pangea_modes "team"
+pangea_players "4-8"
+pangea_ring "0"
+pangea_connectivity "bottom_loop"
+}

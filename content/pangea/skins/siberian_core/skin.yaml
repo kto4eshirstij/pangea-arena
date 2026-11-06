@@ -1,0 +1,10 @@
+# Обличие «Вэр-Кирракс» — Тёплые траппы, сердце Сибирского кратона (красные драконорождённые).
+name: siberian_core
+title_ru: "Вэр-Кирракс"
+craton: siberian
+niche: core
+ambient: 5
+room_light: 140
+light_color: "1.0 0.86 0.7"
+sun: {color: "1.0 0.78 0.55", intensity: 95, degrees: 320, elevation: 18}
+hazards: []          # горячие ключи/пар — на этапе реквизита

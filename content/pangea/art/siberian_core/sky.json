@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-11-06T10:14:35.233045Z",
+    "display_name": "Nano Banana 2.1",
+    "id": "4ab65819-8948-4de2-b8dd-7f51e2aeab2f",
+    "job_type": "nano_banana_2_1",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101435_4ab65819-8948-4de2-b8dd-7f51e2aeab2f_min.webp",
+    "params": {
+      "aspect_ratio": "21:9",
+      "batch_size": 1,
+      "height": 1344,
+      "is_inpaint": false,
+      "medias": [
+        {
+          "data": {
+            "id": "1e327de3-6427-4b21-9ae4-108dac540bac",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/1e327de3-6427-4b21-9ae4-108dac540bac.png"
+          },
+          "role": "image"
+        }
+      ],
+      "prompt": "Cold sky over a volcanic trap plateau at low sun: pale orange sun near the horizon, long violet-grey clouds, white steam columns rising from hot springs, distant dark basalt steps and a line of larch taiga, horizon in the lower fifth of the frame, painterly realism, wide panoramic, no text",
+      "reference_elements": [],
+      "resolution": "2k",
+      "seed": 1152,
+      "thinking_level": "medium",
+      "width": 3168
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101435_4ab65819-8948-4de2-b8dd-7f51e2aeab2f.png",
+    "status": "completed"
+  }
+]

@@ -24,6 +24,29 @@
    "doc": "Бойня на 8: открытый двор с помостом (панцирь), четыре зала по сторонам света, кольцевой коридор между соседями, два яруса, кольцо для кулаков у южного зала. Без пропастей."
   },
   {
+   "key": "pangea_arena8_siberian_core",
+   "bsp": "pangea_arena8_siberian_core",
+   "title": "Вэр-Кирракс: Четыре двора (реликт)",
+   "archetype": "arena8",
+   "skin": "siberian_core",
+   "craton": "siberian",
+   "niche": "core",
+   "connectivity": "bottom_loop",
+   "modes": [
+    "brawl",
+    "ranged"
+   ],
+   "players": [
+    3,
+    8
+   ],
+   "ring": true,
+   "no_pits": true,
+   "levelshot": "levelshots/pangea_arena8_siberian_core.jpg",
+   "aas": true,
+   "doc": "Бойня на 8: открытый двор с помостом (панцирь), четыре зала по сторонам света, кольцевой коридор между соседями, два яруса, кольцо для кулаков у южного зала. Без пропастей."
+  },
+  {
    "key": "pangea_depth_relic",
    "bsp": "pangea_depth_relic",
    "title": "Глубь (реликт)",
@@ -49,6 +72,31 @@
    "doc": "Два зала восьмёркой: низ — один коридор-чокпойнт с поворотом, верх замыкает петлю; кольцо кулачной дуэли — карман у зала А."
   },
   {
+   "key": "pangea_depth_siberian_core",
+   "bsp": "pangea_depth_siberian_core",
+   "title": "Вэр-Кирракс: Глубь (реликт)",
+   "archetype": "depth",
+   "skin": "siberian_core",
+   "craton": "siberian",
+   "niche": "core",
+   "connectivity": "branched",
+   "modes": [
+    "fists",
+    "honor",
+    "ranged",
+    "brawl"
+   ],
+   "players": [
+    2,
+    2
+   ],
+   "ring": true,
+   "no_pits": true,
+   "levelshot": "levelshots/pangea_depth_siberian_core.jpg",
+   "aas": true,
+   "doc": "Два зала восьмёркой: низ — один коридор-чокпойнт с поворотом, верх замыкает петлю; кольцо кулачной дуэли — карман у зала А."
+  },
+  {
    "key": "pangea_fronts_relic",
    "bsp": "pangea_fronts_relic",
    "title": "Стенка (реликт)",
@@ -67,6 +115,28 @@
    "ring": false,
    "no_pits": true,
    "levelshot": null,
+   "aas": true,
+   "doc": "3 на 3: две зеркальные базы, спорный центр с помостом (источник) и галереями (панцирь), три пути — низ, верхняя галерея, южный обход. Без пропастей."
+  },
+  {
+   "key": "pangea_fronts_siberian_core",
+   "bsp": "pangea_fronts_siberian_core",
+   "title": "Вэр-Кирракс: Стенка (реликт)",
+   "archetype": "fronts",
+   "skin": "siberian_core",
+   "craton": "siberian",
+   "niche": "core",
+   "connectivity": "bottom_loop",
+   "modes": [
+    "team"
+   ],
+   "players": [
+    4,
+    8
+   ],
+   "ring": false,
+   "no_pits": true,
+   "levelshot": "levelshots/pangea_fronts_siberian_core.jpg",
    "aas": true,
    "doc": "3 на 3: две зеркальные базы, спорный центр с помостом (источник) и галереями (панцирь), три пути — низ, верхняя галерея, южный обход. Без пропастей."
   }

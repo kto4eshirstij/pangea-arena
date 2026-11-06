@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-11-06T10:13:55.021468Z",
+    "display_name": "Nano Banana 2.1",
+    "id": "c430a613-d8f6-4644-9ee0-855fecba1e1a",
+    "job_type": "nano_banana_2_1",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101355_c430a613-d8f6-4644-9ee0-855fecba1e1a_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "batch_size": 1,
+      "height": 2048,
+      "is_inpaint": false,
+      "medias": [
+        {
+          "data": {
+            "id": "3b1828aa-5287-43c3-a7f2-fb34051c17bb",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/3b1828aa-5287-43c3-a7f2-fb34051c17bb.png"
+          },
+          "role": "image"
+        }
+      ],
+      "prompt": "Seamless tileable layer of thin high cirrus clouds and drifting steam wisps on a pure black background, greyscale luminance only, soft edges, top-down, no text",
+      "reference_elements": [],
+      "resolution": "2k",
+      "seed": 1152,
+      "thinking_level": "medium",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3717rqbanDr3YQiOCkVrIw8rzEb/hf_20261106_101355_c430a613-d8f6-4644-9ee0-855fecba1e1a.png",
+    "status": "completed"
+  }
+]

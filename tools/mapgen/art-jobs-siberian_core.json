@@ -1,0 +1,91 @@
+{
+ "skin": "siberian_core",
+ "model": "nano_banana_2_1",
+ "resolution": "2k",
+ "seed": 1152,
+ "jobs": [
+  {
+   "name": "wall_a",
+   "prompt": "Columnar basalt wall, hexagonal prismatic columns packed tightly, dark charcoal-grey stone with faint brown oxide stains and frost rime along the edges, thin glowing orange heat cracks between some columns, cold volcanic plateau of Siberian traps, seamless tileable game texture, top-down orthographic view, flat even diffuse lighting, no cast shadows, no vignette, no text, no watermark, photorealistic PBR albedo",
+   "aspect": "1:1",
+   "kind": "texture"
+  },
+  {
+   "name": "floor_a",
+   "prompt": "Basalt flagstone floor made of broken hexagonal column tops, dark grey polygonal slabs with ochre and white mineral sinter crust in the joints like a hot-spring terrace, thin steam condensation and frost at the edges, seamless tileable game texture, top-down orthographic view, flat even diffuse lighting, no cast shadows, no vignette, no text, no watermark, photorealistic PBR albedo",
+   "aspect": "1:1",
+   "kind": "texture",
+   "ref": "wall_a"
+  },
+  {
+   "name": "ceil_a",
+   "prompt": "Rough basalt cave ceiling, dark grey volcanic rock with vesicular bubbles and soot streaks, small orange ember glow deep inside a few cracks, seamless tileable game texture, top-down orthographic view, flat even diffuse lighting, no cast shadows, no vignette, no text, no watermark, photorealistic PBR albedo",
+   "aspect": "1:1",
+   "kind": "texture",
+   "ref": "wall_a"
+  },
+  {
+   "name": "trim_a",
+   "prompt": "Horizontal band of ancient relic metal plating set into basalt, oxidized dark bronze with rust, one continuous engraved groove running horizontally through the middle filled with glowing orange ember light, small rune-like notches along the groove, seamless tileable game texture, top-down orthographic view, flat even diffuse lighting, no cast shadows, no vignette, no text, no watermark, photorealistic PBR albedo",
+   "aspect": "1:1",
+   "kind": "texture",
+   "ref": "wall_a"
+  },
+  {
+   "name": "lamp",
+   "prompt": "Square ancient relic lamp panel, dark bronze frame set into black basalt, in the centre a glowing orange-gold sun disc with twelve rays, cracked enamel, frost on the frame corners, flat frontal view, square composition, no perspective, no text, photorealistic",
+   "aspect": "1:1",
+   "kind": "texture",
+   "ref": "wall_a"
+  },
+  {
+   "name": "ring_floor",
+   "prompt": "Circular dueling ring marked on a basalt floor: two concentric rings carved into dark grey hexagonal stone slabs and filled with ochre mineral pigment, scuffed worn centre, square composition, ring centred and nearly touching the edges, top-down orthographic, flat lighting, no text, photorealistic",
+   "aspect": "1:1",
+   "kind": "texture",
+   "ref": "wall_a"
+  },
+  {
+   "name": "pad_base",
+   "prompt": "Round ancient bronze plate with concentric grooves inset into black basalt, worn centre, square composition, plate nearly touching the edges, top-down orthographic, flat lighting, no text, photorealistic",
+   "aspect": "1:1",
+   "kind": "texture",
+   "ref": "wall_a"
+  },
+  {
+   "name": "clouds",
+   "prompt": "Seamless tileable layer of thin high cirrus clouds and drifting steam wisps on a pure black background, greyscale luminance only, soft edges, top-down, no text",
+   "aspect": "1:1",
+   "kind": "texture",
+   "ref": "wall_a"
+  },
+  {
+   "name": "sky",
+   "prompt": "Cold sky over a volcanic trap plateau at low sun: pale orange sun near the horizon, long violet-grey clouds, white steam columns rising from hot springs, distant dark basalt steps and a line of larch taiga, horizon in the lower fifth of the frame, painterly realism, wide panoramic, no text",
+   "aspect": "21:9",
+   "kind": "sky",
+   "ref": "wall_a"
+  },
+  {
+   "name": "pangea_depth_siberian_core",
+   "prompt": "Interior of a two-level arena carved into columnar basalt, a stone staircase climbing to an upper ledge, glowing orange ember grooves along bronze trim bands, relic sun-disc lamps on the walls, steam drifting from floor vents, cold blue daylight from a doorway, no people, game level concept art",
+   "aspect": "4:3",
+   "kind": "levelshot",
+   "ref": "wall_a"
+  },
+  {
+   "name": "pangea_fronts_siberian_core",
+   "prompt": "Large open-air basalt courtyard between two fortified stone bases, a raised central plinth with a steaming hot spring, upper galleries along the sides, low orange sun and steam columns, frost on the stone, no people, game level concept art, wide shot",
+   "aspect": "4:3",
+   "kind": "levelshot",
+   "ref": "wall_a"
+  },
+  {
+   "name": "pangea_arena8_siberian_core",
+   "prompt": "Vast volcanic arena: a square basalt courtyard with a raised platform in the middle, four gateways to side halls, glowing ember lines in the floor joints, steam vents, pale cold sky with a low sun, no people, game level concept art, high viewpoint",
+   "aspect": "4:3",
+   "kind": "levelshot",
+   "ref": "wall_a"
+  }
+ ]
+}
