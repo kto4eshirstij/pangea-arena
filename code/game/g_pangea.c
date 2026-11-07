@@ -1249,17 +1249,103 @@ void Pangea_BotWeaponInfo( int weapon, float *speed ) {
 }
 
 /*
+Bots: rites and legacies. The secondary or primary of slot 8/9 that suits the
+moment (Pangea_BotWantsAlt tells ai_main which button), else 0.
+*/
+static qboolean pangeaBotAlt[MAX_CLIENTS];
+
+qboolean Pangea_BotIsRite( int weapon ) {
+	return weapon == WP_PLASMAGUN || weapon == WP_BFG;
+}
+
+qboolean Pangea_BotWantsAlt( int clientNum ) {
+	return clientNum >= 0 && clientNum < MAX_CLIENTS && pangeaBotAlt[clientNum];
+}
+
+static qboolean Pangea_BotRiteFits( gentity_t *ent, const pangeaAbility_t *a, float dist ) {
+	int hp = ent->health, max = ent->client->ps.stats[STAT_MAX_HEALTH];
+
+	if ( !a || dist > 1200 ) {
+		return qfalse;
+	}
+	switch ( a->prim ) {
+	case PP_SELF:
+		if ( a->flags & ( PAF_HEAL | PAF_MEND ) ) {
+			return hp < max * 0.55f;
+		}
+		if ( a->flags & ( PAF_WARD | PAF_DODGE ) ) {
+			return hp < max * 0.8f && dist < 500;
+		}
+		if ( a->flags & PAF_INVIS ) {
+			return hp < max * 0.5f || dist < 300;
+		}
+		return dist < 600;				// haste, rage, vision: when the fight starts
+	case PP_CONE:
+		return dist < a->range * 0.85f;
+	case PP_RING:
+		return dist < a->range * 0.7f;
+	case PP_MISSILE:
+		return dist > 150 && dist < 900;
+	case PP_BLINK:
+		return dist > 280 && dist < 700;
+	case PP_LEAP:
+		return dist > 220 && dist < 600;
+	case PP_CLOUD:
+		return hp < max * 0.5f && dist < 700;
+	default:
+		return qfalse;
+	}
+}
+
+int Pangea_BotReach( int clientNum, int weapon ) {
+	const pangeaAbility_t	*a;
+	int						mode = Pangea_Mode();
+
+	if ( mode == PANGEA_SIM || clientNum < 0 || clientNum >= MAX_CLIENTS ) {
+		return 0;
+	}
+	a = BG_PangeaAbility( weapon, Pangea_BotIsRite( weapon ) && pangeaBotAlt[clientNum], mode,
+		level.clients[clientNum].ps.persistant[PERS_PANGEA_KIN] );
+	if ( a && ( a->prim == PP_MELEE || a->prim == PP_CONE || a->prim == PP_RING ) ) {
+		return a->range;
+	}
+	return 0;
+}
+
+/*
 Bots: which slot to fight with at this distance; 0 = let botlib choose.
-Close: spear, club, fists. Far: bow, sling; without ammo they close in.
+Rites and legacies when they suit; close: spear, club, fists; far: bow, sling.
 */
 int Pangea_BotChooseWeapon( gentity_t *ent, float enemyDist ) {
 	playerState_t	*ps = &ent->client->ps;
 	int				mode = Pangea_Mode();
+	int				kin = ps->persistant[PERS_PANGEA_KIN];
+	int				cn = ent->s.number;
+	int				w;
 
-#define HAS( w )	( ( ps->stats[STAT_WEAPONS] & ( 1 << ( w ) ) ) && BG_PangeaSlotAllowed( ( w ), mode, ps->persistant[PERS_PANGEA_KIN] ) )
+#define HAS( w )	( ( ps->stats[STAT_WEAPONS] & ( 1 << ( w ) ) ) && BG_PangeaSlotAllowed( ( w ), mode, kin ) )
 	if ( mode == PANGEA_SIM ) {
 		return 0;
 	}
+	// a rite or legacy: keep it in hand until it is used (its cooldown starts)
+	for ( w = WP_BFG ; w >= WP_PLASMAGUN ; w-- ) {
+		const pangeaAbility_t *alt, *prim;
+
+		if ( w - WP_GAUNTLET >= PANGEA_SLOTS || !HAS( w ) || ps->stats[STAT_PANGEA_CD1 + w - WP_GAUNTLET] > 0 ) {
+			continue;
+		}
+		alt = BG_PangeaAbility( w, qtrue, mode, kin );
+		prim = BG_PangeaAbility( w, qfalse, mode, kin );
+		if ( Pangea_BotRiteFits( ent, alt, enemyDist ) ) {
+			pangeaBotAlt[cn] = qtrue;
+			return w;
+		}
+		if ( Pangea_BotRiteFits( ent, prim, enemyDist ) ) {
+			pangeaBotAlt[cn] = qfalse;
+			return w;
+		}
+	}
+	pangeaBotAlt[cn] = qfalse;
 	if ( enemyDist > 160 ) {
 		if ( HAS( WP_ROCKET_LAUNCHER ) && ps->ammo[WP_ROCKET_LAUNCHER] > 0 ) {
 			return WP_ROCKET_LAUNCHER;

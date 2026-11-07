@@ -1560,9 +1560,8 @@ BotPangeaMelee
 Pangea tier-0 arena: the slot strikes in melee (club, spear, torch...).
 ==================
 */
-static qboolean BotPangeaMelee(int weapon) {
-	const pangeaAbility_t *a = BG_PangeaAbility(weapon, qfalse, Pangea_Mode(), 0);
-	return a && a->prim == PP_MELEE;
+static qboolean BotPangeaMelee(bot_state_t *bs, int weapon) {
+	return Pangea_BotReach(bs->client, weapon) > 0;
 }
 
 /*
@@ -2717,7 +2716,7 @@ bot_moveresult_t BotAttackMove(bot_state_t *bs, int tfl) {
 			bs->attackjump_time = FloatTime() + 1;
 		}
 	}
-	if (bs->cur_ps.weapon == WP_GAUNTLET || BotPangeaMelee(bs->cur_ps.weapon)) {
+	if (bs->cur_ps.weapon == WP_GAUNTLET || BotPangeaMelee(bs, bs->cur_ps.weapon)) {
 		attack_dist = 0;
 		attack_range = 0;
 	}
@@ -3468,8 +3467,18 @@ void BotAimAtEnemy(bot_state_t *bs) {
 				}
 			}
 		}
+		// Pangea tier-0: stones and arrows fall (TR_GRAVITY): aim higher by the drop,
+		// at the body, not at the ground (botlib takes them for rockets/grenades)
+		if (Pangea_Mode() != PANGEA_SIM) {
+			if (wi.speed > 0) {
+				float t;
+				VectorSubtract(bestorigin, start, dir);
+				t = VectorLength(dir) / wi.speed;
+				bestorigin[2] += 0.5f * DEFAULT_GRAVITY * t * t;
+			}
+		}
 		//if the projectile does radial damage
-		if (aim_skill > 0.6 && wi.proj.damagetype & DAMAGETYPE_RADIAL) {
+		else if (aim_skill > 0.6 && wi.proj.damagetype & DAMAGETYPE_RADIAL) {
 			//if the enemy isn't standing significantly higher than the bot
 			if (entinfo.origin[2] < bs->origin[2] + 16) {
 				//try to aim at the ground in front of the enemy
@@ -3635,9 +3644,8 @@ void BotCheckAttack(bot_state_t *bs) {
 	//
 	VectorSubtract(bs->aimtarget, bs->eye, dir);
 	//
-	if (bs->weaponnum == WP_GAUNTLET || BotPangeaMelee(bs->weaponnum)) {
-		const pangeaAbility_t *pa = BG_PangeaAbility(bs->weaponnum, qfalse, Pangea_Mode(), 0);
-		float reach = pa ? pa->range + 24 : 60;
+	if (bs->weaponnum == WP_GAUNTLET || BotPangeaMelee(bs, bs->weaponnum)) {
+		float reach = BotPangeaMelee(bs, bs->weaponnum) ? Pangea_BotReach(bs->client, bs->weaponnum) + 24 : 60;
 		if (VectorLengthSquared(dir) > Square(reach)) {
 			return;
 		}

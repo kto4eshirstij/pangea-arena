@@ -1007,6 +1007,9 @@ void			Pangea_FireAlt( gentity_t *ent, int weapon );
 qboolean		Pangea_MissileImpact( gentity_t *ent, trace_t *trace );
 void			Pangea_BotWeaponInfo( int weapon, float *speed );
 int				Pangea_BotChooseWeapon( gentity_t *ent, float enemyDist );
+int				Pangea_BotReach( int clientNum, int weapon );			// bot's own slot: close-range reach, 0 = ranged
+qboolean		Pangea_BotIsRite( int weapon );
+qboolean		Pangea_BotWantsAlt( int clientNum );
 qboolean		Pangea_BlockCommand( gentity_t *ent, const char *cmd );
 void			Pangea_MatchLogged( void );
 void			Pangea_RunFrame( void );

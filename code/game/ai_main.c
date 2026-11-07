@@ -832,10 +832,6 @@ void BotInputToUserCommand(bot_input_t *bi, usercmd_t *ucmd, int delta_angles[3]
 	//set the buttons
 	if (bi->actionflags & ACTION_RESPAWN) ucmd->buttons = BUTTON_ATTACK;
 	if (bi->actionflags & ACTION_ATTACK) ucmd->buttons |= BUTTON_ATTACK;
-	// Pangea tier-0 arena: now and then the secondary ability instead (cooldowns gate it)
-	if ((bi->actionflags & ACTION_ATTACK) && Pangea_Mode() != PANGEA_SIM && random() < 0.08) {
-		ucmd->buttons |= BUTTON_PANGEA_ALT;
-	}
 	if (bi->actionflags & ACTION_TALK) ucmd->buttons |= BUTTON_TALK;
 	if (bi->actionflags & ACTION_GESTURE) ucmd->buttons |= BUTTON_GESTURE;
 	if (bi->actionflags & ACTION_USE) ucmd->buttons |= BUTTON_USE_HOLDABLE;
@@ -932,6 +928,13 @@ void BotUpdateInput(bot_state_t *bs, int time, int elapsed_time) {
 	}
 	//convert the bot input to a usercmd
 	BotInputToUserCommand(&bi, &bs->lastucmd, bs->cur_ps.delta_angles, time);
+	// Pangea tier-0 arena: the secondary ability. Rites and legacies: the one
+	// Pangea_BotChooseWeapon picked; other slots now and then (cooldowns gate it).
+	if ((bs->lastucmd.buttons & BUTTON_ATTACK) && Pangea_Mode() != PANGEA_SIM) {
+		if (Pangea_BotIsRite(bs->cur_ps.weapon) ? Pangea_BotWantsAlt(bs->client) : random() < 0.08) {
+			bs->lastucmd.buttons |= BUTTON_PANGEA_ALT;
+		}
+	}
 	//subtract the delta angles
 	for (j = 0; j < 3; j++) {
 		bs->viewangles[j] = AngleMod(bs->viewangles[j] - SHORT2ANGLE(bs->cur_ps.delta_angles[j]));
