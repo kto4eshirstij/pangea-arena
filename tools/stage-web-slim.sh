@@ -11,10 +11,12 @@ rm -rf "$OUT/slim" && mkdir -p "$OUT/slim/vm"
 cp "$PAK" "$OUT/slim/"
 cp build-web/Release/baseq3/vm/*.qvm "$OUT/slim/vm/"
 python3 - "$OUT" "$(basename "$PAK")" <<'PY'
-import json, sys
+import json, os, sys
 out, pak = sys.argv[1:]
 files = [{"src": f"slim/{pak}", "dst": "/baseoa"}] + \
         [{"src": f"slim/vm/{q}", "dst": "/baseoa/vm"} for q in ("cgame.qvm", "qagame.qvm", "ui.qvm")]
+for f in files:  # sizes: arena-boot.js shows pak progress against the full total at once
+    f["size"] = os.path.getsize(f"{out}/{f['src']}")
 json.dump({"baseoa": {"files": files}}, open(f"{out}/arena-config.json", "w"), indent=1)
 print(f"{out}/arena-config.json -> {pak}")
 PY
