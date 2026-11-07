@@ -1522,6 +1522,10 @@ void CG_DrawWeaponSelect( void ) {
 	// draw the selected name
 	if ( cg_weapons[ cg.weaponSelect ].item ) {
 		name = cg_weapons[ cg.weaponSelect ].item->pickup_name;
+		// Pangea tier-0 arena: the slot's own name, not the OpenArena weapon
+		if ( cgs.pangea && BG_PangeaSlotId( cg.weaponSelect ) ) {
+			name = (char *)BG_PangeaSlotId( cg.weaponSelect );
+		}
 		if ( name ) {
 			w = CG_DrawStrlen( name ) * BIGCHAR_WIDTH;
 			x = ( SCREEN_WIDTH - w ) / 2;

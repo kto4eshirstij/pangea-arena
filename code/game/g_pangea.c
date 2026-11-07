@@ -201,6 +201,9 @@ void Pangea_ClientConnected( int clientNum, const char *userinfo, qboolean isBot
 		sizeof( pangeaTickets[clientNum] ) );
 	Pangea_LookupRace( isBot ? Info_ValueForKey( userinfo, "name" ) : pangeaTickets[clientNum],
 		pangeaRaces[clientNum], sizeof( pangeaRaces[clientNum] ) );
+	if ( pangeaRaces[clientNum][0] ) {
+		G_LogPrintf( "Pangea: race client %i %s\n", clientNum, pangeaRaces[clientNum] );
+	}
 	G_LogPrintf( "Pangea: ticket %s client %i\n", pangeaTickets[clientNum], clientNum );
 	// The gateway's UDP socket of this browser: the manager kicks the slot when its
 	// WebSocket closes (a closed arena tab would otherwise linger until sv_timeout).

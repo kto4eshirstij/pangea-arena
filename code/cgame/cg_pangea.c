@@ -287,13 +287,17 @@ static void CG_PangeaViewMotion( const playerState_t *ps, vec3_t offset, vec3_t 
 	VectorClear( offset );
 	VectorClear( dangles );
 
-	if ( ps->weapon == WP_RAILGUN && ( ps->generic1 & PSTAT_BLOCKING ) ) {
-		// the shield comes up in front of the face
-		offset[0] = 2;
-		offset[1] = 6;
-		offset[2] = 3;
-		dangles[YAW] = -8;
-		return;
+	if ( ps->weapon == WP_RAILGUN ) {
+		if ( ps->generic1 & PSTAT_BLOCKING ) {
+			// the shield comes up in front of the body (the pose itself)
+			offset[0] = -2;
+			return;
+		}
+		// at rest the shield hangs low on the left, the way ahead stays open
+		offset[0] = -2;
+		offset[1] = -5;
+		offset[2] = -7;
+		dangles[ROLL] = -8;
 	}
 	if ( !pgSwingTime || pgSwingWeapon != ps->weapon ) {
 		return;
@@ -347,7 +351,7 @@ static void CG_PangeaViewMotion( const playerState_t *ps, vec3_t offset, vec3_t 
 		dangles[PITCH] = pgSwingAlt ? -10 * s : -2 * s;
 		break;
 	case WP_RAILGUN:
-		offset[2] = -12 * s;				// the shield hits the ground
+		offset[2] += -12 * s;				// the shield hits the ground
 		break;
 	}
 }
