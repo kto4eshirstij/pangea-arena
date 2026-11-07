@@ -172,6 +172,7 @@ typedef struct {
 	int			debugLevel;			// if set, diagnostic output will be printed
 	qboolean	noFootsteps;		// if the game is setup for no footsteps by the server
 	qboolean	gauntletHit;		// true if a gauntlet attack would actually hit something
+	int			pangea;				// Pangea arena mode: PANGEA_SIM | PANGEA_HONOR | PANGEA_SLAUGHTER
 
 	int			framecount;
 
@@ -452,7 +453,9 @@ typedef enum {
 	EV_TAUNT_FOLLOWME,
 	EV_TAUNT_GETFLAG,
 	EV_TAUNT_GUARDBASE,
-	EV_TAUNT_PATROL
+	EV_TAUNT_PATROL,
+
+	EV_PANGEA_ALT			// Pangea secondary ability (bg_pangea.h), eventParm = weapon
 
 } entity_event_t;
 
@@ -605,7 +608,22 @@ typedef enum {
 	MOD_KAMIKAZE,
 	MOD_JUICED,
 #endif
-	MOD_GRAPPLE
+	MOD_GRAPPLE,
+	// Pangea tier-0 abilities (bg_pangea.c)
+	MOD_PANGEA_PUNCH,
+	MOD_PANGEA_KICK,
+	MOD_PANGEA_HEADBUTT,
+	MOD_PANGEA_CLUB,
+	MOD_PANGEA_SPEAR,
+	MOD_PANGEA_SPEAR_THROW,
+	MOD_PANGEA_STONE,
+	MOD_PANGEA_BOLA,
+	MOD_PANGEA_ARROW,
+	MOD_PANGEA_FIRE_ARROW,
+	MOD_PANGEA_TORCH,
+	MOD_PANGEA_BRAND,
+	MOD_PANGEA_BURN,
+	MOD_PANGEA_SLAM
 } meansOfDeath_t;
 
 
@@ -741,3 +759,5 @@ qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTim
 #define KAMI_BOOMSPHERE_MAXRADIUS		720
 #define KAMI_SHOCKWAVE2_MAXRADIUS		704
 
+// Pangea tier-0 abilities
+#include "bg_pangea.h"

@@ -916,6 +916,38 @@ Only in One Flag CTF games
 	},
 #endif
 
+/*QUAKED pangea_quiver (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+Pangea: a quiver, arrows for the bow (slot 5)
+*/
+	{
+		"pangea_quiver",
+		"sound/misc/am_pkup.wav",
+		{ "models/projectiles/item_quiver.md3", NULL, NULL, NULL},
+/* icon */		"icons/iconw_bow",
+/* pickup */	"Quiver",
+		5,
+		IT_AMMO,
+		WP_ROCKET_LAUNCHER,
+/* precache */ "",
+/* sounds */ ""
+	},
+
+/*QUAKED pangea_stones (.3 .3 1) (-16 -16 -16) (16 16 16) suspended
+Pangea: a handful of stones for the sling (slot 4)
+*/
+	{
+		"pangea_stones",
+		"sound/misc/am_pkup.wav",
+		{ "models/projectiles/item_stones.md3", NULL, NULL, NULL},
+/* icon */		"icons/iconw_sling",
+/* pickup */	"Stones",
+		6,
+		IT_AMMO,
+		WP_GRENADE_LAUNCHER,
+/* precache */ "",
+/* sounds */ ""
+	},
+
 	// end of list marker
 	{NULL}
 };
@@ -1055,6 +1087,13 @@ qboolean BG_CanItemBeGrabbed( int gametype, const entityState_t *ent, const play
 	case IT_AMMO:
 		if ( ps->ammo[ item->giTag ] >= 200 ) {
 			return qfalse;		// can't hold any more
+		}
+		// Pangea quiver and stones (tier-0 arena)
+		if ( !Q_stricmp( item->classname, "pangea_quiver" ) && ps->ammo[ item->giTag ] >= PANGEA_ARROWS_MAX ) {
+			return qfalse;
+		}
+		if ( !Q_stricmp( item->classname, "pangea_stones" ) && ps->ammo[ item->giTag ] >= PANGEA_STONES_MAX ) {
+			return qfalse;
 		}
 		return qtrue;
 
@@ -1379,7 +1418,8 @@ char *eventnames[] = {
 	"EV_TAUNT_FOLLOWME",
 	"EV_TAUNT_GETFLAG",
 	"EV_TAUNT_GUARDBASE",
-	"EV_TAUNT_PATROL"
+	"EV_TAUNT_PATROL",
+	"EV_PANGEA_ALT"
 
 };
 

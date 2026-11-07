@@ -309,7 +309,21 @@ char	*modNames[] = {
 	"MOD_KAMIKAZE",
 	"MOD_JUICED",
 #endif
-	"MOD_GRAPPLE"
+	"MOD_GRAPPLE",
+	"MOD_PANGEA_PUNCH",
+	"MOD_PANGEA_KICK",
+	"MOD_PANGEA_HEADBUTT",
+	"MOD_PANGEA_CLUB",
+	"MOD_PANGEA_SPEAR",
+	"MOD_PANGEA_SPEAR_THROW",
+	"MOD_PANGEA_STONE",
+	"MOD_PANGEA_BOLA",
+	"MOD_PANGEA_ARROW",
+	"MOD_PANGEA_FIRE_ARROW",
+	"MOD_PANGEA_TORCH",
+	"MOD_PANGEA_BRAND",
+	"MOD_PANGEA_BURN",
+	"MOD_PANGEA_SLAM"
 };
 
 #ifdef MISSIONPACK
@@ -814,7 +828,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		return;
 	}
 
-	damage = Pangea_ModifyDamage( damage, mod );
+	damage = Pangea_ModifyDamage( targ, inflictor, damage, mod );
 
 	// the intermission has already been qualified for, so don't
 	// allow any extra scoring

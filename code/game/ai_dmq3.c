@@ -1555,6 +1555,18 @@ int BotSynonymContext(bot_state_t *bs) {
 
 /*
 ==================
+BotPangeaMelee
+
+Pangea tier-0 arena: the slot strikes in melee (club, spear, torch...).
+==================
+*/
+static qboolean BotPangeaMelee(int weapon) {
+	const pangeaAbility_t *a = BG_PangeaAbility(weapon, qfalse, Pangea_Mode());
+	return a && a->prim == PP_MELEE;
+}
+
+/*
+==================
 BotChooseWeapon
 ==================
 */
@@ -1567,6 +1579,18 @@ void BotChooseWeapon(bot_state_t *bs) {
 	}
 	else {
 		newweaponnum = trap_BotChooseBestFightWeapon(bs->ws, bs->inventory);
+		// Pangea tier-0 arena: botlib knows only the stock weapons
+		if (Pangea_Mode() != PANGEA_SIM) {
+			float dist = 9999;
+			int w;
+			if (bs->enemy >= 0 && bs->enemy < MAX_GENTITIES) {
+				vec3_t d;
+				VectorSubtract(g_entities[bs->enemy].r.currentOrigin, bs->origin, d);
+				dist = VectorLength(d);
+			}
+			w = Pangea_BotChooseWeapon(&g_entities[bs->entitynum], dist);
+			if (w) newweaponnum = w;
+		}
 		if (bs->weaponnum != newweaponnum) bs->weaponchange_time = FloatTime();
 		bs->weaponnum = newweaponnum;
 		//BotAI_Print(PRT_MESSAGE, "bs->weaponnum = %d\n", bs->weaponnum);
@@ -2693,7 +2717,7 @@ bot_moveresult_t BotAttackMove(bot_state_t *bs, int tfl) {
 			bs->attackjump_time = FloatTime() + 1;
 		}
 	}
-	if (bs->cur_ps.weapon == WP_GAUNTLET) {
+	if (bs->cur_ps.weapon == WP_GAUNTLET || BotPangeaMelee(bs->cur_ps.weapon)) {
 		attack_dist = 0;
 		attack_range = 0;
 	}
@@ -3315,6 +3339,7 @@ void BotAimAtEnemy(bot_state_t *bs) {
 
 	//get the weapon information
 	trap_BotGetWeaponInfo(bs->ws, bs->weaponnum, &wi);
+	Pangea_BotWeaponInfo(bs->weaponnum, &wi.speed);
 	//get the weapon specific aim accuracy and or aim skill
 	if (wi.number == WP_MACHINEGUN) {
 		aim_accuracy = trap_Characteristic_BFloat(bs->character, CHARACTERISTIC_AIM_ACCURACY_MACHINEGUN, 0, 1);
@@ -3610,8 +3635,10 @@ void BotCheckAttack(bot_state_t *bs) {
 	//
 	VectorSubtract(bs->aimtarget, bs->eye, dir);
 	//
-	if (bs->weaponnum == WP_GAUNTLET) {
-		if (VectorLengthSquared(dir) > Square(60)) {
+	if (bs->weaponnum == WP_GAUNTLET || BotPangeaMelee(bs->weaponnum)) {
+		const pangeaAbility_t *pa = BG_PangeaAbility(bs->weaponnum, qfalse, Pangea_Mode());
+		float reach = pa ? pa->range + 24 : 60;
+		if (VectorLengthSquared(dir) > Square(reach)) {
 			return;
 		}
 	}
@@ -3629,6 +3656,7 @@ void BotCheckAttack(bot_state_t *bs) {
 
 	//get the weapon info
 	trap_BotGetWeaponInfo(bs->ws, bs->weaponnum, &wi);
+	Pangea_BotWeaponInfo(bs->weaponnum, &wi.speed);
 	//get the start point shooting from
 	VectorCopy(bs->origin, start);
 	start[2] += bs->cur_ps.viewheight;

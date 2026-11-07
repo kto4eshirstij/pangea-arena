@@ -860,6 +860,11 @@ void ClientUserinfoChanged( int clientNum ) {
 			client->pers.maxHealth, client->sess.wins, client->sess.losses, teamTask, teamLeader);
 	}
 
+	// Pangea: the people of the player (first-person hands and their skin)
+	if ( Pangea_ClientRace( clientNum )[0] ) {
+		s = va( "%s\\pr\\%s", s, Pangea_ClientRace( clientNum ) );
+	}
+
 	trap_SetConfigstring( CS_PLAYERS+clientNum, s );
 
 	// this is not the userinfo, more like the configstring actually
@@ -1228,6 +1233,7 @@ void ClientSpawn(gentity_t *ent) {
 					break;
 				}
 			}
+			Pangea_SpawnWeapon( client );
 			// positively link the client, even if the command times are weird
 			VectorCopy(ent->client->ps.origin, ent->r.currentOrigin);
 

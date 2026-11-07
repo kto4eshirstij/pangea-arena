@@ -277,7 +277,9 @@ qboolean G_CallSpawn( gentity_t *ent ) {
 	// check item spawn functions
 	for ( item=bg_itemlist+1 ; item->classname ; item++ ) {
 		if ( !strcmp(item->classname, ent->classname) ) {
-			if ( !Pangea_ItemAllowed( item ) ) {
+			if ( Pangea_ItemReplace( item ) ) {
+				item = Pangea_ItemReplace( item );	// tier-0 arena: quivers and stones
+			} else if ( !Pangea_ItemAllowed( item ) ) {
 				return qfalse;	// freed by the caller
 			}
 			G_SpawnItem( ent, item );

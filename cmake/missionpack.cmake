@@ -17,6 +17,7 @@ set(MPUI_SOURCES
     ${SOURCE_DIR}/ui/ui_players.c
     ${SOURCE_DIR}/ui/ui_shared.c
     ${SOURCE_DIR}/game/bg_misc.c
+    ${SOURCE_DIR}/game/bg_pangea.c
     ${SOURCE_DIR}/game/bg_lib.c
 )
 

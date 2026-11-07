@@ -317,6 +317,15 @@ struct gclient_s {
 #endif
 
 	char		*areabits;
+
+	// Pangea tier-0 effects (g_pangea.c)
+	int			pangeaBurnUntil;
+	int			pangeaBurnNext;
+	int			pangeaBurnBy;		// entity number of who set the fire, -1 none
+	int			pangeaEntangleUntil;
+	int			pangeaStunUntil;
+	int			pangeaTorchBack;	// a new torch in the hand at this time (0 = none due)
+	int			pangeaSpearBack;
 };
 
 
@@ -959,7 +968,9 @@ typedef enum {
 	PANGEA_ARSENAL_FULL,
 	PANGEA_ARSENAL_RAIL,
 	PANGEA_ARSENAL_ROCKET,
-	PANGEA_ARSENAL_MELEE
+	PANGEA_ARSENAL_MELEE,
+	PANGEA_ARSENAL_HONOR,		// tier-0 abilities, дуэль чести (bg_pangea.h)
+	PANGEA_ARSENAL_SLAUGHTER	// tier-0 abilities, бойня
 } pangeaArsenal_t;
 
 extern	vmCvar_t	g_pangea_tickets;
@@ -977,7 +988,18 @@ const char		*Pangea_CheckConnect( int clientNum, const char *userinfo, qboolean 
 void			Pangea_ClientConnected( int clientNum, const char *userinfo, qboolean isBot );
 void			Pangea_GiveArsenal( gclient_t *client );
 qboolean		Pangea_ItemAllowed( const gitem_t *item );
-int				Pangea_ModifyDamage( int damage, int mod );
+int				Pangea_ModifyDamage( gentity_t *targ, gentity_t *inflictor, int damage, int mod );
+int				Pangea_Mode( void );		// PANGEA_SIM | PANGEA_HONOR | PANGEA_SLAUGHTER
+const char		*Pangea_ClientRace( int clientNum );
+void			Pangea_SpawnWeapon( gclient_t *client );
+gitem_t			*Pangea_ItemReplace( gitem_t *item );
+int				Pangea_AmmoMax( int weapon );
+void			Pangea_ClientThink( gentity_t *ent );
+void			Pangea_FirePrimary( gentity_t *ent );
+void			Pangea_FireAlt( gentity_t *ent, int weapon );
+qboolean		Pangea_MissileImpact( gentity_t *ent, trace_t *trace );
+void			Pangea_BotWeaponInfo( int weapon, float *speed );
+int				Pangea_BotChooseWeapon( gentity_t *ent, float enemyDist );
 qboolean		Pangea_BlockCommand( gentity_t *ent, const char *cmd );
 void			Pangea_MatchLogged( void );
 void			Pangea_RunFrame( void );

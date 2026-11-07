@@ -276,6 +276,12 @@ void G_MissileImpact( gentity_t *ent, trace_t *trace ) {
 #endif
 	other = &g_entities[trace->entityNum];
 
+	// Pangea tier-0 missiles (stones, arrows, spear, bola, brand)
+	if ( ent->s.generic1 != PK_NONE && !Q_stricmp( ent->classname, "pangea_missile" ) &&
+		Pangea_MissileImpact( ent, trace ) ) {
+		return;
+	}
+
 	// check for bounce
 	if ( !other->takedamage &&
 		( ent->s.eFlags & ( EF_BOUNCE | EF_BOUNCE_HALF ) ) ) {

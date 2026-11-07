@@ -800,6 +800,12 @@ FireWeapon
 ===============
 */
 void FireWeapon( gentity_t *ent ) {
+	// Pangea tier-0 arena: abilities instead of the stock weapons (g_pangea.c)
+	if ( Pangea_Mode() != PANGEA_SIM ) {
+		Pangea_FirePrimary( ent );
+		return;
+	}
+
 	if (ent->client->ps.powerups[PW_QUAD] ) {
 		s_quadFactor = g_quadfactor.value;
 	} else {

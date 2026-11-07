@@ -365,6 +365,11 @@ static qboolean PM_CheckJump( void ) {
 		return qfalse;
 	}
 
+	// Pangea: a bola round the legs
+	if ( pm->pangea && ( pm->ps->generic1 & PSTAT_ENTANGLED ) ) {
+		return qfalse;
+	}
+
 	// must wait for jump to be released
 	if ( pm->ps->pm_flags & PMF_JUMP_HELD ) {
 		// clear upmove so cmdscale doesn't lower running speed
@@ -1529,6 +1534,119 @@ static void PM_TorsoAnimation( void ) {
 
 /*
 ==============
+PM_PangeaWeapon
+
+Pangea tier-0 abilities (bg_pangea.h): primary on +attack, secondary on
++button12. Called from PM_Weapon once the weapon is ready.
+==============
+*/
+static qboolean PM_PangeaHasAmmo( const pangeaAbility_t *a ) {
+	int ammo = pm->ps->ammo[ a->weapon ];
+
+	if ( ammo == -1 ) {
+		return qtrue;
+	}
+	// the spear and the torch are needed in the hand even for strikes
+	if ( ( a->weapon == WP_SHOTGUN || a->weapon == WP_LIGHTNING ) && ammo <= 0 ) {
+		return qfalse;
+	}
+	return ammo >= a->ammo;
+}
+
+static void PM_PangeaTakeAmmo( const pangeaAbility_t *a ) {
+	if ( a->ammo && pm->ps->ammo[ a->weapon ] != -1 ) {
+		pm->ps->ammo[ a->weapon ] -= a->ammo;
+		if ( pm->ps->ammo[ a->weapon ] < 0 ) {
+			pm->ps->ammo[ a->weapon ] = 0;
+		}
+	}
+}
+
+static int PM_PangeaRefire( int refire ) {
+	if ( pm->ps->powerups[PW_HASTE] ) {
+		refire /= 1.3;
+	}
+	return refire;
+}
+
+static void PM_PangeaWeapon( void ) {
+	const pangeaAbility_t	*a;
+	int						slot = pm->ps->weapon;
+	qboolean				fire = ( pm->cmd.buttons & BUTTON_ATTACK ) != 0;
+	qboolean				alt = ( pm->cmd.buttons & BUTTON_PANGEA_ALT ) != 0;
+	int						*cd;
+
+	if ( pm->ps->generic1 & PSTAT_STUNNED ) {
+		fire = alt = qfalse;
+	}
+	if ( slot < WP_GAUNTLET || slot > WP_RAILGUN ) {
+		pm->ps->weaponTime = 0;
+		pm->ps->weaponstate = WEAPON_READY;
+		return;
+	}
+	cd = &pm->ps->stats[ STAT_PANGEA_CD1 + slot - WP_GAUNTLET ];
+
+	// the secondary ability goes first when both buttons are down
+	if ( alt ) {
+		a = BG_PangeaAbility( slot, qtrue, pm->pangea );
+		if ( a && *cd <= 0 && PM_PangeaHasAmmo( a ) &&
+			( a->prim != PP_SLAM || pm->ps->groundEntityNum != ENTITYNUM_NONE ) ) {
+			PM_PangeaTakeAmmo( a );
+			*cd = a->cooldown;
+			pm->ps->weaponstate = WEAPON_FIRING;
+			pm->ps->weaponTime += PM_PangeaRefire( a->refire );
+			PM_StartTorsoAnim( slot == WP_GAUNTLET ? TORSO_ATTACK2 : TORSO_ATTACK );
+			if ( a->prim == PP_SLAM ) {
+				vec3_t	fwd;
+
+				fwd[0] = pml.forward[0];
+				fwd[1] = pml.forward[1];
+				fwd[2] = 0;
+				VectorNormalize( fwd );
+				VectorMA( pm->ps->velocity, PANGEA_SLAM_FORWARD, fwd, pm->ps->velocity );
+				pm->ps->velocity[2] = PANGEA_SLAM_UP;
+				pm->ps->groundEntityNum = ENTITYNUM_NONE;
+				pml.groundPlane = qfalse;
+				pml.walking = qfalse;
+			}
+			BG_AddPredictableEventToPlayerstate( EV_PANGEA_ALT, slot, pm->ps );
+			return;
+		}
+	}
+
+	if ( !fire ) {
+		pm->ps->weaponTime = 0;
+		pm->ps->weaponstate = WEAPON_READY;
+		return;
+	}
+	a = BG_PangeaAbility( slot, qfalse, pm->pangea );
+	if ( !a ) {
+		pm->ps->weaponTime = 0;
+		pm->ps->weaponstate = WEAPON_READY;
+		return;
+	}
+	if ( a->prim == PP_BLOCK ) {
+		// holding the shield up: no events, the server reduces frontal damage
+		pm->ps->generic1 |= PSTAT_BLOCKING;
+		pm->ps->weaponstate = WEAPON_FIRING;
+		return;
+	}
+
+	PM_StartTorsoAnim( slot == WP_GAUNTLET ? TORSO_ATTACK2 : TORSO_ATTACK );
+	pm->ps->weaponstate = WEAPON_FIRING;
+
+	if ( !PM_PangeaHasAmmo( a ) ) {
+		PM_AddEvent( EV_NOAMMO );
+		pm->ps->weaponTime += 500;
+		return;
+	}
+	PM_PangeaTakeAmmo( a );
+	PM_AddEvent( EV_FIRE_WEAPON );
+	pm->ps->weaponTime += PM_PangeaRefire( a->refire );
+}
+
+/*
+==============
 PM_Weapon
 
 Generates weapon events and modifes the weapon counter
@@ -1571,6 +1689,22 @@ static void PM_Weapon( void ) {
 	}
 
 
+	// Pangea: secondary cooldowns run down, the shield is lowered unless held this frame
+	if ( pm->pangea ) {
+		int i;
+
+		for ( i = 0 ; i < PANGEA_SLOTS ; i++ ) {
+			int *cd = &pm->ps->stats[ STAT_PANGEA_CD1 + i ];
+			if ( *cd > 0 ) {
+				*cd -= pml.msec;
+				if ( *cd < 0 ) {
+					*cd = 0;
+				}
+			}
+		}
+		pm->ps->generic1 &= ~PSTAT_BLOCKING;
+	}
+
 	// make weapon function
 	if ( pm->ps->weaponTime > 0 ) {
 		pm->ps->weaponTime -= pml.msec;
@@ -1602,6 +1736,11 @@ static void PM_Weapon( void ) {
 		} else {
 			PM_StartTorsoAnim( TORSO_STAND );
 		}
+		return;
+	}
+
+	if ( pm->pangea ) {
+		PM_PangeaWeapon();
 		return;
 	}
 
