@@ -1569,9 +1569,60 @@ static int PM_PangeaRefire( int refire ) {
 	return refire;
 }
 
+static void PM_PangeaLeap( const pangeaAbility_t *a ) {
+	vec3_t	fwd;
+	float	forward = a->prim == PP_SLAM ? PANGEA_SLAM_FORWARD : a->effectValue;
+	float	up = a->prim == PP_SLAM ? PANGEA_SLAM_UP : a->speed;
+
+	fwd[0] = pml.forward[0];
+	fwd[1] = pml.forward[1];
+	fwd[2] = 0;
+	VectorNormalize( fwd );
+	VectorMA( pm->ps->velocity, forward, fwd, pm->ps->velocity );
+	if ( pm->ps->velocity[2] < up ) {
+		pm->ps->velocity[2] = up;
+	}
+	pm->ps->groundEntityNum = ENTITYNUM_NONE;
+	pml.groundPlane = qfalse;
+	pml.walking = qfalse;
+}
+
+/*
+Try an ability: ammo, the slot's cooldown, ground for leaps. qtrue = used.
+*/
+static qboolean PM_PangeaTry( const pangeaAbility_t *a, qboolean alt, int *cd ) {
+	if ( !a || !PM_PangeaHasAmmo( a ) ) {
+		return qfalse;
+	}
+	if ( a->cooldown > 0 && *cd > 0 ) {
+		return qfalse;
+	}
+	if ( ( a->prim == PP_SLAM || ( a->prim == PP_LEAP && !( a->flags & PAF_AIR ) ) ) &&
+		pm->ps->groundEntityNum == ENTITYNUM_NONE ) {
+		return qfalse;
+	}
+	PM_PangeaTakeAmmo( a );
+	if ( a->cooldown > 0 ) {
+		*cd = a->cooldown;
+	}
+	pm->ps->weaponstate = WEAPON_FIRING;
+	pm->ps->weaponTime += PM_PangeaRefire( a->refire );
+	PM_StartTorsoAnim( a->weapon == WP_GAUNTLET ? TORSO_ATTACK2 : TORSO_ATTACK );
+	if ( a->prim == PP_SLAM || a->prim == PP_LEAP ) {
+		PM_PangeaLeap( a );
+	}
+	if ( alt ) {
+		BG_AddPredictableEventToPlayerstate( EV_PANGEA_ALT, a->weapon, pm->ps );
+	} else {
+		PM_AddEvent( EV_FIRE_WEAPON );
+	}
+	return qtrue;
+}
+
 static void PM_PangeaWeapon( void ) {
 	const pangeaAbility_t	*a;
 	int						slot = pm->ps->weapon;
+	int						kin = pm->ps->persistant[PERS_PANGEA_KIN];
 	qboolean				fire = ( pm->cmd.buttons & BUTTON_ATTACK ) != 0;
 	qboolean				alt = ( pm->cmd.buttons & BUTTON_PANGEA_ALT ) != 0;
 	int						*cd;
@@ -1579,7 +1630,7 @@ static void PM_PangeaWeapon( void ) {
 	if ( pm->ps->generic1 & PSTAT_STUNNED ) {
 		fire = alt = qfalse;
 	}
-	if ( slot < WP_GAUNTLET || slot > WP_RAILGUN ) {
+	if ( slot < WP_GAUNTLET || slot - WP_GAUNTLET >= PANGEA_SLOTS ) {
 		pm->ps->weaponTime = 0;
 		pm->ps->weaponstate = WEAPON_READY;
 		return;
@@ -1587,39 +1638,15 @@ static void PM_PangeaWeapon( void ) {
 	cd = &pm->ps->stats[ STAT_PANGEA_CD1 + slot - WP_GAUNTLET ];
 
 	// the secondary ability goes first when both buttons are down
-	if ( alt ) {
-		a = BG_PangeaAbility( slot, qtrue, pm->pangea );
-		if ( a && *cd <= 0 && PM_PangeaHasAmmo( a ) &&
-			( a->prim != PP_SLAM || pm->ps->groundEntityNum != ENTITYNUM_NONE ) ) {
-			PM_PangeaTakeAmmo( a );
-			*cd = a->cooldown;
-			pm->ps->weaponstate = WEAPON_FIRING;
-			pm->ps->weaponTime += PM_PangeaRefire( a->refire );
-			PM_StartTorsoAnim( slot == WP_GAUNTLET ? TORSO_ATTACK2 : TORSO_ATTACK );
-			if ( a->prim == PP_SLAM ) {
-				vec3_t	fwd;
-
-				fwd[0] = pml.forward[0];
-				fwd[1] = pml.forward[1];
-				fwd[2] = 0;
-				VectorNormalize( fwd );
-				VectorMA( pm->ps->velocity, PANGEA_SLAM_FORWARD, fwd, pm->ps->velocity );
-				pm->ps->velocity[2] = PANGEA_SLAM_UP;
-				pm->ps->groundEntityNum = ENTITYNUM_NONE;
-				pml.groundPlane = qfalse;
-				pml.walking = qfalse;
-			}
-			BG_AddPredictableEventToPlayerstate( EV_PANGEA_ALT, slot, pm->ps );
-			return;
-		}
+	if ( alt && PM_PangeaTry( BG_PangeaAbility( slot, qtrue, pm->pangea, kin ), qtrue, cd ) ) {
+		return;
 	}
-
 	if ( !fire ) {
 		pm->ps->weaponTime = 0;
 		pm->ps->weaponstate = WEAPON_READY;
 		return;
 	}
-	a = BG_PangeaAbility( slot, qfalse, pm->pangea );
+	a = BG_PangeaAbility( slot, qfalse, pm->pangea, kin );
 	if ( !a ) {
 		pm->ps->weaponTime = 0;
 		pm->ps->weaponstate = WEAPON_READY;
@@ -1631,18 +1658,18 @@ static void PM_PangeaWeapon( void ) {
 		pm->ps->weaponstate = WEAPON_FIRING;
 		return;
 	}
-
-	PM_StartTorsoAnim( slot == WP_GAUNTLET ? TORSO_ATTACK2 : TORSO_ATTACK );
-	pm->ps->weaponstate = WEAPON_FIRING;
-
+	if ( a->cooldown > 0 && *cd > 0 ) {
+		pm->ps->weaponstate = WEAPON_READY;		// a rite or legacy not ready yet
+		return;
+	}
 	if ( !PM_PangeaHasAmmo( a ) ) {
+		PM_StartTorsoAnim( slot == WP_GAUNTLET ? TORSO_ATTACK2 : TORSO_ATTACK );
+		pm->ps->weaponstate = WEAPON_FIRING;
 		PM_AddEvent( EV_NOAMMO );
 		pm->ps->weaponTime += 500;
 		return;
 	}
-	PM_PangeaTakeAmmo( a );
-	PM_AddEvent( EV_FIRE_WEAPON );
-	pm->ps->weaponTime += PM_PangeaRefire( a->refire );
+	PM_PangeaTry( a, qfalse, cd );
 }
 
 /*

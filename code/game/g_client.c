@@ -864,6 +864,9 @@ void ClientUserinfoChanged( int clientNum ) {
 	if ( Pangea_ClientRace( clientNum )[0] ) {
 		s = va( "%s\\pr\\%s", s, Pangea_ClientRace( clientNum ) );
 	}
+	if ( Pangea_ClientFaith( clientNum )[0] ) {
+		s = va( "%s\\pf\\%s", s, Pangea_ClientFaith( clientNum ) );
+	}
 
 	trap_SetConfigstring( CS_PLAYERS+clientNum, s );
 

@@ -1561,7 +1561,7 @@ Pangea tier-0 arena: the slot strikes in melee (club, spear, torch...).
 ==================
 */
 static qboolean BotPangeaMelee(int weapon) {
-	const pangeaAbility_t *a = BG_PangeaAbility(weapon, qfalse, Pangea_Mode());
+	const pangeaAbility_t *a = BG_PangeaAbility(weapon, qfalse, Pangea_Mode(), 0);
 	return a && a->prim == PP_MELEE;
 }
 
@@ -3636,7 +3636,7 @@ void BotCheckAttack(bot_state_t *bs) {
 	VectorSubtract(bs->aimtarget, bs->eye, dir);
 	//
 	if (bs->weaponnum == WP_GAUNTLET || BotPangeaMelee(bs->weaponnum)) {
-		const pangeaAbility_t *pa = BG_PangeaAbility(bs->weaponnum, qfalse, Pangea_Mode());
+		const pangeaAbility_t *pa = BG_PangeaAbility(bs->weaponnum, qfalse, Pangea_Mode(), 0);
 		float reach = pa ? pa->range + 24 : 60;
 		if (VectorLengthSquared(dir) > Square(reach)) {
 			return;

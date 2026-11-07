@@ -356,6 +356,12 @@ describe("tier-0 arena (C6)", () => {
     expect(cfgOf(req)).toContain('set g_pangea_races "t2=fey,Ker=troll"');
   });
 
+  it("C7: faith goes after the race; unknown faith is rejected", () => {
+    const req = parseMatchRequest({ ...duelNpc, players: [{ ticket: "t2", name: "Арн", race: "dwarf", faith: "sun" }, { ...ker, faith: "moon" }] }, MAPS);
+    expect(cfgOf(req)).toContain('set g_pangea_races "t2=dwarf.sun,Ker=.moon"');
+    expect(() => parseMatchRequest({ ...ffa(2), players: [{ ticket: "a", faith: "machine" }, { ticket: "b" }] }, MAPS)).toThrow(ValidationError);
+  });
+
   it("race is optional and must be lowercase latin", () => {
     expect(cfgOf(parseMatchRequest(ffa(3), MAPS))).toContain('set g_pangea_races ""');
     const bad = (b: object) => expect(() => parseMatchRequest(b, MAPS)).toThrow(ValidationError);

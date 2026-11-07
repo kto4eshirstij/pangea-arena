@@ -323,7 +323,9 @@ char	*modNames[] = {
 	"MOD_PANGEA_TORCH",
 	"MOD_PANGEA_BRAND",
 	"MOD_PANGEA_BURN",
-	"MOD_PANGEA_SLAM"
+	"MOD_PANGEA_SLAM",
+	"MOD_PANGEA_RITE",
+	"MOD_PANGEA_LEGACY"
 };
 
 #ifdef MISSIONPACK
@@ -828,7 +830,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		return;
 	}
 
-	damage = Pangea_ModifyDamage( targ, inflictor, damage, mod );
+	damage = Pangea_ModifyDamage( targ, inflictor, attacker, damage, mod );
 	if ( mod >= MOD_PANGEA_PUNCH && trap_Cvar_VariableIntegerValue( "g_pangea_debug" ) ) {
 		G_LogPrintf( "Pangea: damage %i -> %i %i %s\n", attacker ? attacker->s.number : -1, targ->s.number, damage, modNames[mod] );
 	}

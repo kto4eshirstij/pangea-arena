@@ -299,6 +299,14 @@ static void CG_Obituary( entityState_t *ent ) {
 		case MOD_PANGEA_SLAM:
 			message = "was crushed by";
 			break;
+		case MOD_PANGEA_RITE:
+			message = "was struck down by";
+			message2 = "'s rite";
+			break;
+		case MOD_PANGEA_LEGACY:
+			message = "fell to";
+			message2 = "'s ancestral power";
+			break;
 		case MOD_GRAPPLE:
 			message = "was caught by";
 			break;

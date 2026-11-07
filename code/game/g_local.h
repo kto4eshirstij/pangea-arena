@@ -326,6 +326,12 @@ struct gclient_s {
 	int			pangeaStunUntil;
 	int			pangeaTorchBack;	// a new torch in the hand at this time (0 = none due)
 	int			pangeaSpearBack;
+	// C7: rites and legacies
+	int			pangeaWardUntil, pangeaWardPct;
+	int			pangeaSwiftUntil, pangeaSwiftPct;
+	int			pangeaRageUntil, pangeaRagePct;
+	int			pangeaMendUntil, pangeaMendNext, pangeaMendPerTick;
+	int			pangeaDodgeUntil;
 };
 
 
@@ -988,9 +994,10 @@ const char		*Pangea_CheckConnect( int clientNum, const char *userinfo, qboolean 
 void			Pangea_ClientConnected( int clientNum, const char *userinfo, qboolean isBot );
 void			Pangea_GiveArsenal( gclient_t *client );
 qboolean		Pangea_ItemAllowed( const gitem_t *item );
-int				Pangea_ModifyDamage( gentity_t *targ, gentity_t *inflictor, int damage, int mod );
+int				Pangea_ModifyDamage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, int damage, int mod );
 int				Pangea_Mode( void );		// PANGEA_SIM | PANGEA_HONOR | PANGEA_SLAUGHTER
 const char		*Pangea_ClientRace( int clientNum );
+const char		*Pangea_ClientFaith( int clientNum );
 void			Pangea_SpawnWeapon( gclient_t *client );
 gitem_t			*Pangea_ItemReplace( gitem_t *item );
 int				Pangea_AmmoMax( int weapon );

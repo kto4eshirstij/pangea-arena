@@ -43,6 +43,8 @@ static int	pangeaQuitTime;
 static char	pangeaTickets[MAX_CLIENTS][64];
 // people of each client slot ("" = unknown: the client draws human hands)
 static char	pangeaRaces[MAX_CLIENTS][24];
+// faith of each client slot ("" = unknown: «Очаг»)
+static char	pangeaFaiths[MAX_CLIENTS][12];
 
 // "Infinite" ammo for rail/rocket arsenals. Not -1: bot AI treats -1 as empty.
 #define PANGEA_AMMO	99
@@ -142,15 +144,16 @@ const char *Pangea_CheckConnect( int clientNum, const char *userinfo, qboolean i
 }
 
 /*
-The people of <key> (a ticket or a bot name) from g_pangea_races "key=race,key=race".
-Only [a-z_] survive in the race (it goes into a configstring and a file name).
+The people and faith of <key> (a ticket or a bot name) from g_pangea_races
+"key=race.faith,key=race" (faith optional). Only [a-z_] survive (configstring, file names).
 */
-static void Pangea_LookupRace( const char *key, char *out, int size ) {
+static void Pangea_LookupRace( const char *key, char *out, int size, char *faith, int fsize ) {
 	char		list[MAX_STRING_CHARS];
 	const char	*p = list;
 	int			len = strlen( key );
 
 	out[0] = '\0';
+	faith[0] = '\0';
 	if ( !len ) {
 		return;
 	}
@@ -167,20 +170,44 @@ static void Pangea_LookupRace( const char *key, char *out, int size ) {
 		}
 		eq = strchr( start, '=' );
 		if ( eq && eq < p && eq - start == len && !Q_stricmpn( start, key, len ) ) {
-			int n = 0;
-			for ( eq++ ; eq < p && n < size - 1 ; eq++ ) {
+			int		n = 0, max = size;
+			char	*dst = out;
+
+			for ( eq++ ; eq < p ; eq++ ) {
 				char c = *eq;
+				if ( c == '.' && dst == out ) {
+					dst[n] = '\0';
+					dst = faith;
+					max = fsize;
+					n = 0;
+					continue;
+				}
 				if ( c >= 'A' && c <= 'Z' ) {
 					c += 'a' - 'A';
 				}
-				if ( ( c >= 'a' && c <= 'z' ) || c == '_' ) {
-					out[n++] = c;
+				if ( ( ( c >= 'a' && c <= 'z' ) || c == '_' ) && n < max - 1 ) {
+					dst[n++] = c;
 				}
 			}
-			out[n] = '\0';
+			dst[n] = '\0';
 			return;
 		}
 	}
+}
+
+/* PERS_PANGEA_KIN of a client: race | faith << 4 */
+static int Pangea_ClientKin( int clientNum ) {
+	if ( clientNum < 0 || clientNum >= MAX_CLIENTS ) {
+		return 0;
+	}
+	return BG_PangeaRaceIndex( pangeaRaces[clientNum] ) | ( BG_PangeaFaithIndex( pangeaFaiths[clientNum] ) << 4 );
+}
+
+const char *Pangea_ClientFaith( int clientNum ) {
+	if ( clientNum < 0 || clientNum >= MAX_CLIENTS || !Pangea_Active() ) {
+		return "";
+	}
+	return pangeaFaiths[clientNum];
 }
 
 const char *Pangea_ClientRace( int clientNum ) {
@@ -200,9 +227,10 @@ void Pangea_ClientConnected( int clientNum, const char *userinfo, qboolean isBot
 	Q_strncpyz( pangeaTickets[clientNum], isBot ? "bot" : Info_ValueForKey( userinfo, "pangea_ticket" ),
 		sizeof( pangeaTickets[clientNum] ) );
 	Pangea_LookupRace( isBot ? Info_ValueForKey( userinfo, "name" ) : pangeaTickets[clientNum],
-		pangeaRaces[clientNum], sizeof( pangeaRaces[clientNum] ) );
-	if ( pangeaRaces[clientNum][0] ) {
-		G_LogPrintf( "Pangea: race client %i %s\n", clientNum, pangeaRaces[clientNum] );
+		pangeaRaces[clientNum], sizeof( pangeaRaces[clientNum] ),
+		pangeaFaiths[clientNum], sizeof( pangeaFaiths[clientNum] ) );
+	if ( pangeaRaces[clientNum][0] || pangeaFaiths[clientNum][0] ) {
+		G_LogPrintf( "Pangea: race client %i %s %s\n", clientNum, pangeaRaces[clientNum], pangeaFaiths[clientNum] );
 	}
 	G_LogPrintf( "Pangea: ticket %s client %i\n", pangeaTickets[clientNum], clientNum );
 	// The gateway's UDP socket of this browser: the manager kicks the slot when its
@@ -230,15 +258,20 @@ void Pangea_GiveArsenal( gclient_t *client ) {
 	client->pangeaEntangleUntil = client->pangeaStunUntil = 0;
 	client->pangeaTorchBack = client->pangeaSpearBack = 0;
 	client->ps.generic1 = 0;
+	client->pangeaWardUntil = client->pangeaSwiftUntil = client->pangeaRageUntil = 0;
+	client->pangeaMendUntil = client->pangeaMendNext = client->pangeaDodgeUntil = 0;
+	client->ps.powerups[PW_PANGEA_VISION] = 0;
 
 	if ( Pangea_Mode() != PANGEA_SIM ) {
 		int mode = Pangea_Mode();
+		int kin = Pangea_ClientKin( client - level.clients );
 
+		client->ps.persistant[PERS_PANGEA_KIN] = kin;
 		client->ps.stats[STAT_WEAPONS] = 0;
 		client->ps.ammo[WP_GRAPPLING_HOOK] = 0;
-		for ( i = WP_GAUNTLET ; i <= WP_RAILGUN ; i++ ) {
+		for ( i = WP_GAUNTLET ; i - WP_GAUNTLET < PANGEA_SLOTS ; i++ ) {
 			client->ps.stats[STAT_PANGEA_CD1 + i - WP_GAUNTLET] = 0;
-			if ( !BG_PangeaSlotAllowed( i, mode ) ) {
+			if ( !BG_PangeaSlotAllowed( i, mode, kin ) ) {
 				continue;
 			}
 			client->ps.stats[STAT_WEAPONS] |= ( 1 << i );
@@ -300,9 +333,31 @@ qboolean Pangea_ItemAllowed( const gitem_t *item ) {
 	}
 }
 
-int Pangea_ModifyDamage( gentity_t *targ, gentity_t *inflictor, int damage, int mod ) {
+int Pangea_ModifyDamage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker, int damage, int mod ) {
 	if ( g_pangea_instagib.integer && mod == MOD_RAILGUN ) {
 		return 1000;
+	}
+	if ( Pangea_Mode() != PANGEA_SIM && damage > 0 ) {
+		// orc's rage: the blows land harder
+		if ( attacker && attacker != targ && attacker->client && attacker->client->pangeaRageUntil > level.time ) {
+			damage = damage * attacker->client->pangeaRagePct / 100;
+		}
+		if ( targ->client && attacker != targ && mod != MOD_FALLING ) {
+			gclient_t *c = targ->client;
+			// halfling's luck: the next blow misses
+			if ( c->pangeaDodgeUntil > level.time && mod != MOD_PANGEA_BURN ) {
+				c->pangeaDodgeUntil = 0;
+				G_AddEvent( targ, EV_GRENADE_BOUNCE, 0 );
+				return 0;
+			}
+			// stone skin, «Стойкость»
+			if ( c->pangeaWardUntil > level.time ) {
+				damage = damage * c->pangeaWardPct / 100;
+				if ( damage < 1 ) {
+					damage = 1;
+				}
+			}
+		}
 	}
 	// the shield takes the blow when it is up and the blow comes from the front
 	if ( Pangea_Mode() != PANGEA_SIM && targ->client && inflictor && inflictor != targ &&
@@ -378,6 +433,28 @@ Called every server frame (G_RunFrame) and from G_UpdateCvars.
 void Pangea_RunFrame( void ) {
 	pangeaArsenal_t	arsenal = Pangea_Arsenal();
 	int				i;
+
+	// «Видение»: while someone has it, every player is sent to everybody (marked through walls)
+	if ( Pangea_Mode() != PANGEA_SIM ) {
+		qboolean seer = qfalse;
+		for ( i = 0 ; i < level.maxclients ; i++ ) {
+			gclient_t *cl = &level.clients[i];
+			if ( cl->pers.connected == CON_CONNECTED && cl->ps.powerups[PW_PANGEA_VISION] > level.time ) {
+				seer = qtrue;
+			}
+		}
+		for ( i = 0 ; i < level.maxclients ; i++ ) {
+			gentity_t *e = &g_entities[i];
+			if ( !e->inuse || !e->client ) {
+				continue;
+			}
+			if ( seer ) {
+				e->r.svFlags |= SVF_BROADCAST;
+			} else {
+				e->r.svFlags &= ~SVF_BROADCAST;
+			}
+		}
+	}
 
 	if ( arsenal == PANGEA_ARSENAL_RAIL || arsenal == PANGEA_ARSENAL_ROCKET ) {
 		int weapon = arsenal == PANGEA_ARSENAL_RAIL ? WP_RAILGUN : WP_ROCKET_LAUNCHER;
@@ -576,6 +653,7 @@ static const char *Pangea_KindModel( int kind ) {
 	case PK_SPEAR:
 	case PK_SPEAR_GROUND:	return "models/weapons2/spear/spear.md3";
 	case PK_BRAND:			return "models/projectiles/proj_brand.md3";
+	case PK_BOULDER:		return "models/projectiles/proj_boulder.md3";
 	default:				return NULL;
 	}
 }
@@ -800,6 +878,9 @@ qboolean Pangea_MissileImpact( gentity_t *ent, trace_t *trace ) {
 		}
 		G_Damage( other, ent, owner, velocity, origin, ent->damage, 0, ent->methodOfDeath );
 		Pangea_Afflict( other, owner, a );
+		if ( a->flags & PAF_KNOCK ) {
+			Pangea_Push( other, velocity, 350, 150 );
+		}
 	}
 
 	if ( other->takedamage && other->client ) {
@@ -853,6 +934,172 @@ static void Pangea_Slam( gentity_t *ent, const pangeaAbility_t *a ) {
 	}
 }
 
+/*
+C7: a buff on oneself (rites and legacies).
+*/
+static void Pangea_Self( gentity_t *ent, const pangeaAbility_t *a ) {
+	gclient_t	*c = ent->client;
+	int			until = level.time + a->effectTime;
+
+	if ( a->flags & PAF_WARD ) {
+		c->pangeaWardUntil = until;
+		c->pangeaWardPct = a->effectValue;
+	}
+	if ( a->flags & PAF_SWIFT ) {
+		c->pangeaSwiftUntil = until;
+		c->pangeaSwiftPct = a->effectValue;
+	}
+	if ( a->flags & PAF_RAGE ) {
+		c->pangeaRageUntil = until;
+		c->pangeaRagePct = a->effectValue;
+	}
+	if ( a->flags & PAF_DODGE ) {
+		c->pangeaDodgeUntil = until;
+	}
+	if ( a->flags & PAF_INVIS ) {
+		c->ps.powerups[PW_INVIS] = until;
+	}
+	if ( a->flags & PAF_VISION ) {
+		c->ps.powerups[PW_PANGEA_VISION] = until;
+	}
+	if ( a->flags & PAF_HEAL ) {
+		ent->health += a->damage;
+		if ( ent->health > c->ps.stats[STAT_MAX_HEALTH] ) {
+			ent->health = c->ps.stats[STAT_MAX_HEALTH];
+		}
+		c->ps.stats[STAT_HEALTH] = ent->health;
+	}
+	if ( a->flags & PAF_MEND ) {
+		int ticks = a->effectTime / PANGEA_BURN_TICK;
+		c->pangeaMendUntil = until;
+		c->pangeaMendNext = level.time + PANGEA_BURN_TICK;
+		c->pangeaMendPerTick = ticks > 0 ? ( a->damage + ticks - 1 ) / ticks : a->damage;
+	}
+}
+
+/*
+Everyone (alive, visible) within <range> of <ent>; in a cone of cos <dot> ahead if dot > -1.
+*/
+static int Pangea_Around( gentity_t *ent, float range, float dot, gentity_t **out, int max ) {
+	int		touch[MAX_GENTITIES];
+	vec3_t	mins, maxs, fwd, eye;
+	int		i, n, found = 0;
+
+	AngleVectors( ent->client->ps.viewangles, fwd, NULL, NULL );
+	VectorCopy( ent->client->ps.origin, eye );
+	eye[2] += ent->client->ps.viewheight;
+	for ( i = 0 ; i < 3 ; i++ ) {
+		mins[i] = ent->r.currentOrigin[i] - range;
+		maxs[i] = ent->r.currentOrigin[i] + range;
+	}
+	n = trap_EntitiesInBox( mins, maxs, touch, MAX_GENTITIES );
+	for ( i = 0 ; i < n && found < max ; i++ ) {
+		gentity_t	*t = &g_entities[touch[i]];
+		vec3_t		d;
+		trace_t		tr;
+		float		len;
+
+		if ( t == ent || !t->client || t->health <= 0 || !t->takedamage ) {
+			continue;
+		}
+		VectorSubtract( t->r.currentOrigin, eye, d );
+		len = VectorNormalize( d );
+		if ( len > range || ( dot > -1 && DotProduct( d, fwd ) < dot ) ) {
+			continue;
+		}
+		trap_Trace( &tr, eye, NULL, NULL, t->r.currentOrigin, ent->s.number, MASK_SOLID );
+		if ( tr.fraction < 1 && tr.entityNum != t->s.number ) {
+			continue;
+		}
+		out[found++] = t;
+	}
+	return found;
+}
+
+/* «Жар», dragon's breath: everyone in a cone ahead */
+static void Pangea_Cone( gentity_t *ent, const pangeaAbility_t *a ) {
+	gentity_t	*hit[MAX_CLIENTS];
+	vec3_t		fwd;
+	int			i, n = Pangea_Around( ent, a->range, 0.82f, hit, MAX_CLIENTS );
+
+	AngleVectors( ent->client->ps.viewangles, fwd, NULL, NULL );
+	for ( i = 0 ; i < n ; i++ ) {
+		G_Damage( hit[i], ent, ent, fwd, hit[i]->r.currentOrigin, a->damage * Pangea_DamageScale( ent ), DAMAGE_NO_KNOCKBACK, a->mod );
+		Pangea_Afflict( hit[i], ent, a );
+	}
+}
+
+/* «Крик рода»: everyone around is thrown back */
+static void Pangea_Ring( gentity_t *ent, const pangeaAbility_t *a ) {
+	gentity_t	*hit[MAX_CLIENTS];
+	int			i, n = Pangea_Around( ent, a->range, -2, hit, MAX_CLIENTS );
+
+	for ( i = 0 ; i < n ; i++ ) {
+		vec3_t d;
+		VectorSubtract( hit[i]->r.currentOrigin, ent->r.currentOrigin, d );
+		G_Damage( hit[i], ent, ent, d, hit[i]->r.currentOrigin, a->damage * Pangea_DamageScale( ent ), DAMAGE_NO_KNOCKBACK, a->mod );
+		Pangea_Push( hit[i], d, a->effectValue, 180 );
+		Pangea_Afflict( hit[i], ent, a );
+	}
+}
+
+/* tiefling: a short step through the shadow, as far as the way is free */
+static void Pangea_Blink( gentity_t *ent, const pangeaAbility_t *a ) {
+	gclient_t	*c = ent->client;
+	vec3_t		fwd, end, start;
+	trace_t		tr;
+	gentity_t	*tent;
+
+	AngleVectors( c->ps.viewangles, fwd, NULL, NULL );
+	fwd[2] = 0;
+	VectorNormalize( fwd );
+	VectorCopy( c->ps.origin, start );
+	VectorMA( start, a->range, fwd, end );
+	trap_Trace( &tr, start, ent->r.mins, ent->r.maxs, end, ent->s.number, MASK_PLAYERSOLID );
+	if ( tr.startsolid || tr.allsolid || tr.fraction < 0.1f ) {
+		return;
+	}
+	tent = G_TempEntity( c->ps.origin, EV_PLAYER_TELEPORT_OUT );
+	tent->s.clientNum = ent->s.clientNum;
+	VectorCopy( tr.endpos, c->ps.origin );
+	c->ps.eFlags ^= EF_TELEPORT_BIT;
+	BG_PlayerStateToEntityState( &c->ps, &ent->s, qtrue );
+	VectorCopy( c->ps.origin, ent->r.currentOrigin );
+	trap_LinkEntity( ent );
+	tent = G_TempEntity( c->ps.origin, EV_PLAYER_TELEPORT_IN );
+	tent->s.clientNum = ent->s.clientNum;
+}
+
+static void Pangea_FogThink( gentity_t *fog ) {
+	G_FreeEntity( fog );
+}
+
+/* «Морок»: a cloud of fog where the player looks (only the eyes are fooled) */
+static void Pangea_Cloud( gentity_t *ent, const pangeaAbility_t *a ) {
+	vec3_t		fwd, eye, end;
+	trace_t		tr;
+	gentity_t	*fog;
+
+	AngleVectors( ent->client->ps.viewangles, fwd, NULL, NULL );
+	VectorCopy( ent->client->ps.origin, eye );
+	eye[2] += ent->client->ps.viewheight;
+	VectorMA( eye, a->range, fwd, end );
+	trap_Trace( &tr, eye, NULL, NULL, end, ent->s.number, MASK_SOLID );
+	VectorMA( tr.endpos, -24, fwd, end );
+
+	fog = G_Spawn();
+	fog->classname = "pangea_fog";
+	fog->s.eType = ET_GENERAL;
+	fog->s.generic1 = PK_FOG;
+	fog->s.time = level.time;
+	fog->s.time2 = a->effectTime;
+	fog->r.svFlags = SVF_BROADCAST;
+	G_SetOrigin( fog, end );
+	fog->think = Pangea_FogThink;
+	fog->nextthink = level.time + a->effectTime;
+	trap_LinkEntity( fog );
+}
+
 static void Pangea_Use( gentity_t *ent, const pangeaAbility_t *a ) {
 	if ( !a ) {
 		return;
@@ -860,7 +1107,7 @@ static void Pangea_Use( gentity_t *ent, const pangeaAbility_t *a ) {
 	if ( trap_Cvar_VariableIntegerValue( "g_pangea_debug" ) ) {
 		G_LogPrintf( "Pangea: use %i %s\n", ent->s.number, a->id );
 	}
-	if ( a->weapon != WP_GAUNTLET ) {
+	if ( a->prim == PP_MELEE || a->prim == PP_MISSILE ) {
 		ent->client->accuracy_shots++;
 	}
 	switch ( a->prim ) {
@@ -873,14 +1120,29 @@ static void Pangea_Use( gentity_t *ent, const pangeaAbility_t *a ) {
 	case PP_SLAM:
 		Pangea_Slam( ent, a );
 		break;
-	default:
+	case PP_SELF:
+		Pangea_Self( ent, a );
+		break;
+	case PP_CONE:
+		Pangea_Cone( ent, a );
+		break;
+	case PP_RING:
+		Pangea_Ring( ent, a );
+		break;
+	case PP_BLINK:
+		Pangea_Blink( ent, a );
+		break;
+	case PP_CLOUD:
+		Pangea_Cloud( ent, a );
+		break;
+	default:		// PP_LEAP: done by Pmove
 		break;
 	}
 }
 
 /* EV_FIRE_WEAPON in a tier-0 arena */
 void Pangea_FirePrimary( gentity_t *ent ) {
-	Pangea_Use( ent, BG_PangeaAbility( ent->s.weapon, qfalse, Pangea_Mode() ) );
+	Pangea_Use( ent, BG_PangeaAbility( ent->s.weapon, qfalse, Pangea_Mode(), ent->client->ps.persistant[PERS_PANGEA_KIN] ) );
 }
 
 /* EV_PANGEA_ALT, weapon = eventParm */
@@ -888,7 +1150,7 @@ void Pangea_FireAlt( gentity_t *ent, int weapon ) {
 	if ( Pangea_Mode() == PANGEA_SIM ) {
 		return;
 	}
-	Pangea_Use( ent, BG_PangeaAbility( weapon, qtrue, Pangea_Mode() ) );
+	Pangea_Use( ent, BG_PangeaAbility( weapon, qtrue, Pangea_Mode(), ent->client->ps.persistant[PERS_PANGEA_KIN] ) );
 }
 
 /*
@@ -932,6 +1194,33 @@ void Pangea_ClientThink( gentity_t *ent ) {
 	if ( flags & PSTAT_BLOCKING ) {
 		c->ps.speed *= PANGEA_BLOCK_SPEED;
 	}
+	// C7 buffs
+	if ( c->pangeaWardUntil > level.time || c->pangeaDodgeUntil > level.time ) {
+		flags |= PSTAT_WARD;
+	}
+	if ( c->pangeaSwiftUntil > level.time ) {
+		flags |= PSTAT_SWIFT;
+		c->ps.speed = c->ps.speed * c->pangeaSwiftPct / 100;
+	}
+	if ( c->pangeaRageUntil > level.time ) {
+		flags |= PSTAT_SWIFT;
+	}
+	if ( c->pangeaMendUntil > level.time && ent->health > 0 ) {
+		flags |= PSTAT_MEND;
+		if ( level.time >= c->pangeaMendNext ) {
+			c->pangeaMendNext = level.time + PANGEA_BURN_TICK;
+			if ( ent->health < c->ps.stats[STAT_MAX_HEALTH] ) {
+				ent->health += c->pangeaMendPerTick;
+				if ( ent->health > c->ps.stats[STAT_MAX_HEALTH] ) {
+					ent->health = c->ps.stats[STAT_MAX_HEALTH];
+				}
+				c->ps.stats[STAT_HEALTH] = ent->health;
+			}
+		}
+	}
+	if ( c->ps.powerups[PW_PANGEA_VISION] && c->ps.powerups[PW_PANGEA_VISION] <= level.time ) {
+		c->ps.powerups[PW_PANGEA_VISION] = 0;
+	}
 	if ( c->pangeaTorchBack && level.time >= c->pangeaTorchBack ) {
 		c->pangeaTorchBack = 0;
 		c->ps.ammo[WP_LIGHTNING] = 1;
@@ -950,7 +1239,7 @@ void Pangea_ClientThink( gentity_t *ent ) {
 Bots: the projectile speed botlib aims with (it knows the stock weapons only).
 */
 void Pangea_BotWeaponInfo( int weapon, float *speed ) {
-	const pangeaAbility_t *a = BG_PangeaAbility( weapon, qfalse, Pangea_Mode() );
+	const pangeaAbility_t *a = BG_PangeaAbility( weapon, qfalse, Pangea_Mode(), 0 );
 
 	if ( a && a->prim == PP_MISSILE ) {
 		*speed = a->speed;
@@ -967,7 +1256,7 @@ int Pangea_BotChooseWeapon( gentity_t *ent, float enemyDist ) {
 	playerState_t	*ps = &ent->client->ps;
 	int				mode = Pangea_Mode();
 
-#define HAS( w )	( ( ps->stats[STAT_WEAPONS] & ( 1 << ( w ) ) ) && BG_PangeaSlotAllowed( ( w ), mode ) )
+#define HAS( w )	( ( ps->stats[STAT_WEAPONS] & ( 1 << ( w ) ) ) && BG_PangeaSlotAllowed( ( w ), mode, ps->persistant[PERS_PANGEA_KIN] ) )
 	if ( mode == PANGEA_SIM ) {
 		return 0;
 	}

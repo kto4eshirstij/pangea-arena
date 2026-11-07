@@ -372,7 +372,8 @@ typedef struct {
 	animation_t		animations[MAX_TOTALANIMATIONS];
 
 	sfxHandle_t		sounds[MAX_CUSTOM_SOUNDS];
-	char			pangeaRace[24];		// Pangea: people of the player ("pr"), first-person hands
+	char			pangeaRace[24];
+	char			pangeaFaith[12];		// "pf": sun | moon | "" (hearth)		// Pangea: people of the player ("pr"), first-person hands
 } clientInfo_t;
 
 

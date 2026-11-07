@@ -13,6 +13,8 @@ export interface Player {
   name?: string;
   /** People of the character (arena hand skins), e.g. "human", "troll", "fey". */
   race?: string;
+  /** Faith (rites, slot 8): "sun" | "moon"; none = «Очаг». */
+  faith?: string;
 }
 
 /** A Pangea NPC fighter: an ioq3 bot under the NPC's (transliterated) name. */
@@ -23,6 +25,7 @@ export interface NpcPlayer {
   key: string;           // internal id in places ("npc:<i>")
   bot: { model: string; skill: number };
   race?: string;
+  faith?: string;
 }
 
 export interface Rules {
@@ -58,6 +61,14 @@ export const BOT_NAMES = ["sarge", "grism", "kyonshi"];
 const TICKET_RE = /^[A-Za-z0-9_-]{1,63}$/;
 /** A people key: lowercase latin, as in the arena's hand skins. */
 const RACE_RE = /^[a-z_]{1,20}$/;
+
+const FAITHS = ["sun", "moon"];
+
+function faith(v: unknown, where: string): string | undefined {
+  if (v === undefined || v === null || v === "") return undefined;
+  if (typeof v !== "string" || !FAITHS.includes(v)) throw new ValidationError(`${where}.faith: ${FAITHS.join(" | ")}`);
+  return v;
+}
 
 function race(v: unknown, where: string): string | undefined {
   if (v === undefined || v === null || v === "") return undefined;
@@ -126,30 +137,33 @@ export function parseMatchRequest(body: unknown, allowedMaps: Record<Mode, strin
   }
   if (!Array.isArray(b.players)) throw new ValidationError("players: массив");
   const players: Player[] = [];
-  const npcRaw: { name: string; bot: { model: string; skill: number }; race?: string }[] = [];
+  const npcRaw: { name: string; bot: { model: string; skill: number }; race?: string; faith?: string }[] = [];
   b.players.forEach((p, i) => {
     if (!p || typeof p !== "object") throw new ValidationError(`players[${i}]: объект`);
     const { ticket, name, npc, bot } = p as Record<string, unknown>;
     const r = race((p as Record<string, unknown>).race, `players[${i}]`);
+    const f = faith((p as Record<string, unknown>).faith, `players[${i}]`);
+    const kin = { ...(r ? { race: r } : {}), ...(f ? { faith: f } : {}) };
     if (npc === true) {
       if (typeof name !== "string" || !name.trim() || name.length > 64) throw new ValidationError(`players[${i}].name: имя NPC`);
       const bb = (bot ?? {}) as Record<string, unknown>;
       const model = bb.model ?? BOT_NAMES[0];
       if (typeof model !== "string" || !BOT_NAMES.includes(model)) throw new ValidationError(`players[${i}].bot.model: одна из ${BOT_NAMES.join(", ")}`);
       const skill = int(bb.skill ?? 3, `players[${i}].bot.skill`, 1, 5);
-      npcRaw.push({ name: name.trim(), bot: { model, skill }, ...(r ? { race: r } : {}) });
+      npcRaw.push({ name: name.trim(), bot: { model, skill }, ...kin });
       return;
     }
     if (npc !== undefined) throw new ValidationError(`players[${i}].npc: true`);
     if (typeof ticket !== "string" || !TICKET_RE.test(ticket)) throw new ValidationError(`players[${i}].ticket: [A-Za-z0-9_-]{1,63}`);
     if (name !== undefined && typeof name !== "string") throw new ValidationError(`players[${i}].name: строка`);
-    players.push({ ticket, name: name as string | undefined, ...(r ? { race: r } : {}) });
+    players.push({ ticket, name: name as string | undefined, ...kin });
   });
   if (new Set(players.map((p) => p.ticket)).size !== players.length) throw new ValidationError("players: билеты повторяются");
   if (players.length < 1) throw new ValidationError("players: нужен хотя бы один человек");
   const latin = npcNames(npcRaw.map((n) => n.name));
   const npcs: NpcPlayer[] = npcRaw.map((n, i) => ({
-    npc: true, name: n.name, latin: latin[i], key: `npc:${i}`, bot: n.bot, ...(n.race ? { race: n.race } : {}),
+    npc: true, name: n.name, latin: latin[i], key: `npc:${i}`, bot: n.bot,
+    ...(n.race ? { race: n.race } : {}), ...(n.faith ? { faith: n.faith } : {}),
   }));
 
   const r = { ...DEFAULT_RULES[mode], ...((b.rules as object) ?? {}) } as Record<string, unknown>;
@@ -217,11 +231,15 @@ export function botCommands(req: MatchRequest): string[] {
   return out;
 }
 
-/** g_pangea_races: "ticket=race,BotName=race" (the server matches tickets and bot names). */
+/**
+ * g_pangea_races: "ticket=race.faith,BotName=race" (the server matches tickets and bot
+ * names; ".faith" only when known, a missing race is drawn as human).
+ */
 export function racesCvar(req: MatchRequest): string {
+  const kin = (k: string, race?: string, faith?: string) => `${k}=${race ?? ""}${faith ? "." + faith : ""}`;
   return [
-    ...req.players.filter((p) => p.race).map((p) => `${p.ticket}=${p.race}`),
-    ...req.npcs.filter((n) => n.race).map((n) => `${n.latin}=${n.race}`),
+    ...req.players.filter((p) => p.race || p.faith).map((p) => kin(p.ticket, p.race, p.faith)),
+    ...req.npcs.filter((n) => n.race || n.faith).map((n) => kin(n.latin, n.race, n.faith)),
   ].join(",");
 }
 

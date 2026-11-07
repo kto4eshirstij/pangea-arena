@@ -19,6 +19,12 @@ ammo and the network protocol stay as they are:
   slot 5  WP_ROCKET_LAUNCHER   лук             ammo = стрелы
   slot 6  WP_LIGHTNING         факел           ammo = факел в руке (0/1)
   slot 7  WP_RAILGUN           щит
+  slot 8  WP_PLASMAGUN         обряд веры (C7): Солнце | Луна | Очаг
+  slot 9  WP_BFG               наследие народа (C7): своё у каждого из 13 народов
+
+Slots 8–9 depend on the player: ps->persistant[PERS_PANGEA_KIN] = race | faith << 4
+(PANGEA_RACE_*, PANGEA_FAITH_*), set by the server from g_pangea_races. Their
+primary has a cooldown too (shared with the secondary of the slot).
 
 Every slot has a primary (+attack) and a secondary (+button12, BUTTON_PANGEA_ALT)
 ability. Which ones exist depends on the arena mode (g_pangea_arsenal):
@@ -52,6 +58,38 @@ in ps->generic1 / es->generic1 (PSTAT_*). A missile's kind is es->generic1 (PK_*
 #define PSTAT_STUNNED		4
 #define PSTAT_BLOCKING		8
 #define PSTAT_TORCH_OUT		16			// the brand was thrown, the hand is empty for a while
+#define PSTAT_WARD			32			// damage taken reduced (stone skin, «Стойкость»)
+#define PSTAT_SWIFT			64			// faster or stronger (haste, rage)
+#define PSTAT_MEND			128			// healing over time
+
+// ps->persistant index with the player's people and faith (not cleared on respawn)
+#define PERS_PANGEA_KIN		15
+#define PANGEA_KIN_RACE( k )	( ( k ) & 15 )
+#define PANGEA_KIN_FAITH( k )	( ( ( k ) >> 4 ) & 3 )
+
+// powerup slot (time, ms) of «Видение»: enemies are marked through walls
+#define PW_PANGEA_VISION	15
+
+typedef enum {
+	PANGEA_RACE_HUMAN,		// 0 = also "unknown"
+	PANGEA_RACE_ELF,
+	PANGEA_RACE_DWARF,
+	PANGEA_RACE_GNOME,
+	PANGEA_RACE_HALFLING,
+	PANGEA_RACE_ORC,
+	PANGEA_RACE_GOBLIN,
+	PANGEA_RACE_GOLIATH,
+	PANGEA_RACE_DRAGONBORN,
+	PANGEA_RACE_TIEFLING,
+	PANGEA_RACE_TROLL,
+	PANGEA_RACE_FELAR,
+	PANGEA_RACE_FEY,
+	PANGEA_RACE_NUM
+} pangeaRace_t;
+
+#define PANGEA_FAITH_HEARTH	0		// Очаг: no faith known
+#define PANGEA_FAITH_SUN	1
+#define PANGEA_FAITH_MOON	2
 
 // es->generic1 of a Pangea missile / ground entity
 typedef enum {
@@ -64,6 +102,8 @@ typedef enum {
 	PK_SPEAR_GROUND,	// a spear lying on the ground, pick it up by walking over it
 	PK_BRAND,
 	PK_FIRE,			// fire patch left by the brand
+	PK_BOULDER,			// goliath's boulder
+	PK_FOG,				// «Морок»: a cloud of fog
 	PK_NUM
 } pangeaKind_t;
 
@@ -71,7 +111,13 @@ typedef enum {
 	PP_MELEE,			// trace(s) in front of the player
 	PP_MISSILE,			// a projectile (kind)
 	PP_BLOCK,			// hold: frontal damage reduced
-	PP_SLAM				// leap off the ground with a shock ring
+	PP_SLAM,			// leap off the ground with a shock ring
+	PP_SELF,			// a buff on oneself (PAF_WARD/SWIFT/RAGE/MEND/HEAL/DODGE/INVIS/VISION)
+	PP_CONE,			// everyone in a cone ahead within range
+	PP_RING,			// everyone around within range
+	PP_LEAP,			// a jump (Pmove), no damage
+	PP_BLINK,			// a short teleport ahead
+	PP_CLOUD			// fog where the player looks
 } pangeaPrim_t;
 
 #define PAF_ARC			1		// melee: three traces in a horizontal arc
@@ -82,6 +128,15 @@ typedef enum {
 #define PAF_LOB			32		// missile: aimed 25 degrees higher
 #define PAF_BOUNCE		64		// missile bounces (brand)
 #define PAF_USES_ITEM	128		// throws the weapon itself (spear, brand): ammo 1 -> 0
+#define PAF_WARD		256		// self: damage taken x effectValue %
+#define PAF_SWIFT		512		// self: speed x effectValue %
+#define PAF_RAGE		1024	// self: damage dealt x effectValue %
+#define PAF_MEND		2048	// self: heal <damage> over effectTime
+#define PAF_HEAL		4096	// self: heal <damage> at once
+#define PAF_DODGE		8192	// self: the next blow within effectTime misses
+#define PAF_INVIS		16384	// self: nearly invisible for effectTime
+#define PAF_VISION		32768	// self: enemies marked through walls for effectTime
+#define PAF_AIR			65536	// leap: also in the air
 
 typedef struct {
 	const char		*id;			// latin id, also the obituary/log name
@@ -99,10 +154,17 @@ typedef struct {
 	int				effectTime;		// ms of burn / entangle / stun
 	int				kind;			// PK_* of the missile
 	int				mod;			// means of death
+	int				kin;			// slot 8: faith + 1, slot 9: race + 1; 0 = everybody
+	int				effectValue;	// % for ward/swift/rage, push for rings and leaps
+	const char		*name;			// Russian name (docs, MUD)
 } pangeaAbility_t;
 
-#define PANGEA_SLOTS		7
-#define STAT_PANGEA_CD1		( STAT_MAX_HEALTH + 1 )		// .. CD1 + 6, ms
+#ifdef MISSIONPACK
+#define PANGEA_SLOTS		7		// the missionpack has one stat less: no slots 8-9
+#else
+#define PANGEA_SLOTS		9
+#endif
+#define STAT_PANGEA_CD1		( STAT_MAX_HEALTH + 1 )		// .. CD1 + PANGEA_SLOTS - 1, ms
 
 // player numbers
 #define PANGEA_BURN_TICK		500		// ms between burn damage ticks
@@ -128,9 +190,12 @@ typedef struct {
 extern const pangeaAbility_t	bg_pangeaAbilities[];
 extern const int				bg_numPangeaAbilities;
 
-const pangeaAbility_t	*BG_PangeaAbility( int weapon, qboolean alt, int mode );
-qboolean				BG_PangeaSlotAllowed( int weapon, int mode );
+const pangeaAbility_t	*BG_PangeaAbility( int weapon, qboolean alt, int mode, int kin );
+qboolean				BG_PangeaSlotAllowed( int weapon, int mode, int kin );
+int						BG_PangeaRaceIndex( const char *race );	// PANGEA_RACE_*, unknown = human
+int						BG_PangeaFaithIndex( const char *faith );
+const char				*BG_PangeaRaceName( int race );
 int						BG_PangeaModeBits( int mode );
-const char				*BG_PangeaSlotId( int weapon );	// "fists" .. "shield" (model ids)
+const char				*BG_PangeaSlotId( int weapon );	// "fists" .. "shield" (model ids), "rite", "legacy"
 
 #endif

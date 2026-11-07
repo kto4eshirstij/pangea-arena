@@ -25,6 +25,8 @@ Sounds are temporary OpenArena ones (GPL) until our own are made.
 #include "cg_local.h"
 
 #define Vector4Set( v, a, b, c, d )	( (v)[0] = (a), (v)[1] = (b), (v)[2] = (c), (v)[3] = (d) )
+#define PG_SLOT( w )	( (w) >= WP_GAUNTLET && (w) - WP_GAUNTLET < PANGEA_SLOTS )
+#define PG_RITE( w )	( (w) == WP_PLASMAGUN || (w) == WP_BFG )
 
 typedef struct {
 	qboolean	registered;
@@ -41,7 +43,7 @@ static struct {
 	qboolean	registered;
 	qhandle_t	fistPose[3];
 	qhandle_t	stones[4];
-	qhandle_t	bola, arrow, arrowFire, brand, spear, atlatl;
+	qhandle_t	bola, arrow, arrowFire, brand, spear, atlatl, boulder;
 	qhandle_t	flameShader;
 	sfxHandle_t	hitWall, hitStone, hitFlesh, block, slam, fire, bowRelease, slingRelease, throwSound;
 	char		race[24];				// of the local hands
@@ -98,6 +100,8 @@ static const char *CG_PangeaPoseName( int weapon ) {
 	case WP_ROCKET_LAUNCHER:	return "bow";
 	case WP_LIGHTNING:			return "torch";
 	case WP_RAILGUN:			return "shield";
+	case WP_PLASMAGUN:
+	case WP_BFG:				return "rite";
 	default:					return "fist";
 	}
 }
@@ -121,6 +125,7 @@ static void CG_PangeaRegisterCommon( void ) {
 	pg.brand = trap_R_RegisterModel( "models/projectiles/proj_brand.md3" );
 	pg.spear = trap_R_RegisterModel( "models/weapons2/spear/spear.md3" );
 	pg.atlatl = trap_R_RegisterModel( "models/weapons2/atlatl/atlatl.md3" );
+	pg.boulder = trap_R_RegisterModel( "models/projectiles/proj_boulder.md3" );
 	pg.flameShader = trap_R_RegisterShader( "models/weapons2/torch/flame" );
 
 	pg.hitWall = trap_S_RegisterSound( "sound/weapons/proxmine/wstbimpl.wav", qfalse );
@@ -150,7 +155,7 @@ void CG_PangeaRegisterWeapon( weaponInfo_t *wi, int weaponNum ) {
 	s = &pgSlots[weaponNum];
 	if ( !s->registered ) {
 		s->registered = qtrue;
-		if ( weaponNum != WP_GAUNTLET ) {
+		if ( weaponNum != WP_GAUNTLET && !PG_RITE( weaponNum ) ) {
 			s->model = trap_R_RegisterModel( va( "models/weapons2/%s/%s.md3", id, id ) );
 			for ( i = 0 ; i < 4 ; i++ ) {
 				s->paint[i] = trap_R_RegisterSkin( va( "models/weapons2/%s/%s_paint%i.skin", id, id, i + 1 ) );
@@ -176,6 +181,11 @@ void CG_PangeaRegisterWeapon( weaponInfo_t *wi, int weaponNum ) {
 			s->swing = trap_S_RegisterSound( "sound/weapons/melee/fstatck.wav", qfalse );
 			s->altSound = pg.throwSound;
 			break;
+		case WP_PLASMAGUN:
+		case WP_BFG:
+			s->swing = trap_S_RegisterSound( "sound/world/telein.wav", qfalse );
+			s->altSound = s->swing;
+			break;
 		default:
 			s->swing = trap_S_RegisterSound( "sound/weapons/melee/fstatck.wav", qfalse );
 			s->altSound = s->swing;
@@ -197,8 +207,10 @@ void CG_PangeaRegisterWeapon( weaponInfo_t *wi, int weaponNum ) {
 	wi->firingSound = 0;
 	memset( wi->flashSound, 0, sizeof( wi->flashSound ) );
 	wi->flashSound[0] = s->swing;
-	wi->weaponIcon = trap_R_RegisterShader( va( "icons/iconw_%s", id ) );
+	// rites and legacies have no item: the fists icon until their own is drawn
+	wi->weaponIcon = trap_R_RegisterShader( va( "icons/iconw_%s", PG_RITE( weaponNum ) ? "fists" : id ) );
 	wi->ammoIcon = wi->weaponIcon;
+	wi->ammoModel = 0;
 	if ( weaponNum == WP_GAUNTLET ) {
 		wi->weaponModel = 0;
 	}
@@ -207,6 +219,91 @@ void CG_PangeaRegisterWeapon( weaponInfo_t *wi, int weaponNum ) {
 /* "pr" of the player configstring */
 void CG_PangeaClientInfo( clientInfo_t *ci, const char *configstring ) {
 	Q_strncpyz( ci->pangeaRace, Info_ValueForKey( configstring, "pr" ), sizeof( ci->pangeaRace ) );
+	Q_strncpyz( ci->pangeaFaith, Info_ValueForKey( configstring, "pf" ), sizeof( ci->pangeaFaith ) );
+}
+
+/* PERS_PANGEA_KIN of any client, from its configstring */
+static int CG_PangeaKin( int clientNum ) {
+	clientInfo_t *ci;
+
+	if ( clientNum < 0 || clientNum >= MAX_CLIENTS ) {
+		return 0;
+	}
+	if ( clientNum == cg.snap->ps.clientNum ) {
+		return cg.snap->ps.persistant[PERS_PANGEA_KIN];
+	}
+	ci = &cgs.clientinfo[clientNum];
+	return BG_PangeaRaceIndex( ci->pangeaRace ) | ( BG_PangeaFaithIndex( ci->pangeaFaith ) << 4 );
+}
+
+/* colour of a rite / legacy glow */
+static void CG_PangeaRiteColor( const pangeaAbility_t *a, vec3_t c ) {
+	if ( a && a->weapon == WP_PLASMAGUN ) {
+		if ( a->kin == PANGEA_FAITH_SUN + 1 ) {
+			VectorSet( c, 1.0f, 0.8f, 0.35f );		// warm gold
+		} else if ( a->kin == PANGEA_FAITH_MOON + 1 ) {
+			VectorSet( c, 0.6f, 0.75f, 1.0f );		// the only cold one: a sign
+		} else {
+			VectorSet( c, 1.0f, 0.35f, 0.15f );		// embers of the hearth
+		}
+		return;
+	}
+	VectorSet( c, 0.95f, 0.7f, 0.45f );
+}
+
+/*
+Visible part of a rite / legacy at the moment it is used (all players see it).
+*/
+static void CG_PangeaRiteEffect( centity_t *cent, const pangeaAbility_t *a ) {
+	vec3_t	org, fwd, vel, col;
+	int		i;
+
+	if ( !a ) {
+		return;
+	}
+	CG_PangeaRiteColor( a, col );
+	VectorCopy( cent->lerpOrigin, org );
+	AngleVectors( cent->lerpAngles, fwd, NULL, NULL );
+	switch ( a->prim ) {
+	case PP_CONE:
+		org[2] += 20;
+		for ( i = 0 ; i < 10 ; i++ ) {
+			VectorScale( fwd, 260 + i * 15, vel );
+			vel[0] += crandom() * 60;
+			vel[1] += crandom() * 60;
+			vel[2] += crandom() * 30;
+			if ( a->flags & PAF_BURN ) {
+				CG_SmokePuff( org, vel, 14 + i, 1.0f, 0.55f, 0.15f, 0.9f, 600, cg.time + i * 20, 0, 0, cgs.media.smokePuffShader );
+			} else {
+				CG_SmokePuff( org, vel, 12 + i, col[0], col[1], col[2], 0.6f, 500, cg.time + i * 20, 0, 0, cgs.media.smokePuffShader );
+			}
+		}
+		break;
+	case PP_RING:
+	case PP_LEAP:
+		for ( i = 0 ; i < 12 ; i++ ) {
+			float an = i * ( 2 * M_PI / 12 );
+			vec3_t o2;
+			VectorCopy( org, o2 );
+			o2[2] -= 20;
+			VectorSet( vel, cos( an ) * ( a->prim == PP_RING ? 260 : 120 ), sin( an ) * ( a->prim == PP_RING ? 260 : 120 ), 20 );
+			CG_SmokePuff( o2, vel, 18, 0.55f, 0.45f, 0.32f, 0.8f, 700, cg.time, 0, 0, cgs.media.smokePuffShader );
+		}
+		break;
+	case PP_SELF:
+		for ( i = 0 ; i < 8 ; i++ ) {
+			vec3_t o2;
+			VectorCopy( org, o2 );
+			o2[0] += crandom() * 16;
+			o2[1] += crandom() * 16;
+			o2[2] += -10 + i * 6;
+			VectorSet( vel, 0, 0, 40 );
+			CG_SmokePuff( o2, vel, 8, col[0], col[1], col[2], 0.8f, 700, cg.time + i * 30, 0, 0, cgs.media.smokePuffShader );
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 /*
@@ -236,8 +333,14 @@ static void CG_PangeaSwing( int weapon, qboolean alt ) {
 }
 
 void CG_PangeaFireWeapon( centity_t *cent ) {
+	int w = cent->currentState.weapon;
+
 	if ( cent->currentState.number == cg.snap->ps.clientNum ) {
-		CG_PangeaSwing( cent->currentState.weapon, qfalse );
+		CG_PangeaSwing( w, qfalse );
+	}
+	if ( PG_RITE( w ) ) {
+		CG_PangeaRegisterCommon();
+		CG_PangeaRiteEffect( cent, BG_PangeaAbility( w, qfalse, cgs.pangea, CG_PangeaKin( cent->currentState.clientNum ) ) );
 	}
 }
 
@@ -247,11 +350,14 @@ EV_PANGEA_ALT: the secondary ability (sound, own swing, the slam's dust ring).
 void CG_PangeaAltEvent( centity_t *cent, int weapon ) {
 	pangeaSlot_t	*s;
 
-	if ( weapon < WP_GAUNTLET || weapon > WP_RAILGUN ) {
+	if ( !PG_SLOT( weapon ) ) {
 		return;
 	}
 	CG_RegisterWeapon( weapon );
 	s = &pgSlots[weapon];
+	if ( PG_RITE( weapon ) ) {
+		CG_PangeaRiteEffect( cent, BG_PangeaAbility( weapon, qtrue, cgs.pangea, CG_PangeaKin( cent->currentState.clientNum ) ) );
+	}
 	if ( s->altSound ) {
 		trap_S_StartSound( NULL, cent->currentState.number, CHAN_WEAPON, s->altSound );
 	}
@@ -302,7 +408,7 @@ static void CG_PangeaViewMotion( const playerState_t *ps, vec3_t offset, vec3_t 
 	if ( !pgSwingTime || pgSwingWeapon != ps->weapon ) {
 		return;
 	}
-	a = BG_PangeaAbility( pgSwingWeapon, pgSwingAlt, cgs.pangea );
+	a = BG_PangeaAbility( pgSwingWeapon, pgSwingAlt, cgs.pangea, cg.snap->ps.persistant[PERS_PANGEA_KIN] );
 	dur = a && a->refire > 0 ? a->refire : 400;
 	if ( dur > 700 ) {
 		dur = 700;		// the motion is quicker than the recovery
@@ -383,7 +489,7 @@ void CG_PangeaAddViewWeapon( playerState_t *ps ) {
 	int				paint = CG_PangeaPaint( ps->clientNum );
 	qboolean		empty;
 
-	if ( weapon < WP_GAUNTLET || weapon > WP_RAILGUN || ps->stats[STAT_HEALTH] <= 0 ) {
+	if ( !PG_SLOT( weapon ) || ps->stats[STAT_HEALTH] <= 0 ) {
 		return;
 	}
 	CG_RegisterWeapon( weapon );
@@ -426,6 +532,28 @@ void CG_PangeaAddViewWeapon( playerState_t *ps ) {
 	if ( weapon == WP_GAUNTLET || empty ) {
 		return;
 	}
+	if ( PG_RITE( weapon ) ) {
+		// the rite's glow between the palms; dim while the slot recovers
+		const pangeaAbility_t	*a = BG_PangeaAbility( weapon, qfalse, cgs.pangea, ps->persistant[PERS_PANGEA_KIN] );
+		int						cd = ps->stats[ STAT_PANGEA_CD1 + weapon - WP_GAUNTLET ];
+		refEntity_t				glow;
+		vec3_t					col;
+		float					k = cd > 0 ? 0.25f : 0.75f + 0.25f * sin( cg.time * 0.006f );
+
+		CG_PangeaRiteColor( a, col );
+		memset( &glow, 0, sizeof( glow ) );
+		glow.reType = RT_SPRITE;
+		glow.customShader = cgs.media.smokePuffShader;
+		glow.radius = cd > 0 ? 1.5f : 2.5f + 0.5f * sin( cg.time * 0.01f );
+		glow.renderfx = hands.renderfx;
+		CG_PositionEntityOnTag( &glow, &hands, hands.hModel, "tag_flash" );
+		glow.shaderRGBA[0] = 255 * col[0] * k;
+		glow.shaderRGBA[1] = 255 * col[1] * k;
+		glow.shaderRGBA[2] = 255 * col[2] * k;
+		glow.shaderRGBA[3] = 255;
+		trap_R_AddRefEntityToScene( &glow );
+		return;
+	}
 
 	switch ( weapon ) {
 	case WP_ROCKET_LAUNCHER:
@@ -464,7 +592,7 @@ qboolean CG_PangeaAddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centi
 	pangeaSlot_t	*s;
 	int				weapon = cent->currentState.weapon;
 
-	if ( !cgs.pangea || weapon < WP_GAUNTLET || weapon > WP_RAILGUN ) {
+	if ( !cgs.pangea || !PG_SLOT( weapon ) ) {
 		return qfalse;
 	}
 	CG_RegisterWeapon( weapon );
@@ -494,10 +622,51 @@ Burning, bola on the legs, stun stars: called from CG_Player with the legs entit
 void CG_PangeaPlayerEffects( centity_t *cent, refEntity_t *legs ) {
 	int flags = cent->currentState.generic1;
 
-	if ( !cgs.pangea || !flags ) {
+	if ( !cgs.pangea ) {
 		return;
 	}
 	CG_PangeaRegisterCommon();
+	// «Видение»: the seer marks every other fighter, drawn over the walls
+	if ( cg.snap->ps.powerups[PW_PANGEA_VISION] > cg.time && cent->currentState.clientNum != cg.snap->ps.clientNum &&
+		!( cent->currentState.eFlags & EF_DEAD ) ) {
+		refEntity_t mark;
+
+		memset( &mark, 0, sizeof( mark ) );
+		mark.reType = RT_SPRITE;
+		mark.customShader = cgs.media.smokePuffShader;
+		mark.radius = 12;
+		mark.renderfx = RF_DEPTHHACK;
+		VectorCopy( cent->lerpOrigin, mark.origin );
+		mark.origin[2] += 8;
+		mark.shaderRGBA[0] = 150;
+		mark.shaderRGBA[1] = 190;
+		mark.shaderRGBA[2] = 255;
+		mark.shaderRGBA[3] = 255;
+		trap_R_AddRefEntityToScene( &mark );
+	}
+	if ( !flags ) {
+		return;
+	}
+	if ( ( flags & ( PSTAT_WARD | PSTAT_SWIFT | PSTAT_MEND ) ) && cent->trailTime + 120 < cg.time ) {
+		vec3_t org, up = { 0, 0, 30 };
+
+		cent->trailTime = cg.time;
+		VectorCopy( cent->lerpOrigin, org );
+		org[0] += crandom() * 14;
+		org[1] += crandom() * 14;
+		if ( flags & PSTAT_WARD ) {			// a golden-grey edge round the body
+			org[2] += crandom() * 24;
+			CG_SmokePuff( org, vec3_origin, 7, 0.9f, 0.8f, 0.5f, 0.7f, 300, cg.time, 0, 0, cgs.media.smokePuffShader );
+		}
+		if ( flags & PSTAT_SWIFT ) {		// dust from the heels
+			org[2] -= 22;
+			CG_SmokePuff( org, vec3_origin, 9, 0.55f, 0.45f, 0.32f, 0.6f, 400, cg.time, 0, 0, cgs.media.smokePuffShader );
+		}
+		if ( flags & PSTAT_MEND ) {			// green sparks rising
+			org[2] += crandom() * 16;
+			CG_SmokePuff( org, up, 4, 0.5f, 1.0f, 0.5f, 0.9f, 600, cg.time, 0, 0, cgs.media.smokePuffShader );
+		}
+	}
 	if ( flags & PSTAT_BURNING ) {
 		refEntity_t	fl;
 		int			i;
@@ -595,6 +764,11 @@ qboolean CG_PangeaMissile( centity_t *cent ) {
 		ent.hModel = pg.spear;
 		CG_PangeaAxisFromDir( vel, ent.axis );
 		break;
+	case PK_BOULDER:
+		ent.hModel = pg.boulder;
+		VectorSet( angles, cg.time * 0.3f, cg.time * 0.2f, 0 );
+		AnglesToAxis( angles, ent.axis );
+		break;
 	case PK_BRAND:
 		ent.hModel = pg.brand;
 		VectorSet( angles, cg.time * 0.5f, 0, cg.time * 0.3f );
@@ -620,6 +794,33 @@ qboolean CG_PangeaGeneral( centity_t *cent ) {
 	float			life, fade;
 	int				i;
 
+	if ( cgs.pangea && s1->generic1 == PK_FOG ) {
+		// «Морок»: a thick cloud, fades in the last second
+		float	left = s1->time2 - ( cg.time - s1->time );
+		float	a = left > 1000 ? 1.0f : left / 1000.0f;
+
+		if ( a <= 0 ) {
+			return qtrue;
+		}
+		for ( i = 0 ; i < 9 ; i++ ) {
+			float an = i * ( 2 * M_PI / 9 ) + cg.time * 0.0002f;
+			memset( &fl, 0, sizeof( fl ) );
+			fl.reType = RT_SPRITE;
+			fl.customShader = cgs.media.smokePuffShader;
+			fl.radius = 70 + ( i % 3 ) * 15;
+			VectorCopy( cent->lerpOrigin, fl.origin );
+			fl.origin[0] += cos( an ) * 50;
+			fl.origin[1] += sin( an ) * 50;
+			fl.origin[2] += ( i % 3 ) * 30 - 20;
+			fl.rotation = i * 40 + cg.time * 0.01f;
+			fl.shaderRGBA[0] = 180;
+			fl.shaderRGBA[1] = 190;
+			fl.shaderRGBA[2] = 210;
+			fl.shaderRGBA[3] = 255 * a;
+			trap_R_AddRefEntityToScene( &fl );
+		}
+		return qtrue;
+	}
 	if ( !cgs.pangea || s1->generic1 != PK_FIRE ) {
 		return qfalse;
 	}
@@ -661,7 +862,7 @@ qtrue = handled (no stock explosions).
 qboolean CG_PangeaImpact( int weapon, vec3_t origin, vec3_t dir, int fleshEntity ) {
 	vec3_t	vel;
 
-	if ( !cgs.pangea || weapon < WP_GAUNTLET || weapon > WP_RAILGUN ) {
+	if ( !cgs.pangea || !PG_SLOT( weapon ) ) {
 		return qfalse;
 	}
 	CG_PangeaRegisterCommon();
@@ -685,37 +886,50 @@ qboolean CG_PangeaImpact( int weapon, vec3_t origin, vec3_t dir, int fleshEntity
 /*
 HUD: the secondary ability of the slot in hand — ready or the seconds left.
 */
+static void CG_PangeaHudLine( const pangeaAbility_t *a, int cd, const char *key, int y ) {
+	const char	*s;
+	vec4_t		color;
+
+	if ( cd > 0 ) {
+		s = va( "%s %i", a->id, ( cd + 999 ) / 1000 );
+		Vector4Set( color, 0.8f, 0.6f, 0.4f, 0.8f );
+	} else {
+		s = va( "%s [%s]", a->id, key );
+		Vector4Set( color, 0.95f, 0.8f, 0.5f, 1.0f );
+	}
+	CG_DrawStringExt( 320 - CG_DrawStrlen( s ) * 4, y, s, color, qtrue, qtrue, 8, 10, 0 );
+}
+
 void CG_PangeaDrawHud( void ) {
 	const playerState_t		*ps = &cg.snap->ps;
 	const pangeaAbility_t	*a;
-	int						cd;
+	int						cd, kin, y = 412;
 	const char				*s;
 	vec4_t					color;
 
 	if ( !cgs.pangea || ps->persistant[PERS_TEAM] == TEAM_SPECTATOR || ps->stats[STAT_HEALTH] <= 0 ) {
 		return;
 	}
-	if ( ps->weapon < WP_GAUNTLET || ps->weapon > WP_RAILGUN ) {
+	if ( !PG_SLOT( ps->weapon ) ) {
 		return;
 	}
-	a = BG_PangeaAbility( ps->weapon, qtrue, cgs.pangea );
-	if ( !a ) {
-		return;
-	}
+	kin = ps->persistant[PERS_PANGEA_KIN];
 	cd = ps->stats[ STAT_PANGEA_CD1 + ps->weapon - WP_GAUNTLET ];
-	if ( cd > 0 ) {
-		s = va( "%s %i", a->id, ( cd + 999 ) / 1000 );
-		Vector4Set( color, 0.8f, 0.6f, 0.4f, 0.8f );
-	} else {
-		s = va( "%s [MOUSE2/F]", a->id );
-		Vector4Set( color, 0.95f, 0.8f, 0.5f, 1.0f );
+	a = BG_PangeaAbility( ps->weapon, qtrue, cgs.pangea, kin );
+	if ( a ) {
+		CG_PangeaHudLine( a, cd, "MOUSE2/F", y );
+		y -= 12;
 	}
-	CG_DrawStringExt( 320 - CG_DrawStrlen( s ) * 4, 412, s, color, qtrue, qtrue, 8, 10, 0 );
+	a = BG_PangeaAbility( ps->weapon, qfalse, cgs.pangea, kin );
+	if ( a && a->cooldown > 0 ) {
+		CG_PangeaHudLine( a, cd, "MOUSE1", y );
+		y -= 12;
+	}
 
 	if ( ps->generic1 & ( PSTAT_ENTANGLED | PSTAT_STUNNED | PSTAT_BURNING ) ) {
 		s = ( ps->generic1 & PSTAT_BURNING ) ? "BURNING" : ( ps->generic1 & PSTAT_STUNNED ) ? "STUNNED" : "TANGLED";
 		Vector4Set( color, 1.0f, 0.5f, 0.25f, 1.0f );
-		CG_DrawStringExt( 320 - CG_DrawStrlen( s ) * 4, 398, s, color, qtrue, qtrue, 8, 10, 0 );
+		CG_DrawStringExt( 320 - CG_DrawStrlen( s ) * 4, y - 2, s, color, qtrue, qtrue, 8, 10, 0 );
 	}
 }
 
