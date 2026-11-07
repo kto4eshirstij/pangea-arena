@@ -372,6 +372,7 @@ typedef struct {
 	animation_t		animations[MAX_TOTALANIMATIONS];
 
 	sfxHandle_t		sounds[MAX_CUSTOM_SOUNDS];
+	char			pangeaRace[24];		// Pangea: people of the player ("pr"), first-person hands
 } clientInfo_t;
 
 
@@ -1073,6 +1074,7 @@ typedef struct {
 	// media
 	cgMedia_t		media;
 
+	int				pangea;				// Pangea arena mode (bg_pangea.h): PANGEA_SIM | PANGEA_HONOR | PANGEA_SLAUGHTER
 } cgs_t;
 
 //==============================================================================
@@ -1373,6 +1375,22 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 void CG_DrawWeaponSelect( void );
 
 void CG_OutOfAmmoChange( void );	// should this be in pmove?
+
+//
+// cg_pangea.c — Pangea tier-0 abilities
+//
+void		CG_PangeaInit( void );
+void		CG_PangeaRegisterWeapon( weaponInfo_t *wi, int weaponNum );
+void		CG_PangeaClientInfo( clientInfo_t *ci, const char *configstring );
+void		CG_PangeaFireWeapon( centity_t *cent );
+void		CG_PangeaAltEvent( centity_t *cent, int weapon );
+void		CG_PangeaAddViewWeapon( playerState_t *ps );
+qboolean	CG_PangeaAddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent );
+void		CG_PangeaPlayerEffects( centity_t *cent, refEntity_t *legs );
+qboolean	CG_PangeaMissile( centity_t *cent );
+qboolean	CG_PangeaGeneral( centity_t *cent );
+qboolean	CG_PangeaImpact( int weapon, vec3_t origin, vec3_t dir, int fleshEntity );
+void		CG_PangeaDrawHud( void );
 
 //
 // cg_marks.c

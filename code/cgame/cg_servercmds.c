@@ -165,6 +165,12 @@ void CG_ParseServerinfo( void ) {
 	cgs.capturelimit = atoi( Info_ValueForKey( info, "capturelimit" ) );
 	cgs.timelimit = atoi( Info_ValueForKey( info, "timelimit" ) );
 	cgs.maxclients = atoi( Info_ValueForKey( info, "sv_maxclients" ) );
+	// Pangea: tier-0 abilities instead of the stock weapons (bg_pangea.h)
+	{
+		const char *arsenal = Info_ValueForKey( info, "g_pangea_arsenal" );
+		cgs.pangea = !Q_stricmp( arsenal, "honor" ) ? PANGEA_HONOR :
+			!Q_stricmp( arsenal, "slaughter" ) ? PANGEA_SLAUGHTER : PANGEA_SIM;
+	}
 	mapname = Info_ValueForKey( info, "mapname" );
 	Com_sprintf( cgs.mapname, sizeof( cgs.mapname ), "maps/%s.bsp", mapname );
 	Q_strncpyz( cgs.redTeam, Info_ValueForKey( info, "g_redTeam" ), sizeof(cgs.redTeam) );

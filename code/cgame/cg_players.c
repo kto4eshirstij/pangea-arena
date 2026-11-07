@@ -896,6 +896,9 @@ void CG_NewClientInfo( int clientNum ) {
 	v = Info_ValueForKey(configstring, "n");
 	Q_strncpyz( newInfo.name, v, sizeof( newInfo.name ) );
 
+	// Pangea: people of the player
+	CG_PangeaClientInfo( &newInfo, configstring );
+
 	// colors
 	v = Info_ValueForKey( configstring, "c1" );
 	CG_ColorFromString( v, newInfo.color1 );
@@ -2327,6 +2330,9 @@ void CG_Player( centity_t *cent ) {
 	VectorCopy (legs.origin, legs.oldorigin);	// don't positionally lerp at all
 
 	CG_AddRefEntityWithPowerups( &legs, &cent->currentState, ci->team );
+
+	// Pangea: burning, bola, stun
+	CG_PangeaPlayerEffects( cent, &legs );
 
 	// if the model failed, allow the default nullmodel to be displayed
 	if (!legs.hModel) {

@@ -1936,6 +1936,9 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum ) {
 
 	CG_StartMusic();
 
+	// Pangea: arena controls (secondary ability)
+	CG_PangeaInit();
+
 	CG_LoadingString( "" );
 
 #ifdef MISSIONPACK

@@ -815,6 +815,9 @@ void CG_RegisterWeapon( int weaponNum ) {
 		weaponInfo->flashSound[0] = trap_S_RegisterSound( "sound/weapons/rocket/rocklf1a.wav", qfalse );
 		break;
 	}
+
+	// Pangea tier-0 arena: slots 1–7 are abilities with our models
+	CG_PangeaRegisterWeapon( weaponInfo, weaponNum );
 }
 
 /*
@@ -1207,6 +1210,10 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
 	weaponNum = cent->currentState.weapon;
 
+	if ( CG_PangeaAddPlayerWeapon( parent, ps, cent ) ) {
+		return;
+	}
+
 	CG_RegisterWeapon( weaponNum );
 	weapon = &cg_weapons[weaponNum];
 
@@ -1391,6 +1398,12 @@ void CG_AddViewWeapon( playerState_t *ps ) {
 
 	// don't draw if testing a gun model
 	if ( cg.testGun ) {
+		return;
+	}
+
+	// Pangea tier-0 arena: hands of the player's people with the slot's weapon
+	if ( cgs.pangea ) {
+		CG_PangeaAddViewWeapon( ps );
 		return;
 	}
 
@@ -1690,6 +1703,10 @@ void CG_FireWeapon( centity_t *cent ) {
 	}
 	weap = &cg_weapons[ ent->weapon ];
 
+	if ( cgs.pangea ) {
+		CG_PangeaFireWeapon( cent );
+	}
+
 	// mark the entity as muzzle flashing, so when it is added it will
 	// append the flash to the weapon model
 	cent->muzzleFlashTime = cg.time;
@@ -1753,6 +1770,10 @@ void CG_MissileHitWall( int weapon, int clientNum, vec3_t origin, vec3_t dir, im
 	int				duration;
 	vec3_t			sprOrg;
 	vec3_t			sprVel;
+
+	if ( CG_PangeaImpact( weapon, origin, dir, -1 ) ) {
+		return;
+	}
 
 	mod = 0;
 	shader = 0;
@@ -1943,6 +1964,10 @@ CG_MissileHitPlayer
 =================
 */
 void CG_MissileHitPlayer( int weapon, vec3_t origin, vec3_t dir, int entityNum ) {
+	if ( CG_PangeaImpact( weapon, origin, dir, entityNum ) ) {
+		return;
+	}
+
 	CG_Bleed( origin, entityNum );
 
 	// some weapons will make an explosion with the blood, while

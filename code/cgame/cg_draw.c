@@ -577,6 +577,10 @@ static void CG_DrawStatusBar( void ) {
 	//
 	if ( cent->currentState.weapon ) {
 		value = ps->ammo[cent->currentState.weapon];
+		// Pangea: slots without ammo (fists, club, shield) carry 99 for the bots
+		if ( cgs.pangea && value == PANGEA_MELEE_AMMO ) {
+			value = -1;
+		}
 		if ( value > -1 ) {
 			if ( cg.predictedPlayerState.weaponstate == WEAPON_FIRING
 				&& cg.predictedPlayerState.weaponTime > 100 ) {
@@ -2563,6 +2567,7 @@ static void CG_Draw2D(stereoFrame_t stereoFrame)
 			}
 #else
 			CG_DrawStatusBar();
+			CG_PangeaDrawHud();
 #endif
       
 			CG_DrawAmmoWarning();

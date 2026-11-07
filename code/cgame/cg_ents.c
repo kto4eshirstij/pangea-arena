@@ -166,6 +166,11 @@ static void CG_General( centity_t *cent ) {
 
 	s1 = &cent->currentState;
 
+	// Pangea tier-0 missiles and the fire patch
+	if ( CG_PangeaGeneral( cent ) ) {
+		return;
+	}
+
 	// if set to invisible, skip
 	if (!s1->modelindex) {
 		return;
@@ -418,6 +423,11 @@ static void CG_Missile( centity_t *cent ) {
 //	int	col;
 
 	s1 = &cent->currentState;
+
+	// Pangea tier-0 missiles and the fire patch
+	if ( CG_PangeaMissile( cent ) ) {
+		return;
+	}
 	if ( s1->weapon >= WP_NUM_WEAPONS ) {
 		s1->weapon = 0;
 	}

@@ -151,6 +151,9 @@ static void CG_Obituary( entityState_t *ent ) {
 	if (attacker == target) {
 		gender = ci->gender;
 		switch (mod) {
+		case MOD_PANGEA_BURN:
+			message = "burned to death";
+			break;
 #ifdef MISSIONPACK
 		case MOD_KAMIKAZE:
 			message = "goes out with a bang";
@@ -247,6 +250,55 @@ static void CG_Obituary( entityState_t *ent ) {
 
 	if ( attacker != ENTITYNUM_WORLD ) {
 		switch (mod) {
+		// Pangea tier-0 abilities
+		case MOD_PANGEA_PUNCH:
+			message = "was beaten by";
+			break;
+		case MOD_PANGEA_KICK:
+			message = "was kicked down by";
+			break;
+		case MOD_PANGEA_HEADBUTT:
+			message = "was headbutted by";
+			break;
+		case MOD_PANGEA_CLUB:
+			message = "was clubbed by";
+			break;
+		case MOD_PANGEA_SPEAR:
+			message = "was speared by";
+			break;
+		case MOD_PANGEA_SPEAR_THROW:
+			message = "was skewered by";
+			message2 = "'s thrown spear";
+			break;
+		case MOD_PANGEA_STONE:
+			message = "was stoned by";
+			break;
+		case MOD_PANGEA_BOLA:
+			message = "was tangled by";
+			message2 = "'s bola";
+			break;
+		case MOD_PANGEA_ARROW:
+			message = "was shot by";
+			message2 = "'s arrow";
+			break;
+		case MOD_PANGEA_FIRE_ARROW:
+			message = "was set ablaze by";
+			message2 = "'s fire arrow";
+			break;
+		case MOD_PANGEA_TORCH:
+			message = "was burned by";
+			message2 = "'s torch";
+			break;
+		case MOD_PANGEA_BRAND:
+			message = "caught";
+			message2 = "'s brand";
+			break;
+		case MOD_PANGEA_BURN:
+			message = "burned to death, set on fire by";
+			break;
+		case MOD_PANGEA_SLAM:
+			message = "was crushed by";
+			break;
 		case MOD_GRAPPLE:
 			message = "was caught by";
 			break;
@@ -810,6 +862,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_FIRE_WEAPON:
 		DEBUGNAME("EV_FIRE_WEAPON");
 		CG_FireWeapon( cent );
+		break;
+
+	case EV_PANGEA_ALT:
+		DEBUGNAME("EV_PANGEA_ALT");
+		CG_PangeaAltEvent( cent, es->eventParm );
 		break;
 
 	case EV_USE_ITEM0:
