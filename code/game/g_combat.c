@@ -829,6 +829,9 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 	}
 
 	damage = Pangea_ModifyDamage( targ, inflictor, damage, mod );
+	if ( mod >= MOD_PANGEA_PUNCH && trap_Cvar_VariableIntegerValue( "g_pangea_debug" ) ) {
+		G_LogPrintf( "Pangea: damage %i -> %i %i %s\n", attacker ? attacker->s.number : -1, targ->s.number, damage, modNames[mod] );
+	}
 
 	// the intermission has already been qualified for, so don't
 	// allow any extra scoring

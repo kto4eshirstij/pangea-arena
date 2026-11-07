@@ -66,7 +66,7 @@ const ffa = (n: number, rules: object = {}) => ({
 describe("rules", () => {
   it("fills mode defaults and maps them to ioq3ded args", () => {
     const req = parseMatchRequest(duel, MAPS);
-    expect(req.rules).toMatchObject({ fraglimit: 10, timelimit: 10, warmup: 10, bots: 0, arsenal: "full" });
+    expect(req.rules).toMatchObject({ fraglimit: 10, timelimit: 10, warmup: 10, bots: 0, arsenal: "honor" });
     const { args, config } = serverLaunch(req, 27963, { basepath: "/c", homepath: "/h", basegame: "baseoa" });
     const a = args.join(" ");
     expect(a).toContain("+set net_port 27963");
@@ -336,6 +336,31 @@ describe("npc: rules", () => {
     const req = parseMatchRequest({ ...ffa(2, { bots: 2 }), players: [...ffa(2).players, ker, { ...ker, name: "Тур", bot: { model: "grism", skill: 2 } }] }, MAPS);
     expect(maxClients(req)).toBe(6);
     expect(botCommands(req)).toEqual(["addbot sarge 3 free 0 Ker", "addbot grism 2 free 0 Tur", "addbot sarge 3", "addbot grism 3"]);
+  });
+});
+
+describe("tier-0 arena (C6)", () => {
+  const cfgOf = (req: MatchRequest) => serverLaunch(req, 27990, { basepath: "/b", homepath: "/h", basegame: "baseoa" }).config;
+
+  it("defaults: honor in a duel, slaughter in ffa; the simulator arsenals still parse", () => {
+    expect(parseMatchRequest(ffa(3), MAPS).rules.arsenal).toBe("slaughter");
+    for (const a of ["full", "rail", "rocket", "melee", "honor", "slaughter"]) {
+      expect(parseMatchRequest(ffa(3, { arsenal: a }), MAPS).rules.arsenal).toBe(a);
+    }
+  });
+
+  it("passes the people of humans (by ticket) and npcs (by bot name) to g_pangea_races", () => {
+    const req = parseMatchRequest({ ...duelNpc, players: [{ ticket: "t2", name: "Арн", race: "fey" }, { ...ker, race: "troll" }] }, MAPS);
+    expect(req.players[0].race).toBe("fey");
+    expect(req.npcs[0].race).toBe("troll");
+    expect(cfgOf(req)).toContain('set g_pangea_races "t2=fey,Ker=troll"');
+  });
+
+  it("race is optional and must be lowercase latin", () => {
+    expect(cfgOf(parseMatchRequest(ffa(3), MAPS))).toContain('set g_pangea_races ""');
+    const bad = (b: object) => expect(() => parseMatchRequest(b, MAPS)).toThrow(ValidationError);
+    bad({ ...ffa(2), players: [{ ticket: "a", race: "Тролль" }, { ticket: "b" }] });
+    bad({ ...ffa(2), players: [{ ticket: "a", race: "x\"; quit" }, { ticket: "b" }] });
   });
 });
 

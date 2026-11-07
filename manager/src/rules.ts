@@ -1,11 +1,18 @@
 // Match request validation and mapping of Pangea rules to ioq3ded arguments.
 
 export type Mode = "duel" | "ffa";
-export type Arsenal = "full" | "rail" | "rocket" | "melee";
+/**
+ * full | rail | rocket | melee — «симулятор», the stock OpenArena weapons;
+ * honor | slaughter — tier-0 abilities (code/game/bg_pangea.h): дуэль чести (no fire) / бойня (everything).
+ */
+export type Arsenal = "full" | "rail" | "rocket" | "melee" | "honor" | "slaughter";
+export const ARSENALS: Arsenal[] = ["full", "rail", "rocket", "melee", "honor", "slaughter"];
 
 export interface Player {
   ticket: string;
   name?: string;
+  /** People of the character (arena hand skins), e.g. "human", "troll", "fey". */
+  race?: string;
 }
 
 /** A Pangea NPC fighter: an ioq3 bot under the NPC's (transliterated) name. */
@@ -15,6 +22,7 @@ export interface NpcPlayer {
   latin: string;         // in-game name: the engine fonts have no Cyrillic
   key: string;           // internal id in places ("npc:<i>")
   bot: { model: string; skill: number };
+  race?: string;
 }
 
 export interface Rules {
@@ -38,8 +46,8 @@ export interface MatchRequest {
 }
 
 export const DEFAULT_RULES: Record<Mode, Rules> = {
-  duel: { fraglimit: 10, timelimit: 10, arsenal: "full", instagib: false, powerups: true, items: true, warmup: 10, bots: 0 },
-  ffa: { fraglimit: 20, timelimit: 12, arsenal: "full", instagib: false, powerups: true, items: true, warmup: 15, bots: 0 },
+  duel: { fraglimit: 10, timelimit: 10, arsenal: "honor", instagib: false, powerups: true, items: true, warmup: 10, bots: 0 },
+  ffa: { fraglimit: 20, timelimit: 12, arsenal: "slaughter", instagib: false, powerups: true, items: true, warmup: 15, bots: 0 },
 };
 
 export const FFA_MAX_CLIENTS = 8;
@@ -48,6 +56,14 @@ export const DUEL_SPECTATORS = 2;
 export const BOT_NAMES = ["sarge", "grism", "kyonshi"];
 
 const TICKET_RE = /^[A-Za-z0-9_-]{1,63}$/;
+/** A people key: lowercase latin, as in the arena's hand skins. */
+const RACE_RE = /^[a-z_]{1,20}$/;
+
+function race(v: unknown, where: string): string | undefined {
+  if (v === undefined || v === null || v === "") return undefined;
+  if (typeof v !== "string" || !RACE_RE.test(v)) throw new ValidationError(`${where}.race: [a-z_]{1,20}`);
+  return v;
+}
 /** Longest in-game name of an NPC bot. */
 export const NPC_NAME_MAX = 15;
 
@@ -110,36 +126,39 @@ export function parseMatchRequest(body: unknown, allowedMaps: Record<Mode, strin
   }
   if (!Array.isArray(b.players)) throw new ValidationError("players: массив");
   const players: Player[] = [];
-  const npcRaw: { name: string; bot: { model: string; skill: number } }[] = [];
+  const npcRaw: { name: string; bot: { model: string; skill: number }; race?: string }[] = [];
   b.players.forEach((p, i) => {
     if (!p || typeof p !== "object") throw new ValidationError(`players[${i}]: объект`);
     const { ticket, name, npc, bot } = p as Record<string, unknown>;
+    const r = race((p as Record<string, unknown>).race, `players[${i}]`);
     if (npc === true) {
       if (typeof name !== "string" || !name.trim() || name.length > 64) throw new ValidationError(`players[${i}].name: имя NPC`);
       const bb = (bot ?? {}) as Record<string, unknown>;
       const model = bb.model ?? BOT_NAMES[0];
       if (typeof model !== "string" || !BOT_NAMES.includes(model)) throw new ValidationError(`players[${i}].bot.model: одна из ${BOT_NAMES.join(", ")}`);
       const skill = int(bb.skill ?? 3, `players[${i}].bot.skill`, 1, 5);
-      npcRaw.push({ name: name.trim(), bot: { model, skill } });
+      npcRaw.push({ name: name.trim(), bot: { model, skill }, ...(r ? { race: r } : {}) });
       return;
     }
     if (npc !== undefined) throw new ValidationError(`players[${i}].npc: true`);
     if (typeof ticket !== "string" || !TICKET_RE.test(ticket)) throw new ValidationError(`players[${i}].ticket: [A-Za-z0-9_-]{1,63}`);
     if (name !== undefined && typeof name !== "string") throw new ValidationError(`players[${i}].name: строка`);
-    players.push({ ticket, name: name as string | undefined });
+    players.push({ ticket, name: name as string | undefined, ...(r ? { race: r } : {}) });
   });
   if (new Set(players.map((p) => p.ticket)).size !== players.length) throw new ValidationError("players: билеты повторяются");
   if (players.length < 1) throw new ValidationError("players: нужен хотя бы один человек");
   const latin = npcNames(npcRaw.map((n) => n.name));
-  const npcs: NpcPlayer[] = npcRaw.map((n, i) => ({ npc: true, name: n.name, latin: latin[i], key: `npc:${i}`, bot: n.bot }));
+  const npcs: NpcPlayer[] = npcRaw.map((n, i) => ({
+    npc: true, name: n.name, latin: latin[i], key: `npc:${i}`, bot: n.bot, ...(n.race ? { race: n.race } : {}),
+  }));
 
   const r = { ...DEFAULT_RULES[mode], ...((b.rules as object) ?? {}) } as Record<string, unknown>;
   const rules: Rules = {
     fraglimit: int(r.fraglimit, "rules.fraglimit", 1, 100),
     timelimit: int(r.timelimit, "rules.timelimit", 1, 60),
     arsenal: ((): Arsenal => {
-      if (r.arsenal === "full" || r.arsenal === "rail" || r.arsenal === "rocket" || r.arsenal === "melee") return r.arsenal;
-      throw new ValidationError("rules.arsenal: full | rail | rocket | melee");
+      if (ARSENALS.includes(r.arsenal as Arsenal)) return r.arsenal as Arsenal;
+      throw new ValidationError(`rules.arsenal: ${ARSENALS.join(" | ")}`);
     })(),
     instagib: bool(r.instagib, "rules.instagib"),
     powerups: bool(r.powerups, "rules.powerups"),
@@ -198,6 +217,14 @@ export function botCommands(req: MatchRequest): string[] {
   return out;
 }
 
+/** g_pangea_races: "ticket=race,BotName=race" (the server matches tickets and bot names). */
+export function racesCvar(req: MatchRequest): string {
+  return [
+    ...req.players.filter((p) => p.race).map((p) => `${p.ticket}=${p.race}`),
+    ...req.npcs.filter((n) => n.race).map((n) => `${n.latin}=${n.race}`),
+  ].join(",");
+}
+
 /** ioq3ded command line + match.cfg for a match. */
 export function serverLaunch(req: MatchRequest, port: number, paths: ServerPaths): ServerLaunch {
   const r = req.rules;
@@ -226,6 +253,7 @@ export function serverLaunch(req: MatchRequest, port: number, paths: ServerPaths
     ["g_pangea_bots", allBots(req)],
     ["g_pangea_autoexit", 1],
     ["g_pangea_overtime", OVERTIME_S],
+    ["g_pangea_races", racesCvar(req)],
   ];
   const config = `// generated by pangea-arena-manager for match ${req.match_id}\n` +
     cvars.map(([k, v]) => `set ${k} "${v}"`).join("\n") + "\n";

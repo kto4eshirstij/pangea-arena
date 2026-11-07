@@ -854,6 +854,9 @@ static void Pangea_Use( gentity_t *ent, const pangeaAbility_t *a ) {
 	if ( !a ) {
 		return;
 	}
+	if ( trap_Cvar_VariableIntegerValue( "g_pangea_debug" ) ) {
+		G_LogPrintf( "Pangea: use %i %s\n", ent->s.number, a->id );
+	}
 	if ( a->weapon != WP_GAUNTLET ) {
 		ent->client->accuracy_shots++;
 	}

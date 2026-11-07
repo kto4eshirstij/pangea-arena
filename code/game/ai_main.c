@@ -832,6 +832,10 @@ void BotInputToUserCommand(bot_input_t *bi, usercmd_t *ucmd, int delta_angles[3]
 	//set the buttons
 	if (bi->actionflags & ACTION_RESPAWN) ucmd->buttons = BUTTON_ATTACK;
 	if (bi->actionflags & ACTION_ATTACK) ucmd->buttons |= BUTTON_ATTACK;
+	// Pangea tier-0 arena: now and then the secondary ability instead (cooldowns gate it)
+	if ((bi->actionflags & ACTION_ATTACK) && Pangea_Mode() != PANGEA_SIM && random() < 0.08) {
+		ucmd->buttons |= BUTTON_PANGEA_ALT;
+	}
 	if (bi->actionflags & ACTION_TALK) ucmd->buttons |= BUTTON_TALK;
 	if (bi->actionflags & ACTION_GESTURE) ucmd->buttons |= BUTTON_GESTURE;
 	if (bi->actionflags & ACTION_USE) ucmd->buttons |= BUTTON_USE_HOLDABLE;
